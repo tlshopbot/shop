@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TL shop</title>
+    <link rel="stylesheet" href="TL_shop.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/jsonpath@1.1.0/jsonpath.min.js"></script>
+</head>
+
+<body>
+    <div class="top"></div>
+    <main>
+        <div class="catalog" id="catalog">
+        </div>
+        <div class="cart hide" id="cart">
+        </div>
+        <div class="basket hide">
+            <section class="basket_path">
+                <p class="basket_name">Корзина</p>
+            </section>
+            <section class="basket_empty">
+                <p class="basket_empty_title">Ваша корзина пуста</p>
+                <svg class="basket_empty_svg" width="284" height="305" viewBox="0 0 284 305" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M53 137.77L161 73V84.2302L53 149V137.77Z" fill="#3B16D0" />
+                    <path d="M161 73L226 116.844V128L161 84.1557V73Z" fill="#2808A7" />
+                    <path
+                        d="M56 203.173V140.172L160.375 79L222.543 119.224C222.828 119.408 223 119.725 223 120.064V182.26L118.625 245L56 203.173Z"
+                        fill="#BCC5FF" />
+                    <path d="M53 137.77L161 73V84.2302L53 149V137.77Z" fill="#490081" />
+                    <path
+                        d="M161 73L224.237 115.655C225.339 116.399 226 117.641 226 118.971V120.477C226 123.682 222.42 125.585 219.763 123.793L161 84.1557V73Z"
+                        fill="#490081" />
+                    <path
+                        d="M168 107.094V106.111C168 102.795 171.804 100.919 174.435 102.938L205.435 126.724C206.422 127.481 207 128.654 207 129.898V131.715C207 135.062 203.134 136.929 200.512 134.847L169.512 110.226C168.557 109.467 168 108.314 168 107.094Z"
+                        fill="#F6F6F6" />
+                    <path
+                        d="M73 152.107V154.553C73 157.742 76.5497 159.649 79.2087 157.888L151.209 110.203C152.327 109.462 153 108.21 153 106.868V105.366C153 102.193 149.483 100.283 146.822 102.011L74.822 148.752C73.6857 149.489 73 150.752 73 152.107Z"
+                        fill="#F6F6F6" />
+                    <path
+                        d="M60.2671 206.206C57.8226 204.573 57.9162 200.949 60.4417 199.444L158.031 141.29C159.354 140.502 161.012 140.543 162.295 141.396L217.749 178.297C220.191 179.922 220.112 183.535 217.601 185.051L120.503 243.686C119.175 244.488 117.503 244.45 116.213 243.588L60.2671 206.206Z"
+                        fill="#011664" />
+                    <path
+                        d="M73 173.12V175.631C73 178.805 76.5181 180.714 79.1792 178.985L151.179 132.208C152.315 131.47 153 130.208 153 128.854V127.288C153 124.131 149.515 122.218 146.852 123.914L74.852 169.746C73.6985 170.48 73 171.753 73 173.12Z"
+                        fill="#F6F6F6" />
+                    <path
+                        d="M56 139.651L118.788 181.739V246L57.776 205.188C56.6662 204.446 56 203.198 56 201.863V139.651Z"
+                        fill="#BCC5FF" />
+                    <path
+                        d="M68 173.094V172.111C68 168.795 71.8039 166.919 74.435 168.938L105.435 192.724C106.422 193.481 107 194.654 107 195.898V197.715C107 201.062 103.134 202.929 100.512 200.847L69.5123 176.226C68.5568 175.467 68 174.314 68 173.094Z"
+                        fill="#F6F6F6" />
+                    <path
+                        d="M168 129.572V128.117C168 124.8 171.806 122.924 174.437 124.945L205.437 148.761C206.422 149.518 207 150.69 207 151.933V152.969C207 156.271 203.226 158.151 200.59 156.162L169.59 132.764C168.589 132.008 168 130.826 168 129.572Z"
+                        fill="#F6F6F6" />
+                    <path d="M118.5 182L223 119V181.722C223 183.134 222.255 184.442 221.041 185.162L118.5 246V182Z"
+                        fill="#7D8DF7" />
+                    <path
+                        d="M131 196.107V198.553C131 201.742 134.55 203.649 137.209 201.888L209.209 154.203C210.327 153.462 211 152.21 211 150.868V149.366C211 146.193 207.483 144.283 204.822 146.011L132.822 192.752C131.686 193.489 131 194.752 131 196.107Z"
+                        fill="#F6F6F6" />
+                    <path
+                        d="M131 217.12V219.631C131 222.805 134.518 224.714 137.179 222.985L209.179 176.208C210.315 175.47 211 174.208 211 172.854V171.288C211 168.131 207.515 166.218 204.852 167.914L132.852 213.746C131.699 214.48 131 215.753 131 217.12Z"
+                        fill="#F6F6F6" />
+                    <path
+                        d="M68 194.572V193.117C68 189.8 71.8061 187.924 74.4369 189.945L105.437 213.761C106.422 214.518 107 215.69 107 216.933V217.969C107 221.271 103.226 223.151 100.59 221.162L69.5903 197.764C68.5888 197.008 68 195.826 68 194.572Z"
+                        fill="#F6F6F6" />
+                    <path d="M53 137.5L118.5 181.5V193.5L53 149.156V137.5Z" fill="#750DC5" />
+                    <path
+                        d="M118.5 181.5L226 117V127.226C226 128.636 225.258 129.942 224.046 130.663L118.5 193.5V181.5Z"
+                        fill="#4E0089" />
+                    <path
+                        d="M100.656 68.6395C100.521 86.8535 100.3 108.474 100.469 109.322L88 116.871V60.9046L100.729 57L179.058 103.992C180.263 104.715 181 106.017 181 107.422V150.475C181 151.909 180.232 153.233 178.988 153.946L177.895 154.571C175.229 156.098 171.908 154.173 171.908 151.1V114.429C171.908 113.035 171.183 111.742 169.994 111.016L100.656 68.6395Z"
+                        fill="#0C0C0C" />
+                    <path d="M100.729 57L182 105L171.908 113L88 60.9437L100.729 57Z" fill="#454545" />
+                    <path d="M172 111.849L182 105V153.732L172 159V111.849Z" fill="#424242" />
+                    <path d="M141 36.0001L141 8.00006" stroke="#C1C1C1" stroke-width="16" stroke-linecap="round" />
+                    <path d="M254.098 94.6909L273.902 74.8973" stroke="#C1C1C1" stroke-width="16"
+                        stroke-linecap="round" />
+                    <path d="M29.8536 90.4416L9.74961 70.9524" stroke="#C1C1C1" stroke-width="16"
+                        stroke-linecap="round" />
+                    <path d="M232.746 225.128L256.997 239.123" stroke="#C1C1C1" stroke-width="16"
+                        stroke-linecap="round" />
+                    <path d="M141 269L141 297" stroke="#C1C1C1" stroke-width="16" stroke-linecap="round" />
+                    <path d="M38.2493 224.883L13.9972 238.877" stroke="#C1C1C1" stroke-width="16"
+                        stroke-linecap="round" />
+                </svg>
+                <p class="basket_empty_add">Добавьте товары из каталога</p>
+                <div class="basket_empty_cataloge_but">
+                    <p class="basket_empty_cataloge_but_text">Перейти в каталог</p>
+                </div>
+            </section>
+            <section class="basket_full hide">
+                <div class="delete">
+                    <svg class="delete_svg" width="21" height="24" viewBox="0 0 21 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M3.9375 24C3.21563 24 2.59744 23.7387 2.08294 23.216C1.56844 22.6933 1.31163 22.0658 1.3125 21.3333V4H1C0.447715 4 0 3.55228 0 3C0 2.44772 0.447715 2 1 2H6.5625V1C6.5625 0.447715 7.01022 0 7.5625 0H13.4375C13.9898 0 14.4375 0.447715 14.4375 1V2H20C20.5523 2 21 2.44772 21 3C21 3.55228 20.5523 4 20 4H19.6875V21.3333C19.6875 22.0667 19.4303 22.6947 18.9158 23.2173C18.4013 23.74 17.7835 24.0009 17.0625 24H3.9375ZM17.7158 4H3.5V22L17.7158 22V4ZM7 17.6667C7 18.219 7.44772 18.6667 8 18.6667C8.55229 18.6667 9 18.219 9 17.6667V7.66667C9 7.11438 8.55229 6.66667 8 6.66667C7.44772 6.66667 7 7.11438 7 7.66667V17.6667ZM12 17.6667C12 18.219 12.4477 18.6667 13 18.6667C13.5523 18.6667 14 18.219 14 17.6667V7.66667C14 7.11438 13.5523 6.66667 13 6.66667C12.4477 6.66667 12 7.11438 12 7.66667V17.6667Z"
+                            fill="#454545" />
+                    </svg>
+                    <p class="delete_text">Удалить всё</p>
+                </div>
+                <div class="basket_product_list">
+                </div>
+                <div class="result">
+                    <p class="result_text">Итого:</p>
+                    <p class="result_text_sum">279 978 ₽</p>
+                    <div class="result_but">
+                        <p class="result_but_text">Оформить заказ</p>
+                    </div>
+                </div>
+            </section>
+            <section class="form_path hide">
+                <svg class="form_back" width="10" height="19" viewBox="0 0 10 19" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 1.5L1.72591 8.41039C1.32515 8.79111 1.30929 9.42476 1.69052 9.82504L9 17.5"
+                        stroke="#0C0C0C" stroke-width="2" stroke-linecap="round"></path>
+                </svg>
+                <p class="form_name">Оформление заказа</p>
+            </section>
+            <section class="form hide">
+                <div class="date_pickup1 hide">
+                    <input class="day" type="date" id="start" name="trip-start">
+                    <ul class="hours">
+                        <li class="hour">10:00-11:00</li>
+                        <li class="hour">11:00-12:00</li>
+                        <li class="hour">12:00-13:00</li>
+                        <li class="hour">13:00-14:00</li>
+                        <li class="hour">14:00-15:00</li>
+                        <li class="hour">15:00-16:00</li>
+                        <li class="hour">16:00-17:00</li>
+                        <li class="hour">17:00-18:00</li>
+                        <li class="hour">18:00-19:00</li>
+                        <li class="hour">19:00-20:00</li>
+                        <li class="hour">20:00-21:00</li>
+                        <li class="hour">21:00-22:00</li>
+                        <li class="hour">22:00-23:00</li>
+                    </ul>
+                </div>
+                <div class="date_pickup2 hide">
+                    <input class="day" type="date" id="start" name="trip-start">
+                    <ul class="hours">
+                        <li class="hour">9:00-10:00</li>
+                        <li class="hour">11:00-12:00</li>
+                        <li class="hour">12:00-13:00</li>
+                        <li class="hour">13:00-14:00</li>
+                        <li class="hour">14:00-15:00</li>
+                    </ul>
+                </div>
+                <div class="date_courier hide">
+                    <input class="day" class="day" type="date" id="start" name="trip-start">
+                    <ul class="hours">
+                        <li class="hour">12:00-13:00</li>
+                        <li class="hour">13:00-14:00</li>
+                        <li class="hour">14:00-15:00</li>
+                        <li class="hour">15:00-16:00</li>
+                        <li class="hour">16:00-17:00</li>
+                        <li class="hour">17:00-18:00</li>
+                        <li class="hour">18:00-19:00</li>
+                        <li class="hour">19:00-20:00</li>
+                        <li class="hour">20:00-21:00</li>
+                        <li class="hour">21:00-22:00</li>
+                        <li class="hour">22:00-23:00</li>
+                    </ul>
+                </div>
+                <div class="method">
+                    <div class="method_toggle">
+                        <div class="toggle">
+                            <div class="method_pickup">Самовывоз</div>
+                            <div class="method_courier hide">Курьер</div>
+                        </div>
+                        <svg class="method_svg" width="11" height="19" viewBox="0 0 11 19" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1.5 1.5L8.77409 8.41039C9.17485 8.79111 9.1907 9.42476 8.80948 9.82504L1.5 17.5"
+                                stroke="#0C0C0C" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <div class="method_pickup_info">
+                        <div class="method_pickup_info_main">
+                            <p class="pickup_address_text">Адрес пункта выдачи</p>
+                            <p class="pickup_address_text_selected hide">Адрес пункта выдачи:</p>
+                            <p class="pickup_address hide">Г. Мурманск, Беринга 14, п. 6, эт. 1, кв. 362</p>
+                        </div>
+                        <div class="method_pickup_but">
+                            <svg class="method_pickup_but_change" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <rect x="1" y="1" width="22" height="22" rx="3" stroke-width="2" />
+                                <path d="M12 6V18" stroke-width="2" stroke-linecap="round" />
+                                <path d="M6 12H18" stroke-width="2" stroke-linecap="round" />
+                            </svg>
+                            <svg class="method_pickup_but_add hide" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="1" y="1" width="22" height="22" rx="3" stroke-width="2" />
+                                <path
+                                    d="M15.0779 6.50136C15.2368 6.34241 15.4255 6.21632 15.6332 6.1303C15.8409 6.04428 16.0635 6 16.2883 6C16.513 6 16.7356 6.04428 16.9433 6.1303C17.151 6.21632 17.3397 6.34241 17.4986 6.50136C17.6576 6.66031 17.7837 6.84901 17.8697 7.05669C17.9557 7.26436 18 7.48695 18 7.71174C18 7.93653 17.9557 8.15912 17.8697 8.3668C17.7837 8.57447 17.6576 8.76317 17.4986 8.92212L9.32855 17.0922L6 18L6.90779 14.6714L15.0779 6.50136Z"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="method_courier_info hide">
+                        <div class="method_courier_info_main">
+                            <p class="courier_address_text">Адрес доставки</p>
+                            <p class="courier_address_text_selected hide">Адрес доставки:</p>
+                            <p class="courier_address hide">Г. Мурманск, Беринга 14, п. 6, эт. 1, кв. 362</p>
+                        </div>
+                        <div class="method_courier_but">
+                            <svg class="method_courier_but_change" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="1" y="1" width="22" height="22" rx="3" stroke-width="2" />
+                                <path d="M12 6V18" stroke-width="2" stroke-linecap="round" />
+                                <path d="M6 12H18" stroke-width="2" stroke-linecap="round" />
+                            </svg>
+                            <svg class="method_courier_but_add hide" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="1" y="1" width="22" height="22" rx="3" stroke-width="2" />
+                                <path
+                                    d="M15.0779 6.50136C15.2368 6.34241 15.4255 6.21632 15.6332 6.1303C15.8409 6.04428 16.0635 6 16.2883 6C16.513 6 16.7356 6.04428 16.9433 6.1303C17.151 6.21632 17.3397 6.34241 17.4986 6.50136C17.6576 6.66031 17.7837 6.84901 17.8697 7.05669C17.9557 7.26436 18 7.48695 18 7.71174C18 7.93653 17.9557 8.15912 17.8697 8.3668C17.7837 8.57447 17.6576 8.76317 17.4986 8.92212L9.32855 17.0922L6 18L6.90779 14.6714L15.0779 6.50136Z"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact">
+                    <p class="contact_name">Контактные данные</p>
+                    <form action="" method="get" class="form_phone">
+                        <input class="phone" type="text" placeholder="Телефон *" maxlength="18" />
+                        <input class="comment" type="text" placeholder="Коментарий к заказу" />
+                    </form>
+                </div>
+                <div class="payment">
+                    <p class="payment_text">Оплата</p>
+                    <div class="payment_type">
+                        <div class="transfer">Перевод при получении</div>
+                        <div class="cash">Наличными при получении</div>
+                    </div>
+                </div>
+                <div class="pay">
+                    <p class="pay_text">Итого:</p>
+                    <p class="pay_text_sum"></p>
+                    <div class="pay_but disactive_but">
+                        <p class="pay_but_text">Оформить</p>
+                    </div>
+                </div>
+            </section>
+            <section class="choice_delivery hide">
+                <div class="choice">
+                    <p class="choice_name">Способы доставки</p>
+                    <div class="choice_buts">
+                        <div class="choice_pickup choiced">Самовывоз</div>
+                        <div class="choice_courier">Курьер</div>
+                    </div>
+                    <div class="choice_warning">
+                        <p class="choice_warning_text">Самовывоз - бесплатно<br>
+                            Курьер - 150 ₽<br>
+                            Курьер от 1000 ₽ - бесплатно</p>
+                        <svg class="choice_warning_svg" width="25" height="24" viewBox="0 0 25 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12.5" cy="12" r="11.5" stroke="#169B00" />
+                            <circle cx="12.5" cy="18" r="0.5" stroke="#169B00" />
+                            <rect x="12" y="4.5" width="1" height="10" rx="0.5" stroke="#169B00" />
+                        </svg>
+                    </div>
+                    <div class="choice_close">Выбрать</div>
+                </div>
+            </section>
+            <section class="choice_pickup_adress hide">
+                <div class="choice_adress">
+                    <p class="choice_adress_name">Выбор пункта выдачи</p>
+                    <div class="choice_adress_buts">
+                        <div class="choice_adress_pickup choiced">
+                            <p class="choice_point_name">Пункт выдачи:</p>
+                            <p class="choice_point">Г. Мурманск, ул. Беринга 14</p>
+                            <p class="choice_time_name">Время работы:</p>
+                            <p class="choice_time">Ежедневно 10:00 - 23:00</p>
+                        </div>
+                        <div class="choice_adress_pickup1">
+                            <p class="choice_point_name">Пункт выдачи:</p>
+                            <p class="choice_point">Г. Мурманск, ул. Полярной правды 8</p>
+                            <p class="choice_time_name">Время работы:</p>
+                            <p class="choice_time">Пн-пт 9:00 - 15:00</p>
+                        </div>
+                    </div>
+                    <div class="choice_adress_close">Выбрать</div>
+                </div>
+            </section>
+            <section class="choice_delivery_adress hide">
+                <div class="choice">
+                    <p class="choice_delivery_name">Укажите адрес доставки</p>
+                    <form action="" method="get" class="form_adress">
+                        <input class="delivery_adress" name="adress" placeholder="Адрес *" />
+                    </form>
+                    <div class="choice_warning">
+                        <p class="choice_warning_text">Исключительно Первомайский и Октябрьский районы</p>
+                        <svg class="choice_warning_svg" width="25" height="24" viewBox="0 0 25 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12.5" cy="12" r="11.5" stroke="#169B00" />
+                            <circle cx="12.5" cy="18" r="0.5" stroke="#169B00" />
+                            <rect x="12" y="4.5" width="1" height="10" rx="0.5" stroke="#169B00" />
+                        </svg>
+                    </div>
+                    <div class="choice_delivery_close disactive_but">указать</div>
+                </div>
+            </section>
+        </div>
+        <div class="profile">
+
+        </div>
+    </main>
+
+    <footer>
+        <nav class="cataloge_but active">
+            <svg width="27" height="19" viewBox="0 0 27 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0.5" y="0.5" width="2" height="2" rx="1" />
+                <rect x="6.5" y="0.5" width="20" height="2" rx="1" />
+                <rect x="0.5" y="8.5" width="2" height="2" rx="1" />
+                <rect x="6.5" y="8.5" width="20" height="2" rx="1" />
+                <rect x="0.5" y="16.5" width="2" height="2" rx="1" />
+                <rect x="6.5" y="16.5" width="20" height="2" rx="1" />
+            </svg>
+            <p>Каталог</p>
+        </nav>
+        <nav class="basket_but">
+            <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M9.5 22.5C10.0523 22.5 10.5 22.0523 10.5 21.5C10.5 20.9477 10.0523 20.5 9.5 20.5C8.94772 20.5 8.5 20.9477 8.5 21.5C8.5 22.0523 8.94772 22.5 9.5 22.5Z"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path
+                    d="M19.5 22.5C20.0523 22.5 20.5 22.0523 20.5 21.5C20.5 20.9477 20.0523 20.5 19.5 20.5C18.9477 20.5 18.5 20.9477 18.5 21.5C18.5 22.0523 18.9477 22.5 19.5 22.5Z"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path
+                    d="M1.5 1.5H5.5L8.18 15.7823C8.27144 16.2734 8.52191 16.7145 8.88755 17.0285C9.25318 17.3424 9.7107 17.5092 10.18 17.4996H19.9C20.3693 17.5092 20.8268 17.3424 21.1925 17.0285C21.5581 16.7145 21.8086 16.2734 21.9 15.7823L23.5 6.8332H6.5"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <p>Корзина</p>
+        </nav>
+        <nav class="profile_but" id="profile">
+            <svg width="22" height="25" viewBox="0 0 22 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M21 23.5V21.1667C21 19.929 20.4732 18.742 19.5355 17.8668C18.5979 16.9917 17.3261 16.5 16 16.5H6C4.67392 16.5 3.40215 16.9917 2.46447 17.8668C1.52678 18.742 1 19.929 1 21.1667V23.5"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path
+                    d="M10.5 11.5C13.2614 11.5 15.5 9.26142 15.5 6.5C15.5 3.73858 13.2614 1.5 10.5 1.5C7.73858 1.5 5.5 3.73858 5.5 6.5C5.5 9.26142 7.73858 11.5 10.5 11.5Z"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <p>Профиль</p>
+        </nav>
+    </footer>
+
+
+
+
+    <script src="categories.js" defer></script>
+    <script>
+        let cataloge_but = document.getElementsByClassName('cataloge_but')[0];
+        let basket_but = document.getElementsByClassName('basket_but')[0];
+        let profile_but = document.getElementsByClassName('profile_but')[0];
+        let cataloge = document.getElementsByClassName('cataloge')[0];
+        let basket = document.getElementsByClassName('basket')[0];
+        let profile = document.getElementsByClassName('profile')[0];
+        let basket_empty_cataloge_but = document.getElementsByClassName('basket_empty_cataloge_but')[0];
+        let result_but = document.getElementsByClassName('result_but')[0];
+        let basket_path = document.getElementsByClassName('basket_path')[0];
+        let basket_full = document.getElementsByClassName('basket_full')[0];
+        let form_path = document.getElementsByClassName('form_path')[0];
+        let form = document.getElementsByClassName('form')[0];
+        let form_back = document.getElementsByClassName('form_back')[0];
+        cataloge_but.addEventListener('click', () => {
+            cataloge_but.classList.add('active');
+            basket_but.classList.remove('active');
+            profile_but.classList.remove('active');
+            catalog.classList.remove('hide');
+            basket.classList.add('hide');
+            profile.classList.add('hide');
+            uppdate_categories();
+        });
+        basket_empty_cataloge_but.addEventListener('click', () => {
+            cataloge_but.classList.add('active');
+            basket_but.classList.remove('active');
+            profile_but.classList.remove('active');
+            catalog.classList.remove('hide');
+            basket.classList.add('hide');
+            profile.classList.add('hide');
+            uppdate_categories();
+        });
+        basket_but.addEventListener('click', () => {
+            cataloge_but.classList.remove('active');
+            basket_but.classList.add('active');
+            profile_but.classList.remove('active');
+            catalog.classList.add('hide');
+            basket.classList.remove('hide');
+            profile.classList.add('hide');
+        });
+        profile_but.addEventListener('click', () => {
+            cataloge_but.classList.remove('active');
+            basket_but.classList.remove('active');
+            profile_but.classList.add('active');
+            catalog.classList.add('hide');
+            basket.classList.add('hide');
+            profile.classList.remove('hide');
+        });
+        result_but.addEventListener('click', () => {
+            basket_path.classList.add('hide');
+            basket_full.classList.add('hide');
+            form_path.classList.remove('hide');
+            form.classList.remove('hide');
+            form_manag();
+        });
+        form_back.addEventListener('click', () => {
+            basket_path.classList.remove('hide');
+            basket_full.classList.remove('hide');
+            form_path.classList.add('hide');
+            form.classList.add('hide');
+        });
+    </script>
+</body>
+
+</html>
