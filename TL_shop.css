@@ -18,6 +18,11 @@ main {
     width: 100%;
     background-color: #ffffff;
     position: relative;
+    scrollbar-width: none; /* Скрыть скроллбар в Firefox */
+    -ms-overflow-style: none; /* Скрыть скроллбар в IE и Edge */
+}
+main::-webkit-scrollbar {
+    display: none; /* Скрыть скроллбар в Chrome, Safari и Opera */
 }
 .path, .cart_path, .basket_path, .form_path {
     display: flex;
@@ -384,9 +389,11 @@ main {
     margin-top: 10px;
     display: flex;
     overflow: scroll;
+    scrollbar-width: none; /* Скрыть скроллбар в Firefox */
+    -ms-overflow-style: none; /* Скрыть скроллбар в IE и Edge */
 }
 .hours::-webkit-scrollbar {
-    width: 0;
+    display: none; /* Скрыть скроллбар в Chrome, Safari и Opera */
 }
 .hour {
     margin-right: 5px;
