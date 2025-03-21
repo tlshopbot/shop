@@ -212,7 +212,9 @@ function create_categories(json_data, category_id) { //создание кате
                 let category = document.createElement('article');
                 category_list.append(category);
                 category.outerHTML = `<article class="category" id="${json_data[i]['id']}">
-                        <img src="${json_data[i]['design']['image']}" class="img" loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false" style="object-fit: contain; object-position: 50% 50%;"></img>
+                        <div class="container">
+                            <img src="${json_data[i]['design']['image']}" class="img" loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false" style="object-fit: contain; object-position: 50% 50%;"></img>
+                        </div>
                         <div class="info">
                             <p class="name">${json_data[i]['design']['title']}</p>
                             <p class="discript">${discript}</p>
@@ -249,7 +251,9 @@ function create_categories(json_data, category_id) { //создание кате
                 let product = document.createElement('product');
                 category_list.append(product);
                 product.outerHTML = `<article class="product" id="${json_data[i]['id']}">
-                    <img src="${json_data[i]['design']['image']}" class="img" loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false" style="object-fit: contain; object-position: 50% 50%;"></img>
+                    <div class="container">
+                        <img src="${json_data[i]['design']['image']}" class="img" loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false" style="object-fit: contain; object-position: 50% 50%;"></img>
+                    </div>
                     <div class="info">
                         <p class="name">${json_data[i]['design']['title']}</p>
 
@@ -354,8 +358,9 @@ function create_basket(basket_list) {
             let basket_product = document.createElement('article');
             basket_product_list.append(basket_product);
             basket_product.outerHTML = `<article class="basket_product" id="${parseInt(basket_list['items'][i]['id'])}">
-                        <img src="${basket_list['items'][i]['product']['design']['image']}"
-                            class="basket_product_img">
+                        <div class="container">
+                            <img src="${basket_list['items'][i]['product']['design']['image']}" class="basket_product_img">
+                        </div>
                         <div class="basket_product_info">
                             <p class="basket_product_name">${basket_list['items'][i]['product']['design']['title']}</p>
                             <div class="basket_product_price_info">
