@@ -13,7 +13,7 @@ let basket_list;
 let basket_products_list = new Object();
 let basket_products_id_list = [];
 let basket_products_count_list = [];
-const userId;
+let userId;
 // const userId = 1000597955;
 let user_id;
 let bot_id = 251807;
