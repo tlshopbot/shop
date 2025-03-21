@@ -15,7 +15,7 @@ let basket_products_id_list = [];
 let basket_products_count_list = [];
 const user = Telegram.WebApp.initDataUnsafe.user;
 console.log(user);
-const userId = user.id;
+const user_id = user.id;
 let bot_id = 251807;
 let delivery = 'pickup';
 let form_data = {
@@ -33,7 +33,7 @@ let form_data = {
 function get_user_key() {
     const post_user_keyData = {
         bot_id: bot_id,
-        telegram_id: userId
+        telegram_id: user_id 
     };
     let my_user_keyHeaders = new Headers();
     my_user_keyHeaders.append('Content-Type', 'application/json');
