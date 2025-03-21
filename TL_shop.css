@@ -43,14 +43,22 @@ main {
     display: flex;
     position: relative;
 }
-.img, .basket_product_img {
+.container {
     margin-top: 24px;
     margin-left: 16px;
     margin-right: 20px;
-    width: 101px;
-    height: 101px;
+    display: flex;
+    justify-content: center; /* Центрирование по горизонтали */
+    align-items: center; /* Центрирование по вертикали */
+    height: 101px; /* Высота контейнера равна высоте viewport */
+    width: 101px; /* Ширина контейнера равна ширине viewport */
+}
+.img, .basket_product_img {
     background-size: cover;
     border-radius: 5px;
+    height: 101px;
+    width: 101px;
+    transition: opacity 0.5s;
 }
 .info, .basket_product_info {
     width: 100%;
