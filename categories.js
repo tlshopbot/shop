@@ -15,7 +15,7 @@ let basket_products_id_list = [];
 let basket_products_count_list = [];
 const user = Telegram.WebApp.initDataUnsafe.user;
 console.log(user);
-let user_id = window.location.search.split('=')[1];
+const userId = user.id;
 let bot_id = 251807;
 let delivery = 'pickup';
 let form_data = {
@@ -33,11 +33,11 @@ let form_data = {
 function get_user_key() {
     const post_user_keyData = {
         bot_id: bot_id,
-        user_id: user_id
+        telegram_id: userId
     };
     let my_user_keyHeaders = new Headers();
     my_user_keyHeaders.append('Content-Type', 'application/json');
-    fetch('https://api.bot-t.com/v1/bot/user/view?token=7723075467:AAEHIRezunqN-fb__mqG4akqIHGZd3r9X5g', {
+    fetch('https://api.bot-t.com/v1/bot/user/view-by-telegram-id?token=7723075467:AAEHIRezunqN-fb__mqG4akqIHGZd3r9X5g', {
         method: 'POST',
         headers: my_user_keyHeaders,
         body: JSON.stringify(post_user_keyData),
