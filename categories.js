@@ -13,9 +13,7 @@ let basket_list;
 let basket_products_list = new Object();
 let basket_products_id_list = [];
 let basket_products_count_list = [];
-const user = Telegram.WebApp.initDataUnsafe.user;
-console.log(user);
-const userId = user.id;
+const userId;
 // const userId = 1000597955;
 let user_id;
 let bot_id = 251807;
@@ -1610,6 +1608,14 @@ fetch('https://api.bot-t.com/v1/shoppublic/category/alls', {
     body: JSON.stringify(postData),
 }).then((data) => {
     return data.json();
+    document.addEventListener('DOMContentLoaded', function () {
+        userId = Telegram.WebApp.initDataUnsafe.user.id;
+        if (userId) {
+            console.log('User ID:', user.id);
+        } else {
+            console.log('User data is not available.');
+        }
+    });
 }).then((json_data) => {
     json_data = json_data['data'];
     common_json_data = json_data;
