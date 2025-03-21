@@ -1610,11 +1610,7 @@ fetch('https://api.bot-t.com/v1/shoppublic/category/alls', {
     return data.json();
     document.addEventListener('DOMContentLoaded', function () {
         userId = Telegram.WebApp.initDataUnsafe.user.id;
-        if (userId) {
-            console.log('User ID:', user.id);
-        } else {
-            console.log('User data is not available.');
-        }
+        console.log('User ID:', userId);
     });
 }).then((json_data) => {
     json_data = json_data['data'];
