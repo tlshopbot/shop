@@ -13,6 +13,8 @@ let basket_list;
 let basket_products_list = new Object();
 let basket_products_id_list = [];
 let basket_products_count_list = [];
+const user = Telegram.WebApp.initDataUnsafe.user;
+console.log(user);
 let user_id = window.location.search.split('=')[1];
 let bot_id = 251807;
 let delivery = 'pickup';
