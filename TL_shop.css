@@ -122,7 +122,7 @@ main {
 
 .cart {
     position: relative;
-    height: calc(100% - 80px);
+    height: calc(100% - 60px);
     overflow: scroll;
 }
 .cart_info {
