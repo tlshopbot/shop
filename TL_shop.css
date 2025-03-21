@@ -630,6 +630,7 @@ footer {
     height: 60px;
     bottom: 0px;
     display: flex;
+    background-color: #ffffff;
 }
 nav {
     width: calc(100vw / 3);
