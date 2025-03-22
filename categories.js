@@ -1615,5 +1615,5 @@ document.addEventListener('DOMContentLoaded', function () {
         common_json_data = json_data;
         create_categories(json_data, 0);
         get_user_key();
-    })
+    });
 });
