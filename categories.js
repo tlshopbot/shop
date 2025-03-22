@@ -1596,27 +1596,24 @@ function send_massage_admin2(id) {
     });
 };
 
-
-const postData = {
-    bot_id: 251807,
-};
-let myHeaders = new Headers();
-myHeaders.append('Content-Type', 'application/json');
-fetch('https://api.bot-t.com/v1/shoppublic/category/alls', {
-    method: 'POST',
-    headers: myHeaders,
-    body: JSON.stringify(postData),
-}).then((data) => {
-    document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
+    const postData = {
+        bot_id: 251807,
+    };
+    let myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    fetch('https://api.bot-t.com/v1/shoppublic/category/alls', {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify(postData),
+    }).then((data) => {
         userId = Telegram.WebApp.initDataUnsafe.user.id;
         console.log('User ID:', userId);
-    });
-    return data.json();
-}).then((json_data) => {
-    json_data = json_data['data'];
-    common_json_data = json_data;
-    create_categories(json_data, 0);
-    get_user_key();
-})
-
-
+        return data.json();
+    }).then((json_data) => {
+        json_data = json_data['data'];
+        common_json_data = json_data;
+        create_categories(json_data, 0);
+        get_user_key();
+    })
+});
