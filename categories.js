@@ -1607,6 +1607,8 @@ document.addEventListener('DOMContentLoaded', function () {
         headers: myHeaders,
         body: JSON.stringify(postData),
     }).then((data) => {
+        console.log('Telegram.WebApp:', Telegram.WebApp);
+        console.log('initDataUnsafe:', Telegram.WebApp.initDataUnsafe);
         let user = Telegram.WebApp.initDataUnsafe.user;
         console.log('User:', user);
         userId = user['id'];
