@@ -1607,11 +1607,11 @@ fetch('https://api.bot-t.com/v1/shoppublic/category/alls', {
     headers: myHeaders,
     body: JSON.stringify(postData),
 }).then((data) => {
-    return data.json();
     document.addEventListener('DOMContentLoaded', function () {
         userId = Telegram.WebApp.initDataUnsafe.user.id;
         console.log('User ID:', userId);
     });
+    return data.json();
 }).then((json_data) => {
     json_data = json_data['data'];
     common_json_data = json_data;
