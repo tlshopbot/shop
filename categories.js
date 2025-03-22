@@ -43,7 +43,8 @@ fetch('/get-user-data', {
 }).then(response => response.json())
   .then(data => {
       console.log('User data from server:', data);
-      userId = data.user.id; // Предположим, что сервер возвращает объект пользователя
+      userId = data.user.id; // Предположим, что сервер возвращает объект пользователя\
+      console.log(userId);
   });
 
 
