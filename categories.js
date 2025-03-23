@@ -613,6 +613,12 @@ function show_cart() { //Открытие карточки
         img.addEventListener('click', () => {
             catalog.classList.add('hide');
             cart.classList.remove('hide');
+            for (let j = 0; j < cart_category.length; j++) {
+                cart_category[j].classList.add('hide');
+            }
+            for (let j = 0; j < cart_product.length; j++) {
+                cart_product[j].classList.add('hide');
+            }
             cart_product[i].classList.remove('hide');
         });
         cart_back.addEventListener('click', () => {
@@ -627,6 +633,12 @@ function show_cart() { //Открытие карточки
         img.addEventListener('click', () => {
             catalog.classList.add('hide');
             cart.classList.remove('hide');
+            for (let j = 0; j < cart_category.length; j++) {
+                cart_category[j].classList.add('hide');
+            }
+            for (let j = 0; j < cart_product.length; j++) {
+                cart_product[j].classList.add('hide');
+            }
             cart_category[i].classList.remove('hide');
         });
         cart_back.addEventListener('click', () => {
