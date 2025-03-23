@@ -731,6 +731,7 @@ function back_to_category() { //Назад в категорию
     let cart_product = document.getElementsByClassName('cart_product');
 
     path.addEventListener('click', () => {
+        console.log(back_to_category.textContent);
         let category_id = category_list.id;
         let category_father_id = findCategoryById(common_json_data, parseInt(category_id));
         // let category_father_id = jsonpath.query(common_json_data, `$..[?(@.id == ${category_id})].category_id`);
