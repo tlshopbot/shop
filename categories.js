@@ -729,11 +729,12 @@ function back_to_category() { //Назад в категорию
     let category_list = document.getElementsByClassName('category_list')[0];
     let cart_category = document.getElementsByClassName('cart_category');
     let cart_product = document.getElementsByClassName('cart_product');
-    let category_name = document.getElementsByClassName('category_name');
+    let category_name = document.getElementsByClassName('category_name')[0];
+
 
     path.addEventListener('click', () => {
-        console.log(category_name.textContent);
-        let category_id = category_list.id;
+        if (category_name.innerText != 'Главная') {
+            let category_id = category_list.id;
         let category_father_id = findCategoryById(common_json_data, parseInt(category_id));
         // let category_father_id = jsonpath.query(common_json_data, `$..[?(@.id == ${category_id})].category_id`);
         let json_data_new;
@@ -752,6 +753,7 @@ function back_to_category() { //Назад в категорию
             cart_product[0].remove();
         };
         create_categories(json_data_new, category_father_id);
+        }
     });
 };
 
