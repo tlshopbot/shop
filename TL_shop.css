@@ -44,13 +44,14 @@ main::-webkit-scrollbar {
 
 
 .category, .product, .basket_product {
-    padding-bottom: 24px;
+    margin-bottom: 24px;
     border-top: 1px solid #BCC5FF;
     display: flex;
     position: relative;
 }
 .category {
     cursor: pointer;
+    padding-bottom: 24px;
 }
 .container {
     margin-top: 24px;
