@@ -30,9 +30,6 @@ let form_data = {
 };
 
 
-const currentUrl = window.location.href;
-console.log('Current URL:', currentUrl);
-
 
 function get_user_key() {
     const post_user_keyData = {
@@ -1614,8 +1611,14 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Telegram.WebApp:', Telegram.WebApp);
         console.log('initDataUnsafe:', Telegram.WebApp.initDataUnsafe);
         let user = Telegram.WebApp.initDataUnsafe.user;
-        console.log('User:', user);
-        userId = user['id'];
+        if (user) {
+            console.log('User:', user);
+            userId = user['id'];
+        } else {
+            const urlParams = new URLSearchParams(window.location.search);
+            console.log(urlParams);
+            userId = urlParams.get('id'); // Получить значение параметра "param1"
+        }
         console.log('User ID:', userId);
         return data.json();
     }).then((json_data) => {
