@@ -30,6 +30,10 @@ let form_data = {
 };
 
 
+const currentUrl = window.location.href;
+console.log('Current URL:', currentUrl);
+
+
 function get_user_key() {
     const post_user_keyData = {
         bot_id: bot_id,
