@@ -706,7 +706,7 @@ function open_categories() { //открытие категории
     let cart_product = document.getElementsByClassName('cart_product');
 
     for (let i = 0; i < category.length; i++) {
-        let open = category[i].getElementsByClassName('info')[0];
+        let open = category[i];
         open.addEventListener('click', () => {
             let category_id = category[i].id;
             let json_data_new = findById(common_json_data, parseInt(category_id));
