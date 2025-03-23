@@ -168,6 +168,7 @@ main::-webkit-scrollbar {
     left: 0;
     height: 80px;
     width: 100vw;
+    background-color: #ffffff;
 }
 .cart_price {
     margin-left: 16px;
