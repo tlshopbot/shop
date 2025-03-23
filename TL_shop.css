@@ -29,6 +29,7 @@ main::-webkit-scrollbar {
     align-items: center;
     margin-top: 20px;
     margin-bottom: 20px;
+    cursor: pointer;
 }
 .category_back, .cart_back, .form_back {
     margin-left: 16px;
@@ -48,6 +49,9 @@ main::-webkit-scrollbar {
     display: flex;
     position: relative;
 }
+.category {
+    cursor: pointer;
+}
 .container {
     margin-top: 24px;
     margin-left: 16px;
@@ -64,6 +68,9 @@ main::-webkit-scrollbar {
     height: 101px;
     width: 101px;
     transition: opacity 0.5s;
+}
+.img {
+    cursor: pointer;
 }
 .info, .basket_product_info {
     width: 100%;
@@ -113,6 +120,7 @@ main::-webkit-scrollbar {
     height: 12px;
     margin: 10px;
     stroke: #750DC5;
+    cursor: pointer;
 }
 .add_text, .basket_product_add_text {
     font-size: 16px;
@@ -246,6 +254,7 @@ main::-webkit-scrollbar {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+    cursor: pointer;
 }
 .delete_text {
     margin-left: 12px;
@@ -300,7 +309,8 @@ main::-webkit-scrollbar {
     justify-content: center;
     align-items: center;
     border-radius: 8px;
-
+    cursor: pointer;
+    maegin-botom: 20px;
 }
 .result_but_text {
     font-size: 16px;
@@ -316,6 +326,7 @@ main::-webkit-scrollbar {
 }
 .basket_product_trash {
     margin-bottom: 24px;
+    cursor: pointer;
 }
 
 
@@ -337,6 +348,7 @@ main::-webkit-scrollbar {
     justify-content: space-between;
     align-items: center;
     height: 45px;
+    cursor: pointer;
 }
 .method_pickup, .method_courier {
     margin-left: 16.5px;
@@ -349,6 +361,7 @@ main::-webkit-scrollbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    cursor: pointer;
 }
 .method_pickup_info>*, .method_courier_info>* {
     margin-left: 16.5px;
@@ -441,6 +454,7 @@ main::-webkit-scrollbar {
     border: 1px solid #454545;
     padding-left: 16px;
     padding-right: 16px;
+    cursor: pointer;
 }
 .phone::placeholder {
     color: #454545;
@@ -448,6 +462,7 @@ main::-webkit-scrollbar {
 }
 .comment {
     margin-top: 15px;
+    cursor: pointer;
 }
 .comment::placeholder {
     color: #454545;
@@ -480,6 +495,7 @@ main::-webkit-scrollbar {
     text-align: center;
     padding-left: 14.5px;
     padding-right: 14.5px;
+    cursor: pointer;
 }
 .transfer {
     margin-right: 8px;
@@ -516,6 +532,7 @@ main::-webkit-scrollbar {
     margin-bottom: 26px;
     margin-left: 5px;
     margin-left: 5px;
+    cursor: pointer;
 }
 .pay_but_text {
     font-size: 16px;
@@ -656,6 +673,7 @@ nav {
     flex-direction: column;
     justify-content: end;
     align-items: center;
+    cursor: pointer;
 }
 nav>svg {
     margin-bottom: 5px;
