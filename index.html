@@ -370,6 +370,7 @@
         let form_path = document.getElementsByClassName('form_path')[0];
         let form = document.getElementsByClassName('form')[0];
         let form_back = document.getElementsByClassName('form_back')[0];
+        let cart = document.getElementsByClassName('cart')[0];
         cataloge_but.addEventListener('click', () => {
             cataloge_but.classList.add('active');
             basket_but.classList.remove('active');
@@ -377,6 +378,7 @@
             catalog.classList.remove('hide');
             basket.classList.add('hide');
             profile.classList.add('hide');
+            cart.classList.add('hide');
             uppdate_categories();
         });
         basket_empty_cataloge_but.addEventListener('click', () => {
@@ -386,6 +388,7 @@
             catalog.classList.remove('hide');
             basket.classList.add('hide');
             profile.classList.add('hide');
+            cart.classList.add('hide');
             uppdate_categories();
         });
         basket_but.addEventListener('click', () => {
@@ -395,6 +398,7 @@
             catalog.classList.add('hide');
             basket.classList.remove('hide');
             profile.classList.add('hide');
+            cart.classList.add('hide');
         });
         profile_but.addEventListener('click', () => {
             cataloge_but.classList.remove('active');
@@ -403,6 +407,7 @@
             catalog.classList.add('hide');
             basket.classList.add('hide');
             profile.classList.remove('hide');
+            cart.classList.add('hide');
         });
         result_but.addEventListener('click', () => {
             basket_path.classList.add('hide');
