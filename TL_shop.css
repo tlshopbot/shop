@@ -645,6 +645,7 @@ footer {
     height: 60px;
     bottom: 0px;
     display: flex;
+    justify-content: space-around;
     background-color: #ffffff;
 }
 nav {
