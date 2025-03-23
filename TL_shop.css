@@ -44,7 +44,7 @@ main::-webkit-scrollbar {
 
 
 .category, .product, .basket_product {
-    margin-bottom: 24px;
+    padding-bottom: 24px;
     border-top: 1px solid #BCC5FF;
     display: flex;
     position: relative;
@@ -116,9 +116,9 @@ main::-webkit-scrollbar {
     border-radius: 4px;
 }
 .minus, .plus, .basket_product_minus, .basket_product_plus {
+    padding: 10px;
     width: 12px;
     height: 12px;
-    margin: 10px;
     stroke: #750DC5;
     cursor: pointer;
 }
