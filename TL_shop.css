@@ -310,7 +310,7 @@ main::-webkit-scrollbar {
     align-items: center;
     border-radius: 8px;
     cursor: pointer;
-    maegin-botom: 20px;
+    margin-bottom: 20px;
 }
 .result_but_text {
     font-size: 16px;
