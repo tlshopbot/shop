@@ -796,7 +796,7 @@ function form_manag() {
     let method_courier = document.getElementsByClassName('method_courier')[0];
     let method_pickup_info = document.getElementsByClassName('method_pickup_info')[0];
     let method_courier_info = document.getElementsByClassName('method_courier_info')[0];
-    let method_pickup_but = document.getElementsByClassName('method_pickup_but')[0];
+    let method_pickup_but = document.getElementsByClassName('method_pickup_info')[0];
     let choice_pickup_adress = document.getElementsByClassName('choice_pickup_adress')[0];
     let choice_adress = document.getElementsByClassName('choice_adress')[0];
     let choice_adress_pickup = document.getElementsByClassName('choice_adress_pickup')[0];
