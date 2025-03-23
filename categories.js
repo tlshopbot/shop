@@ -30,43 +30,6 @@ let form_data = {
 };
 
 
-const initData = Telegram.WebApp.initData;
-console.log('initData:', initData);
-
-// Отправьте initData на сервер для расшифровки
-fetch('/get-user-data', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ initData }),
-}).then(response => response.json())
-  .then(data => {
-      console.log('User data from server:', data);
-      userId = data.user.id; // Предположим, что сервер возвращает объект пользователя\
-      console.log(userId);
-  });
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    if (typeof Telegram === 'undefined' || !Telegram.WebApp) {
-        document.getElementById('user-info').innerText = 'Web App is not running inside Telegram.';
-        return;
-    }
-
-    const user = Telegram.WebApp.initDataUnsafe.user;
-    if (user) {
-        document.getElementById('user-info').innerHTML = `
-            <p>User ID: ${user.id}</p>
-            <p>Имя: ${user.first_name} ${user.last_name || ''}</p>
-            <p>Юзернейм: ${user.username ? `@${user.username}` : 'Не указан'}</p>
-        `;
-    } else {
-        document.getElementById('user-info').innerText = 'User data is not available.';
-    }
-});
-
-
 function get_user_key() {
     const post_user_keyData = {
         bot_id: bot_id,
