@@ -475,11 +475,15 @@ function add() { //Манипуляция количеством
             };
             plus.classList.remove('disactive');
             cart_plus.classList.remove('disactive');
-            if (basket_products_list[product[i].id] < 1) {
-                let basket_full = document.getElementsByClassName('basket_full')[0];
-                let basket_empty = document.getElementsByClassName('basket_empty')[0];
-                basket_full.classList.add('hide');
-                basket_empty.classList.remove('hide');
+            let basket_full = document.getElementsByClassName('basket_full')[0];
+            let basket_empty = document.getElementsByClassName('basket_empty')[0];
+            basket_full.classList.add('hide');
+            basket_empty.classList.remove('hide');
+            for (let j = 0; j < basket_products_list.length; j++) {
+                if (basket_products_list[product[j].id] > 0) {
+                    basket_full.classList.remove('hide');
+                    basket_empty.classList.add('hide');
+                }
             };
         });
         cart_minus.addEventListener('click', () => {
@@ -495,11 +499,15 @@ function add() { //Манипуляция количеством
             };
             cart_plus.classList.remove('disactive');
             plus.classList.remove('disactive');
-            if (basket_products_list[product[i].id] < 1) {
-                let basket_full = document.getElementsByClassName('basket_full')[0];
-                let basket_empty = document.getElementsByClassName('basket_empty')[0];
-                basket_full.classList.add('hide');
-                basket_empty.classList.remove('hide');
+            let basket_full = document.getElementsByClassName('basket_full')[0];
+            let basket_empty = document.getElementsByClassName('basket_empty')[0];
+            basket_full.classList.add('hide');
+            basket_empty.classList.remove('hide');
+            for (let j = 0; j < basket_products_list.length; j++) {
+                if (basket_products_list[product[j].id] > 0) {
+                    basket_full.classList.remove('hide');
+                    basket_empty.classList.add('hide');
+                }
             };
         });
     };
@@ -747,24 +755,24 @@ function back_to_category() { //Назад в категорию
     path.addEventListener('click', () => {
         if (category_name.innerText != 'Главная') {
             let category_id = category_list.id;
-        let category_father_id = findCategoryById(common_json_data, parseInt(category_id));
-        // let category_father_id = jsonpath.query(common_json_data, `$..[?(@.id == ${category_id})].category_id`);
-        let json_data_new;
-        if (category_father_id == 0) {
-            json_data_new = common_json_data;
-        } else {
-            json_data_new = findById(common_json_data, parseInt(category_father_id));
-            // json_data_new = jsonpath.query(common_json_data, `$..[?(@.id == ${category_father_id})]`);
-        };
-        path.remove();
-        category_list.remove();
-        for (let i = 0; i < cart_category.length;) {
-            cart_category[0].remove();
-        };
-        for (let i = 0; i < cart_product.length;) {
-            cart_product[0].remove();
-        };
-        create_categories(json_data_new, category_father_id);
+            let category_father_id = findCategoryById(common_json_data, parseInt(category_id));
+            // let category_father_id = jsonpath.query(common_json_data, `$..[?(@.id == ${category_id})].category_id`);
+            let json_data_new;
+            if (category_father_id == 0) {
+                json_data_new = common_json_data;
+            } else {
+                json_data_new = findById(common_json_data, parseInt(category_father_id));
+                // json_data_new = jsonpath.query(common_json_data, `$..[?(@.id == ${category_father_id})]`);
+            };
+            path.remove();
+            category_list.remove();
+            for (let i = 0; i < cart_category.length;) {
+                cart_category[0].remove();
+            };
+            for (let i = 0; i < cart_product.length;) {
+                cart_product[0].remove();
+            };
+            create_categories(json_data_new, category_father_id);
         }
     });
 };
