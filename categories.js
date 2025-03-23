@@ -729,9 +729,10 @@ function back_to_category() { //Назад в категорию
     let category_list = document.getElementsByClassName('category_list')[0];
     let cart_category = document.getElementsByClassName('cart_category');
     let cart_product = document.getElementsByClassName('cart_product');
+    let category_name = document.getElementsByClassName('category_name');
 
     path.addEventListener('click', () => {
-        console.log(back_to_category.textContent);
+        console.log(category_name.textContent);
         let category_id = category_list.id;
         let category_father_id = findCategoryById(common_json_data, parseInt(category_id));
         // let category_father_id = jsonpath.query(common_json_data, `$..[?(@.id == ${category_id})].category_id`);
