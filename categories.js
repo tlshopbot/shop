@@ -475,7 +475,7 @@ function add() { //Манипуляция количеством
             };
             plus.classList.remove('disactive');
             cart_plus.classList.remove('disactive');
-            if (basket_product.length < 1) {
+            if (basket_products_list[product[i].id] < 1) {
                 let basket_full = document.getElementsByClassName('basket_full')[0];
                 let basket_empty = document.getElementsByClassName('basket_empty')[0];
                 basket_full.classList.add('hide');
@@ -495,7 +495,7 @@ function add() { //Манипуляция количеством
             };
             cart_plus.classList.remove('disactive');
             plus.classList.remove('disactive');
-            if (basket_product.length < 1) {
+            if (basket_products_list[product[i].id] < 1) {
                 let basket_full = document.getElementsByClassName('basket_full')[0];
                 let basket_empty = document.getElementsByClassName('basket_empty')[0];
                 basket_full.classList.add('hide');
