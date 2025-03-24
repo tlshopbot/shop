@@ -1325,6 +1325,7 @@ function form_manag() {
         }
         if (pay_check()) {
             create_order(form_data);
+            load();
         };
         console.log(form_data);
     });
@@ -1373,6 +1374,14 @@ function form_manag() {
 
 
 let json_order_data;
+
+
+
+function load() {
+    let loading = document.getElementsByClassName('loading')[0];
+    loading.classList.remove('hide');
+};
+
 
 function create_order() {
     const post_create_orderData = {
