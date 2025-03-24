@@ -629,7 +629,7 @@ function show_cart() { //Открытие карточки
     let cart = document.getElementsByClassName('cart')[0];
     for (let i = 0; i < product.length; i++) {//Открытие карточки продкута
         let img = product[i].getElementsByClassName('img')[0];
-        let cart_back = cart_product[i].getElementsByClassName('cart_back')[0];
+        let cart_back = cart_product[i].getElementsByClassName('cart_path')[0];
         img.addEventListener('click', () => {
             catalog.classList.add('hide');
             cart.classList.remove('hide');
@@ -649,7 +649,7 @@ function show_cart() { //Открытие карточки
     };
     for (let i = 0; i < category.length; i++) {//Открытие карточки категории
         let img = category[i].getElementsByClassName('img')[0];
-        let cart_back = cart_category[i].getElementsByClassName('cart_back')[0];
+        let cart_back = cart_category[i].getElementsByClassName('cart_path')[0];
         img.addEventListener('click', (e) => {
             e.stopPropagation(); // Останавливаем всплытие события
             catalog.classList.add('hide');
