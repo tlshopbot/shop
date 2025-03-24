@@ -364,7 +364,7 @@ function create_basket(basket_list) {
             basket_product_list.append(basket_product);
             basket_product.outerHTML = `<article class="basket_product" id="${parseInt(basket_list['items'][i]['id'])}">
                         <div class="container">
-                            <img src="${basket_list['items'][i]['product']['design']['image']}" class="basket_product_img">
+                            <img src="${basket_list['items'][i]['product']['design']['image']}" class="basket_product_img" loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false" style="object-fit: contain; object-position: 50% 50%;">
                         </div>
                         <div class="basket_product_info">
                             <p class="basket_product_name">${basket_list['items'][i]['product']['design']['title']}</p>
