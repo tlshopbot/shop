@@ -9,6 +9,7 @@ let common_json_data;
 
 
 let user_key;
+let orders_count;
 let basket_list;
 let basket_products_list = new Object();
 let basket_products_id_list = [];
@@ -16,7 +17,7 @@ let basket_products_count_list = [];
 let userId;
 // const userId = 1000597955;
 let user_id;
-let bot_id = 251807;
+let bot_id = '251807';
 let delivery = 'pickup';
 let form_data = {
     method: 'pickup',
@@ -51,8 +52,8 @@ function get_user_key() {
     }).then(() => {
         get_basket();
         get_count();
-        get_orders();
         delete_all_product();
+        promocode_manag();
     });
 };
 
@@ -99,6 +100,7 @@ function get_count() {
     }).then((count_data) => {
         return count_data.json();
     }).then((json_count_data) => {
+        orders_count = json_count_data['data'];
     });
 };
 
@@ -148,27 +150,6 @@ function remove_product(product_id) {
     });
 };
 
-
-function get_orders() {
-    const post_get_ordersData = {
-        bot_id: bot_id,
-        offset: 0,
-        secret_user_key: user_key,
-        user_id: user_id
-    };
-    let my_get_ordersHeaders = new Headers();
-    my_get_ordersHeaders.append('Content-Type', 'application/json');
-    fetch('https://api.bot-t.com/v1/shopcart/order/index', {
-        method: 'POST',
-        headers: my_get_ordersHeaders,
-        body: JSON.stringify(post_get_ordersData),
-    }).then((orders_data) => {
-        return orders_data.json();
-    }).then((json_orders_data) => {
-        console.log('Заказы:');
-        console.log(json_orders_data);
-    });
-};
 
 
 function uppdate_categories() {
@@ -1642,6 +1623,151 @@ function send_massage_admin2(id) {
         window.close();
     });
 };
+
+
+const controller = new AbortController();
+
+async function create_orders_list() {
+    for (let i = 0; i < orders_count / 3; i++) {
+        try {
+            const post_get_ordersData = {
+                bot_id: bot_id,
+                offset: i * 3,
+                secret_user_key: user_key,
+                user_id: user_id
+            };
+
+            const my_get_ordersHeaders = new Headers();
+            my_get_ordersHeaders.append('Content-Type', 'application/json');
+
+            // Ожидаем завершения fetch
+            const response = await fetch('https://api.bot-t.com/v1/shopcart/order/index', {
+                signal: controller.signal,
+                method: 'POST',
+                headers: my_get_ordersHeaders,
+                body: JSON.stringify(post_get_ordersData),
+            });
+
+            const json_orders_data = await response.json();
+
+            console.log('Заказы:');
+            console.log(json_orders_data);
+
+            const orders_list = document.getElementsByClassName('orders_list')[0];
+
+            for (let j = 0; j < json_orders_data['data'].length; j++) {
+                const order = document.createElement('div');
+                orders_list.append(order);
+                order.outerHTML = `
+            <div class="order">
+              <div class="order_system_info">
+                <p class="order_num">${json_orders_data['data'][j]['id']}</p>
+                <p class="order_time">${json_orders_data['data'][j]['created_time']}</p>
+              </div>
+              <div class="order_products"></div>
+              <p class="order_full_price">${json_orders_data['data'][j]['sum']} ₽</p>
+            </div>`;
+
+                const order_products = document.querySelectorAll('.order_products')[i * 3 + j];
+
+                for (let k = 0; k < json_orders_data['data'][j]['items'].length; k++) {
+                    const order_product = document.createElement('div');
+                    order_products.append(order_product);
+                    order_product.outerHTML = `
+              <div class="order_product">
+                <div class="order_product_info">
+                  <div class="order_container">
+                    <img class="order_img"
+                      src="${json_orders_data['data'][j]['items'][k]['product']['design']['image']}"
+                      loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false">
+                  </div>
+                  <div class="order_product_ident">
+                    <p class="order_product_category">${json_orders_data['data'][j]['items'][k]['product']['parent']['design']['title']}</p>
+                    <p class="order_product_name">${json_orders_data['data'][j]['items'][k]['product']['design']['title']}</p>
+                  </div>
+                </div>
+                <p class="order_product_price">${json_orders_data['data'][j]['items'][k]['price']} X ${json_orders_data['data'][j]['items'][k]['count']}</p>
+              </div>`;
+                };
+            };
+        } catch (error) {
+            console.error('Ошибка при загрузке заказов:', error);
+        };
+    };
+};
+
+
+function promocode_manag() {
+    let promocode_input = document.getElementsByClassName('promocode_input')[0];
+    let check_promocode = document.getElementsByClassName('check_promocode')[0];
+
+    promocode_input.addEventListener('input', () => {
+        if (promocode_input.value) {
+            check_promocode.classList.remove('disactive_but');
+        } else {
+            check_promocode.classList.add('disactive_but');
+        }
+    });
+
+    check_promocode.addEventListener('click', async () => { // Добавляем async
+        if (!check_promocode.classList.contains('disactive_but')) {
+            try {
+                const result = await promocode_activate(promocode_input.value); // Ждём ответа
+                if (result && result.result) { // Проверяем result на существование
+                    promocode_input.classList.add('succes_input'); // Добавляем класс (было remove)
+                    setTimeout(() => {
+                        promocode_input.classList.remove('succes_input');
+                    }, 1000);
+                } else {
+                    promocode_input.classList.add('incorrect'); // Добавляем класс (было remove)
+                    setTimeout(() => {
+                        promocode_input.classList.remove('incorrect');
+                    }, 1000);
+                }
+            } catch (error) {
+                console.error('Ошибка при активации промокода:', error);
+                promocode_input.classList.add('incorrect');
+                setTimeout(() => {
+                    promocode_input.classList.remove('incorrect');
+                }, 1000);
+            }
+        } else {
+            promocode_input.classList.add('incorrect');
+            setTimeout(() => {
+                promocode_input.classList.remove('incorrect');
+            }, 1000);
+        }
+    });
+}
+
+// Возвращаем Promise с результатом
+function promocode_activate(value) {
+    const post_promocodeData = {
+        bot_id: bot_id,
+        code: value,
+        secret_user_key: user_key,
+        user_id: user_id
+    };
+    let my_promocodeHeaders = new Headers();
+    my_promocodeHeaders.append('Content-Type', 'application/json');
+
+    // Возвращаем промис с данными
+    return fetch('https://api.bot-t.com/v1/shoppublic/coupon/activated', {
+        method: 'POST',
+        headers: my_promocodeHeaders,
+        body: JSON.stringify(post_promocodeData),
+    })
+    .then((promocode_data) => promocode_data.json())
+    .then((json_promocode_data) => {
+        console.log('Промокод применён:', json_promocode_data);
+        return json_promocode_data; // Возвращаем данные
+    })
+    .catch((error) => {
+        console.error('Ошибка при запросе:', error);
+        return { result: false }; // Возвращаем объект с result: false в случае ошибки
+    });
+}
+
 
 document.addEventListener('DOMContentLoaded', function () {
     const postData = {
