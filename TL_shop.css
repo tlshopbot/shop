@@ -24,19 +24,19 @@ main {
 main::-webkit-scrollbar {
     display: none; /* Скрыть скроллбар в Chrome, Safari и Opera */
 }
-.path, .cart_path, .basket_path, .form_path {
+.path, .cart_path, .basket_path, .form_path, .profile_path, .orders_path, .help_path, .rules_path {
     display: flex;
     align-items: center;
     margin-top: 20px;
     margin-bottom: 20px;
     cursor: pointer;
 }
-.category_back, .cart_back, .form_back {
+.category_back, .cart_back, .form_back, .orders_back, .help_back, .rules_back {
     margin-left: 16px;
     width: 8px;
     height: 16px;
 }
-.category_name, .cart_path_name, .basket_name, .form_name {
+.category_name, .cart_path_name, .basket_name, .form_name, .profile_name, .orders_name, .help_name, .rules_name {
     font-size: 20px;
     margin-left: 20px;
 }
@@ -332,7 +332,7 @@ main::-webkit-scrollbar {
 
 
 
-.method, .date_pickup1, .date_pickup2, .date_courier, .contact {
+.method, .date_pickup1, .date_pickup2, .date_courier, .contact, .promocode {
     margin-left: 16px;
     margin-right: 16px;
 }
@@ -424,19 +424,19 @@ main::-webkit-scrollbar {
 .hours:last-child {
     margin-right: 16px;
 }
-.contact {
+.contact, .promocode {
     margin-top: 41.5px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.contact_name {
+.contact_name, .promocode_name {
     font-size: 18px;
 }
 .form_phone {
     width: 100%;
 }
-.phone, .comment {
+.phone, .comment, .promocode_input {
     box-sizing: border-box;
     margin-top: 20px;
     border: 1px solid #454545;
@@ -518,7 +518,7 @@ main::-webkit-scrollbar {
     font-size: 18px;
     font-weight: 500;
 }
-.pay_but {
+.pay_but, .check_promocode {
     margin-top: 20px;
     width: calc(100% - 108px);
     min-width: 80px;
@@ -533,7 +533,7 @@ main::-webkit-scrollbar {
     margin-left: 5px;
     cursor: pointer;
 }
-.pay_but_text {
+.pay_but_text, .check_promocode_text {
     font-size: 16px;
     color: #F6F6F6;
     font-weight: 500;
@@ -653,6 +653,136 @@ main::-webkit-scrollbar {
 
 
 
+.profile_info {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #750DC5;
+    border-bottom: 1px solid #750DC5;
+    padding-left: 16.5px;
+    padding-right: 16.5px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.user_name {
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: 400;
+}
+.user_url {
+    font-size: 14px;
+    color: #454545;
+    font-weight: 300;
+}
+.balance {
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: 400;
+}
+.orders_but, .help_but, .rules_but {
+    display: flex;
+    padding: 16.5px;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #750DC5;
+    cursor: pointer;
+}
+.order_info, .help_info, .rules_info {
+    display: flex;
+    align-items: center;
+}
+.profile_svg {
+    width: 27px;
+    height: 23px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.orders_name, .help_name, .rules_name {
+    margin-left: 10px;
+    font-size: 20px;
+}
+
+
+
+
+.order {
+    border-top: 1px solid #BCC5FF;
+    padding-left: 16px;
+    padding-right: 16px;
+    display: flex;
+    flex-direction: column;
+}
+.order_system_info {
+    display: flex;
+    justify-content: space-between;
+}
+.order_num {
+    margin-top: 16px;
+    font-size: 20px;
+}
+.order_time {
+    margin-top: 16px;
+    font-size: 20px;
+}
+.order_products {
+    margin-top: 16px;
+}
+.order_product {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.order_product_info {
+    display: flex;
+    align-items: center;
+}
+.order_container {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.order_img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain; 
+    object-position: 50% 50%;
+}
+.order_product_ident {
+    margin-left: 16px;
+}
+.order_product_category {
+    font-size: 18px;
+}
+.order_product_name {
+    font-size: 16px;
+    font-weight: 300;
+    color: #454545;
+}
+.order_product_price {
+    font-size: 18px;
+}
+.order_full_price {
+    margin-top: 6px;
+    font-size: 20px;
+    align-self: flex-end;
+    margin-bottom: 16px;
+}
+
+
+.help_body, .rules_body {
+    padding-left: 16px;
+    padding-right: 16px;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.rules_body>pre {
+    white-space: pre-wrap;
+    font-family: "Roboto", sans-serif;
+}
+
 
 
 footer {
@@ -754,13 +884,23 @@ nav>p {
 .active_input {
     border: 1px solid #169B00;
 }
+.succes_input {
+    border: 1px solid #169B00;
+    color: #169B00;
+}
 .incorrect {
     border: 1px solid #FF0000;
+    color: #FF0000;
+}
+.incorrect::placeholder {
+    color: #FF0000;
 }
 .incorrect_svg {
     stroke: #FF0000;
 }
-.path, .cart_path, .basket_path, .form_path, .category, .img, .minus, .plus, .basket_product_minus, .basket_product_plus, .delete, .result_but, .basket_product_trash, .method_toggle, .method_pickup_info, .method_courier_info, .phone, .comment, .transfer, .cash, .pay_but, nav {
+.path, .cart_path, .basket_path, .form_path, .category, .img, .minus, .plus, .basket_product_minus, .basket_product_plus, .delete, .result_but, 
+.basket_product_trash, .method_toggle, .method_pickup_info, .method_courier_info, .phone, .comment, .transfer, .cash, .pay_but, nav, .profile_path, 
+.orders_but, .help_but, .rules_but, .orders_path, .help_path, .rules_path, .promocode_input, .check_promocode {
     -webkit-tap-highlight-color: transparent; /* Убирает подсветку на iOS/Safari */
     tap-highlight-color: transparent; /* Для некоторых Android-браузеров */
     outline: none; /* Убирает outline при фокусе (необязательно) */
