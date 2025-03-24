@@ -272,8 +272,6 @@ main::-webkit-scrollbar {
 }
 .basket_product_img {
     margin-top: 24px;
-    width: 106px;
-    height: 106px;
 }
 .basket_product_name {
     font-size: 14px;
