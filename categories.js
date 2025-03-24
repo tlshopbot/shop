@@ -364,7 +364,7 @@ function create_basket(basket_list) {
             basket_product_list.append(basket_product);
             basket_product.outerHTML = `<article class="basket_product" id="${parseInt(basket_list['items'][i]['id'])}">
                         <div class="container">
-                            <img src="${basket_list['items'][i]['product']['design']['image']}" class="basket_product_img" loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false" style="object-fit: contain; object-position: 50% 50%;">
+                            <img src="${basket_list['items'][i]['product']['design']['image']}" class="basket_product_img">
                         </div>
                         <div class="basket_product_info">
                             <p class="basket_product_name">${basket_list['items'][i]['product']['design']['title']}</p>
@@ -650,7 +650,8 @@ function show_cart() { //Открытие карточки
     for (let i = 0; i < category.length; i++) {//Открытие карточки категории
         let img = category[i].getElementsByClassName('img')[0];
         let cart_back = cart_category[i].getElementsByClassName('cart_back')[0];
-        img.addEventListener('click', () => {
+        img.addEventListener('click', (e) => {
+            e.stopPropagation(); // Останавливаем всплытие события
             catalog.classList.add('hide');
             cart.classList.remove('hide');
             for (let j = 0; j < cart_category.length; j++) {
