@@ -272,6 +272,8 @@ main::-webkit-scrollbar {
 }
 .basket_product_img {
     margin-top: 24px;
+    width: 106px;
+    height: 106px;
 }
 .basket_product_name {
     font-size: 14px;
@@ -731,4 +733,10 @@ nav>p {
 }
 .incorrect_svg {
     stroke: #FF0000;
+}
+.path, .cart_path, .basket_path, .form_path, .category, .img, .minus, .plus, .basket_product_minus, .basket_product_plus, .delete, .result_but, .basket_product_trash, .method_toggle, .method_pickup_info, .method_courier_info, .phone, .comment, .transfer, .cash, .pay_but, nav {
+    -webkit-tap-highlight-color: transparent; /* Убирает подсветку на iOS/Safari */
+    tap-highlight-color: transparent; /* Для некоторых Android-браузеров */
+    outline: none; /* Убирает outline при фокусе (необязательно) */
+    user-select: none; /* Отключает выделение текста при тапе (опционально) */
 }
