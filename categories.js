@@ -9,6 +9,7 @@ let common_json_data;
 
 
 let user_key;
+let user_data;
 let orders_count;
 let basket_list;
 let basket_products_list = new Object();
@@ -49,11 +50,12 @@ function get_user_key() {
         user_key = json_user_key_data['data']['secret_user_key'];
         console.log(json_user_key_data);
         user_id = json_user_key_data['data']['id'];
+        user_data = json_user_key_data;
     }).then(() => {
         get_basket();
         get_count();
         delete_all_product();
-        promocode_manag();
+        profile_manag();
     });
 };
 
@@ -103,6 +105,12 @@ function get_count() {
         orders_count = json_count_data['data'];
     });
 };
+
+
+function get_profile() {
+
+};
+
 
 
 function add_product(product_id) {
@@ -1625,6 +1633,21 @@ function send_massage_admin2(id) {
 };
 
 
+function profile_manag() {
+    let user_name = document.getElementsByClassName('user_name')[0];
+    let user_url = document.getElementsByClassName('user_url')[0];
+    let balance = document.getElementsByClassName('balance')[0];
+    user_name.innerText = user_data['data']['user']['first_name'];
+    user_url.innerText = user_data['data']['user']['link'];
+    if (user_data['data']['money']) {
+        balance.innerText = parseFloat(String(user_data['data']['money']).slice(0, -2)) + parseFloat('0.' + String(user_data['data']['money']).slice(-2)) + ' ₽';
+    } else {
+        balance.innerText = '0 ₽';
+    };
+    promocode_manag();
+}
+
+
 const controller = new AbortController();
 
 async function create_orders_list() {
@@ -1665,7 +1688,7 @@ async function create_orders_list() {
                 <p class="order_time">${json_orders_data['data'][j]['created_time']}</p>
               </div>
               <div class="order_products"></div>
-              <p class="order_full_price">${json_orders_data['data'][j]['sum']} ₽</p>
+              <p class="order_full_price">${json_orders_data['data'][j]['price']} ₽</p>
             </div>`;
 
                 const order_products = document.querySelectorAll('.order_products')[i * 3 + j];
