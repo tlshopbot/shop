@@ -24,7 +24,7 @@ main {
 main::-webkit-scrollbar {
     display: none; /* Скрыть скроллбар в Chrome, Safari и Opera */
 }
-.path, .cart_path, .basket_path, .form_path, .profile_path, .orders_path, .help_path, .rules_path {
+.path, .cart_path, .basket_path, .form_path, .profile_path, .orders_path, .help_path, .rules_path, .admin_path{
     display: flex;
     align-items: center;
     margin-top: 20px;
@@ -36,7 +36,7 @@ main::-webkit-scrollbar {
     width: 8px;
     height: 16px;
 }
-.category_name, .cart_path_name, .basket_name, .form_name, .profile_name, .orders_name, .help_name, .rules_name {
+.category_name, .cart_path_name, .basket_name, .form_name, .profile_name, .orders_name, .help_name, .rules_name, .admin_name {
     font-size: 20px;
     margin-left: 20px;
 }
@@ -424,19 +424,19 @@ main::-webkit-scrollbar {
 .hours:last-child {
     margin-right: 16px;
 }
-.contact, .promocode {
+.contact, .promocode, .user_balance, .user_block, .order_delete {
     margin-top: 41.5px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.contact_name, .promocode_name {
+.contact_name, .promocode_name, .balance_name, .block_name, .delete_name {
     font-size: 18px;
 }
 .form_phone {
     width: 100%;
 }
-.phone, .comment, .promocode_input {
+.phone, .comment, .promocode_input, .balance_input, .block_input, .delete_input {
     box-sizing: border-box;
     margin-top: 20px;
     border: 1px solid #454545;
@@ -518,7 +518,7 @@ main::-webkit-scrollbar {
     font-size: 18px;
     font-weight: 500;
 }
-.pay_but, .check_promocode {
+.pay_but, .check_promocode, .check_block, .check_balance, .check_delete {
     margin-top: 20px;
     width: calc(100% - 108px);
     min-width: 80px;
@@ -533,7 +533,7 @@ main::-webkit-scrollbar {
     margin-left: 5px;
     cursor: pointer;
 }
-.pay_but_text, .check_promocode_text {
+.pay_but_text, .check_promocode_text, .check_balance_text, .check_block_text, .check_delete_text {
     font-size: 16px;
     color: #F6F6F6;
     font-weight: 500;
@@ -821,6 +821,10 @@ nav>svg {
     width: 20px;
     height: 22px;
 }
+.admin_but>svg {
+    fill: #454545;
+    stroke: none;
+}
 nav>p {
     margin-bottom: 8px;
     color: #454545;
@@ -837,6 +841,15 @@ nav>p {
     fill: #091D9E;
 }
 
+
+.admin_body {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.orders, .users {
+    margin-top: 40px;
+    font-size: 20px;
+}
 
 
 .loading {
@@ -900,7 +913,8 @@ nav>p {
 }
 .path, .cart_path, .basket_path, .form_path, .category, .img, .minus, .plus, .basket_product_minus, .basket_product_plus, .delete, .result_but, 
 .basket_product_trash, .method_toggle, .method_pickup_info, .method_courier_info, .phone, .comment, .transfer, .cash, .pay_but, nav, .profile_path, 
-.orders_but, .help_but, .rules_but, .orders_path, .help_path, .rules_path, .promocode_input, .check_promocode {
+.orders_but, .help_but, .rules_but, .orders_path, .help_path, .rules_path, .promocode_input, .check_promocode, .admin_path, .balance_input, .check_balance, .block_input, .check_block,
+.delete_input, .check_delete {
     -webkit-tap-highlight-color: transparent; /* Убирает подсветку на iOS/Safari */
     tap-highlight-color: transparent; /* Для некоторых Android-браузеров */
     outline: none; /* Убирает outline при фокусе (необязательно) */
