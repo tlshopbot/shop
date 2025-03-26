@@ -56,6 +56,7 @@ function get_user_key() {
         get_count();
         delete_all_product();
         profile_manag();
+        admin();
     });
 };
 
@@ -1714,7 +1715,7 @@ function promocode_manag() {
     check_promocode.addEventListener('click', async () => { // Добавляем async
         if (!check_promocode.classList.contains('disactive_but')) {
             try {
-                const result = await promocode_activate(promocode_input.value); // Ждём ответа
+                const result = await promocode_activate('https://api.bot-t.com/v1/shoppublic/coupon/activated', promocode_input.value); // Ждём ответа
                 if (result && result.result) { // Проверяем result на существование
                     promocode_input.classList.add('succes_input'); // Добавляем класс (было remove)
                     setTimeout(() => {
@@ -1743,7 +1744,7 @@ function promocode_manag() {
 }
 
 // Возвращаем Promise с результатом
-function promocode_activate(value) {
+function promocode_activate(url, value) {
     const post_promocodeData = {
         bot_id: bot_id,
         code: value,
@@ -1754,7 +1755,7 @@ function promocode_activate(value) {
     my_promocodeHeaders.append('Content-Type', 'application/json');
 
     // Возвращаем промис с данными
-    return fetch('https://api.bot-t.com/v1/shoppublic/coupon/activated', {
+    return fetch(url, {
         method: 'POST',
         headers: my_promocodeHeaders,
         body: JSON.stringify(post_promocodeData),
@@ -1769,6 +1770,242 @@ function promocode_activate(value) {
         return { result: false }; // Возвращаем объект с result: false в случае ошибки
     });
 }
+
+
+
+function admin() {
+    let admin_but = document.getElementsByClassName('admin_but')[0];
+    if (userId == '1000597955' || userId == '1035087579') {
+        admin_but.classList.remove('hide');
+        let admin = document.getElementsByClassName('admin')[0];
+        let admin_body = document.createElement('section');
+        admin.append(admin_body);
+        admin_body.outerHTML = `<section class="admin_body">
+                <p class="users">Пользователи: </p>
+                <div class="user_balance">
+                    <p class="balance_name">Обнулить баланс пользователю:</p>
+                    <input class="balance_input" type="text" placeholder="Telegram ID" />
+                    <div class="check_balance disactive_but">
+                        <p class="check_balance_text">Проверить</p>
+                    </div>
+                </div>
+                <div class="user_block">
+                    <p class="block_name">Заблокировать/разблокировать пользователя:</p>
+                    <input class="block_input" type="text" placeholder="Telegram ID" />
+                    <div class="check_block disactive_but">
+                        <p class="check_block_text">Проверить</p>
+                    </div>
+                </div>
+                <p class="orders">Заказы: </p>
+                <div class="order_delete">
+                    <p class="delete_name">Удалить заказ:</p>
+                    <input class="delete_input" type="text" placeholder="Order ID" />
+                    <div class="check_delete disactive_but">
+                        <p class="check_delete_text">Проверить</p>
+                    </div>
+                </div>
+            </section>`;
+        const post_get_usersData = {
+            bot_id: bot_id,
+        };
+        let my_get_usersHeaders = new Headers();
+        my_get_usersHeaders.append('Content-Type', 'application/json');
+        fetch('https://api.bot-t.com/v1/bot/user/count?token=7723075467:AAEHIRezunqN-fb__mqG4akqIHGZd3r9X5g', {
+            method: 'POST',
+            headers: my_get_usersHeaders,
+            body: JSON.stringify(post_get_usersData),
+        }).then((get_users_data) => {
+            return get_users_data.json();
+        }).then((json_get_users_data) => {
+            let users = document.getElementsByClassName('users')[0];
+            users.innerHTML = 'Пользователи: ' + json_get_users_data['data'];
+            console.log('Пользователи:');
+            console.log(json_get_users_data);
+            balance_manag();
+            block_manag();
+        });
+        const post_get_order_countData = {
+            bot_id: bot_id,
+        };
+        let my_get_order_countHeaders = new Headers();
+        my_get_order_countHeaders.append('Content-Type', 'application/json');
+        fetch('https://api.bot-t.com/v1/shopcart/order/main/count?token=7723075467:AAEHIRezunqN-fb__mqG4akqIHGZd3r9X5g', {
+            method: 'POST',
+            headers: my_get_order_countHeaders,
+            body: JSON.stringify(post_get_order_countData),
+        }).then((get_order_count_data) => {
+            return get_order_count_data.json();
+        }).then((json_get_order_count_data) => {
+            let orders = document.getElementsByClassName('orders')[0];
+            orders.innerHTML = 'Заказы: ' + json_get_order_count_data['data'];
+            console.log('Заказы:');
+            console.log(json_get_order_count_data);
+            delete_manag();
+        });
+    };
+};
+
+
+
+function balance_manag() {
+    let balance_input = document.getElementsByClassName('balance_input')[0];
+    let check_balance = document.getElementsByClassName('check_balance')[0];
+
+    balance_input.addEventListener('input', () => {
+        if (balance_input.value) {
+            check_balance.classList.remove('disactive_but');
+        } else {
+            check_balance.classList.add('disactive_but');
+        }
+    });
+
+    check_balance.addEventListener('click', async () => { // Добавляем async
+        if (!check_balance.classList.contains('disactive_but')) {
+            try {
+                const result = await admin_activate('https://api.bot-t.com/v1/bot/user/zero-balance?token=7723075467:AAEHIRezunqN-fb__mqG4akqIHGZd3r9X5g', balance_input.value); // Ждём ответа
+                if (result && result.result) { // Проверяем result на существование
+                    balance_input.classList.add('succes_input'); // Добавляем класс (было remove)
+                    setTimeout(() => {
+                        balance_input.classList.remove('succes_input');
+                    }, 1000);
+                } else {
+                    balance_input.classList.add('incorrect'); // Добавляем класс (было remove)
+                    setTimeout(() => {
+                        balance_input.classList.remove('incorrect');
+                    }, 1000);
+                }
+            } catch (error) {
+                console.error('Ошибка при активации промокода:', error);
+                balance_input.classList.add('incorrect');
+                setTimeout(() => {
+                    balance_input.classList.remove('incorrect');
+                }, 1000);
+            }
+        } else {
+            balance_input.classList.add('incorrect');
+            setTimeout(() => {
+                balance_input.classList.remove('incorrect');
+            }, 1000);
+        };
+    });
+};
+
+
+function block_manag() {
+    let block_input = document.getElementsByClassName('block_input')[0];
+    let check_block = document.getElementsByClassName('check_block')[0];
+
+    block_input.addEventListener('input', () => {
+        if (block_input.value) {
+            check_block.classList.remove('disactive_but');
+        } else {
+            check_block.classList.add('disactive_but');
+        }
+    });
+
+    check_block.addEventListener('click', async () => { // Добавляем async
+        if (!check_block.classList.contains('disactive_but')) {
+            try {
+                const result = await admin_activate('https://api.bot-t.com/v1/bot/user/ban?token=7723075467:AAEHIRezunqN-fb__mqG4akqIHGZd3r9X5g', block_input.value); // Ждём ответа
+                if (result && result.result) { // Проверяем result на существование
+                    block_input.classList.add('succes_input'); // Добавляем класс (было remove)
+                    setTimeout(() => {
+                        block_input.classList.remove('succes_input');
+                    }, 1000);
+                } else {
+                    block_input.classList.add('incorrect'); // Добавляем класс (было remove)
+                    setTimeout(() => {
+                        block_input.classList.remove('incorrect');
+                    }, 1000);
+                }
+            } catch (error) {
+                console.error('Ошибка при активации промокода:', error);
+                block_input.classList.add('incorrect');
+                setTimeout(() => {
+                    block_input.classList.remove('incorrect');
+                }, 1000);
+            }
+        } else {
+            block_input.classList.add('incorrect');
+            setTimeout(() => {
+                block_input.classList.remove('incorrect');
+            }, 1000);
+        }
+    });
+}
+
+
+function delete_manag() {
+    let delete_input = document.getElementsByClassName('delete_input')[0];
+    let check_delete = document.getElementsByClassName('check_delete')[0];
+
+    delete_input.addEventListener('input', () => {
+        if (delete_input.value) {
+            check_delete.classList.remove('disactive_but');
+        } else {
+            check_delete.classList.add('disactive_but');
+        }
+    });
+
+    check_delete.addEventListener('click', async () => { // Добавляем async
+        if (!check_delete.classList.contains('disactive_but')) {
+            try {
+                const result = await admin_activate('https://api.bot-t.com/v1/shopcart/order/main/delete?token=7723075467:AAEHIRezunqN-fb__mqG4akqIHGZd3r9X5g', delete_input.value); // Ждём ответа
+                if (result && result.result) { // Проверяем result на существование
+                    delete_input.classList.add('succes_input'); // Добавляем класс (было remove)
+                    setTimeout(() => {
+                        delete_input.classList.remove('succes_input');
+                    }, 1000);
+                } else {
+                    delete_input.classList.add('incorrect'); // Добавляем класс (было remove)
+                    setTimeout(() => {
+                        delete_input.classList.remove('incorrect');
+                    }, 1000);
+                }
+            } catch (error) {
+                console.error('Ошибка при активации промокода:', error);
+                delete_input.classList.add('incorrect');
+                setTimeout(() => {
+                    delete_input.classList.remove('incorrect');
+                }, 1000);
+            }
+        } else {
+            delete_input.classList.add('incorrect');
+            setTimeout(() => {
+                delete_input.classList.remove('incorrect');
+            }, 1000);
+        }
+    });
+}
+
+
+function admin_activate(url, value) {
+    const post_promocodeData = {
+        bot_id: bot_id,
+        id: value,
+        user_id: value,
+        is_back_cart: true
+    };
+    let my_promocodeHeaders = new Headers();
+    my_promocodeHeaders.append('Content-Type', 'application/json');
+
+    // Возвращаем промис с данными
+    return fetch(url, {
+        method: 'POST',
+        headers: my_promocodeHeaders,
+        body: JSON.stringify(post_promocodeData),
+    })
+    .then((promocode_data) => promocode_data.json())
+    .then((json_promocode_data) => {
+        console.log('Промокод применён:', json_promocode_data);
+        return json_promocode_data; // Возвращаем данные
+    })
+    .catch((error) => {
+        console.error('Ошибка при запросе:', error);
+        return { result: false }; // Возвращаем объект с result: false в случае ошибки
+    });
+}
+
 
 
 document.addEventListener('DOMContentLoaded', function () {
