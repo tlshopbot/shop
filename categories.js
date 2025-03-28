@@ -30,6 +30,7 @@ let form_data = {
     comment: null,
     pay: null
 };
+let admin_flag = false;
 
 
 
@@ -106,12 +107,6 @@ function get_count() {
         orders_count = json_count_data['data'];
     });
 };
-
-
-function get_profile() {
-
-};
-
 
 
 function add_product(product_id) {
@@ -217,7 +212,37 @@ function create_categories(json_data, category_id) { //создание кате
                     </article>`;
                 let cart_category = document.createElement('article');
                 cart.append(cart_category);
-                cart_category.outerHTML = `<article class="cart_category hide" id="cart_${json_data[i]['id']}">
+                if (false) {
+                    cart_category.outerHTML = `<article class="cart_category hide" id="cart_${json_data[i]['id']}">
+                        <div class="cart_path">
+                            <svg class="cart_back" width="10" height="19" viewBox="0 0 10 19" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 1.5L1.72591 8.41039C1.32515 8.79111 1.30929 9.42476 1.69052 9.82504L9 17.5"
+                                    stroke="#0C0C0C" stroke-width="2" stroke-linecap="round" />
+                            </svg>
+                            <p class="cart_path_name">Карточка категории</p>
+                        </div>
+                        <div class="cart_info">
+                            <div class="cart_container">
+                                <img src="${json_data[i]['design']['image']}" class="cart_img_change" loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false" style="object-fit: contain; object-position: 50% 50%;"></img>
+                                <label for="fileInput" class="upload_img_change">
+                                    <svg class="add_category_svg_change" width="28" height="28" viewBox="0 0 14 14" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7 1V13" stroke-width="2" stroke-linecap="round" />
+                                        <path d="M1 7H13" stroke-width="2" stroke-linecap="round" />
+                                    </svg>
+                                </label>
+                            </div>
+                            <input type="file" class="fileInput_change" id="fileInput" accept="image/*" required>
+                            <input class="cart_name_input_change" type="text" value="${json_data[i]['design']['title']}" placeholder="Название" />
+                            <textarea class="cart_discript_input_change" type="text" placeholder="Описание" rows="4">${json_data[i]['design']['description']}</textarea>
+                        </div>
+                        <div class="save_category_change disactive_but">
+                            <p class="save_category_text">Сохранить</p>
+                        </div>
+                    </article>`
+                } else {
+                    cart_category.outerHTML = `<article class="cart_category hide" id="cart_${json_data[i]['id']}">
                         <div class="cart_path">
                             <svg class="cart_back" width="10" height="19" viewBox="0 0 10 19" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -232,13 +257,16 @@ function create_categories(json_data, category_id) { //создание кате
                             <p class="cart_discript">${discript}</p>
                         </div>
                     </article>`
+                }
             } else { //если товар
                 let disactive_flag = '';
                 let hide_flag = 'hide';
+                let hide_none_flag = '';
                 let product_count = 0;
                 if (basket_products_list[json_data[i]['id']]) {
                     product_count = basket_products_list[json_data[i]['id']];
                     hide_flag = '';
+                    hide_none_flag = 'hide';
                     if (product_count == json_data[i]['setting']['count']) {
                         disactive_flag = 'disactive';
                     };
@@ -258,13 +286,14 @@ function create_categories(json_data, category_id) { //создание кате
                             <p class="price">${json_data[i]['price']['full']}</p>
                         </div>
                         <div class="add">
+                            <p class="add_none_text ${hide_none_flag}">В КОРЗИНУ</p>
                             <svg class="minus ${hide_flag}" width="14" height="2" viewBox="0 0 14 2" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path d="M1 1H13" stroke-width="2" stroke-linecap="round" />
                             </svg>
                             </svg>
                             <p class="add_text ${hide_flag}">${product_count}</p>
-                            <svg class="plus ${disactive_flag}" width="14" height="14" viewBox="0 0 14 14" fill="none"
+                            <svg class="plus ${hide_flag} ${disactive_flag}" width="14" height="14" viewBox="0 0 14 14" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path d="M7 1V13" stroke-width="2" stroke-linecap="round" />
                                 <path d="M1 7H13" stroke-width="2" stroke-linecap="round" />
@@ -274,43 +303,144 @@ function create_categories(json_data, category_id) { //создание кате
                 </article>`
                 let cart_product = document.createElement('article');
                 cart.append(cart_product);
-                cart_product.outerHTML = `<article class="cart_product hide" id="cart_${json_data[i]['id']}">
-                <div class="cart_path">
-                    <svg class="cart_back" width="10" height="19" viewBox="0 0 10 19" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9 1.5L1.72591 8.41039C1.32515 8.79111 1.30929 9.42476 1.69052 9.82504L9 17.5"
-                            stroke="#0C0C0C" stroke-width="2" stroke-linecap="round" />
-                    </svg>
-                    <p class="cart_path_name">Карточка продукта</p>
-                </div>
-                <div class="cart_info">
-                    <img src="${json_data[i]['design']['image']}" class="cart_img" loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false" style="object-fit: contain; object-position: 50% 50%;"></img>
-                    <p class="cart_name">${json_data[i]['design']['title']}</p>
-                    <p class="cart_discript">${discript}</p>
-                    <div class="cart_price_info">
-                        <p class="cart_count">В наличии: ${json_data[i]['setting']['count']} шт.</p>
+                if (false) {
+                    cart_product.outerHTML = `<article class="cart_product hide" id="cart_${json_data[i]['id']}">
+                    <div class="cart_path">
+                        <svg class="cart_back" width="10" height="19" viewBox="0 0 10 19" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 1.5L1.72591 8.41039C1.32515 8.79111 1.30929 9.42476 1.69052 9.82504L9 17.5"
+                                stroke="#0C0C0C" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                        <p class="cart_path_name">Карточка продукта</p>
                     </div>
-                    <div class="cart_price_menu">
-                        <p class="cart_price">${json_data[i]['price']['full']}</p>
-                        <div class="cart_add">
-                            <svg class="cart_minus ${hide_flag}" width="14" height="2" viewBox="0 0 14 2" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 1H13" stroke-width="2" stroke-linecap="round" />
-                            </svg>
-                            </svg>
-                            <p class="cart_add_text ${hide_flag}">${product_count}</p>
-                            <svg class="cart_plus ${disactive_flag}" width="14" height="14" viewBox="0 0 14 14" fill="none"
+                    <div class="cart_info">
+                        <div class="cart_container">
+                            <img src="${json_data[i]['design']['image']}" class="cart_img_change" loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false" style="object-fit: contain; object-position: 50% 50%;"></img>
+                            <label for="fileInput" class="upload_img_change">
+                                <svg class="add_category_svg" width="28" height="28" viewBox="0 0 14 14" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7 1V13" stroke-width="2" stroke-linecap="round" />
+                                    <path d="M1 7H13" stroke-width="2" stroke-linecap="round" />
+                                </svg>
+                            </label>
+                        </div>
+                        <input type="file" class="fileInput_change" id="fileInput" accept="image/*" required>
+                        <input class="cart_name_input_change" type="text" value="${json_data[i]['design']['title']}" placeholder="Название" />
+                        <textarea class="cart_discript_input_change" type="text" placeholder="Описание" rows="4">${json_data[i]['design']['description']}</textarea>
+                        <input class="cart_count_input_change" type="text" value="${json_data[i]['setting']['count']}" placeholder="Количество" />
+                        <input class="cart_price_input_change" type="text" value="${json_data[i]['price']['full'].slice(0, -2)}" placeholder="Цена" />
+                        <div class="cart_price_menu">
+                            <p class="cart_price">${json_data[i]['price']['full']}</p>
+                            <div class="cart_add">
+                                <svg class="cart_minus ${hide_flag}" width="14" height="2" viewBox="0 0 14 2" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M1 1H13" stroke-width="2" stroke-linecap="round" />
+                                </svg>
+                                <p class="cart_add_text ${hide_flag}">${product_count}</p>
+                                <svg class="cart_plus ${disactive_flag}" width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7 1V13" stroke-width="2" stroke-linecap="round" />
+                                    <path d="M1 7H13" stroke-width="2" stroke-linecap="round" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="save_category_change disactive_but">
+                        <p class="save_category_text">Сохранить</p>
+                    </div>
+                </article>`
+                } else {
+                    cart_product.outerHTML = `<article class="cart_product hide" id="cart_${json_data[i]['id']}">
+                    <div class="cart_path">
+                        <svg class="cart_back" width="10" height="19" viewBox="0 0 10 19" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 1.5L1.72591 8.41039C1.32515 8.79111 1.30929 9.42476 1.69052 9.82504L9 17.5"
+                                stroke="#0C0C0C" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                        <p class="cart_path_name">Карточка продукта</p>
+                    </div>
+                    <div class="cart_info">
+                        <img src="${json_data[i]['design']['image']}" class="cart_img" loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false" style="object-fit: contain; object-position: 50% 50%;"></img>
+                        <p class="cart_name">${json_data[i]['design']['title']}</p>
+                        <p class="cart_discript">${discript}</p>
+                        <div class="cart_price_info">
+                            <p class="cart_count">В наличии: ${json_data[i]['setting']['count']} шт.</p>
+                        </div>
+                        <div class="cart_price_menu">
+                            <p class="cart_price">${json_data[i]['price']['full']}</p>
+                            <div class="cart_add">
+                                <p class="cart_add_none_text ${hide_none_flag}">В КОРЗИНУ</p>
+                                <svg class="cart_minus ${hide_flag}" width="14" height="2" viewBox="0 0 14 2" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M1 1H13" stroke-width="2" stroke-linecap="round" />
+                                </svg>
+                                <p class="cart_add_text ${hide_flag}">${product_count}</p>
+                                <svg class="cart_plus ${hide_flag} ${disactive_flag}" width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7 1V13" stroke-width="2" stroke-linecap="round" />
+                                    <path d="M1 7H13" stroke-width="2" stroke-linecap="round" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </article>`
+                };
+            };
+        };
+    };
+    if (admin_flag) {
+        let add_category = document.createElement('article');
+        category_list.append(add_category);
+        add_category.outerHTML = `<article class="add_category">
+                        <div class="add_category_plus">
+                            <svg class="add_category_svg" width="28" height="28" viewBox="0 0 14 14" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path d="M7 1V13" stroke-width="2" stroke-linecap="round" />
                                 <path d="M1 7H13" stroke-width="2" stroke-linecap="round" />
                             </svg>
                         </div>
+                    </article>`;
+        let add_cart = document.createElement('article');
+        cart.append(add_cart)
+        add_cart.outerHTML = `<article class="add_cart hide">
+                    <div class="cart_adm_path">
+                        <svg class="cart_back" width="10" height="19" viewBox="0 0 10 19" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 1.5L1.72591 8.41039C1.32515 8.79111 1.30929 9.42476 1.69052 9.82504L9 17.5"
+                                stroke="#0C0C0C" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                        <p class="cart_path_name">Карточка продукта</p>
                     </div>
-                </div>
-            </article>`
-            };
-        };
-    };
+                    <div class="cart_info">
+                        <div class="cart_container">
+                            <svg class="cart_img_none" width="1629" height="1629" viewBox="0 0 1629 1629" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M773.667 0.466655C742.067 2.73332 726.867 4.19999 709.4 6.46666C531.133 29.4 366.467 110.467 238.467 238.467C118.467 358.467 38.5999 512.733 11.1333 677.667C2.73328 728.333 0.466614 757.8 0.466614 814.333C0.466614 860.467 1.39995 878.733 5.79995 914.333C28.0666 1094.73 109.267 1261.13 238.467 1390.2C362.867 1514.6 523.267 1595.4 695.133 1620.33C740.867 1626.87 761 1628.2 814.333 1628.2C867.667 1628.2 887.8 1626.87 933.533 1620.33C1149 1589.13 1344.6 1470.33 1474.33 1291.67C1547.53 1191 1597.27 1072.47 1617.53 951C1625.93 900.333 1628.2 870.867 1628.2 814.333C1628.2 768.2 1627.27 749.933 1622.87 714.333C1600.6 533.933 1519.4 367.533 1390.2 238.467C1264.73 112.867 1103.4 32.2 929 7.66666C891.667 2.46666 868.867 0.866655 824.333 0.466655C800.2 0.199988 777.4 0.199988 773.667 0.466655ZM878.333 116.333C1043.13 131.8 1193 202.2 1309.67 319C1461 470.2 1534.47 679.8 1510.87 892.333C1495.27 1033 1437 1166.07 1343.8 1273.4L1332.33 1286.6L1327 1280.73C1324.07 1277.53 1197.67 1142.07 1046.2 979.667C894.733 817.267 682.867 589.933 575.267 474.6L379.667 264.733L386.733 259.133C407.267 242.6 445.267 217.667 476.333 200.333C567.933 149.267 677.4 118.467 785 113.8C805 113 857 114.333 878.333 116.333ZM482.333 541.667C578.067 644.333 789.667 871.267 952.6 1046.07L1249 1363.93L1241.93 1369.53C1211.67 1393.93 1156.73 1427.93 1117 1446.73C1040.33 1483 963.667 1504.07 877 1512.47C828.867 1517.13 761 1515.13 710.333 1507.53C561 1484.87 425.933 1416.6 319 1309.67C167.667 1158.47 94.2 948.867 117.8 736.333C133.4 595.667 191.667 462.6 284.867 355.267L296.333 342.067L302.333 348.6C305.667 352.2 386.6 439.133 482.333 541.667Z" fill="#505050"/>
+                            </svg>
+                            <img class="cart_adm_img hide" loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false" style="object-fit: contain; object-position: 50% 50%;"></img>
+                            <label for="fileInput" class="upload_img">
+                                <svg class="add_category_svg" width="28" height="28" viewBox="0 0 14 14" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7 1V13" stroke-width="2" stroke-linecap="round" />
+                                    <path d="M1 7H13" stroke-width="2" stroke-linecap="round" />
+                                </svg>
+                            </label>
+                        </div>
+                        <div class="type_toggle">
+                            <div class="type_category choiced">Категория</div>
+                            <div class="type_product">Товар</div>
+                        </div>
+                        <input type="file" id="fileInput" accept="image/*" required>
+                        <input class="cart_name_input" type="text" placeholder="Название *" />
+                        <textarea class="cart_discript_input" type="text" placeholder="Описание" rows="4"></textarea>
+                        <input class="cart_count_input hide" type="text" placeholder="Количество *" />
+                        <input class="cart_price_input hide" type="text" placeholder="Цена *" />
+                    </div>
+                    <div class="save_category disactive_but">
+                        <p class="save_category_text">Сохранить</p>
+                    </div>
+                </article>`
+        adm_add_category();
+    }
     show_cart();
     add();
     open_categories();
@@ -409,9 +539,59 @@ function add() { //Манипуляция количеством
         let cart_plus = cart_product[i].getElementsByClassName('cart_plus')[0];
         let count = document.getElementsByClassName('product')[i].getElementsByClassName('count')[0];
         let cart_count = cart_product[i].getElementsByClassName('cart_count')[0];
+        let add_none_text = document.getElementsByClassName('product')[i].getElementsByClassName('add_none_text')[0];
+        let cart_add_none_text = cart_product[i].getElementsByClassName('cart_add_none_text')[0];
         if (!basket_products_list[product[i].id]) {
             basket_products_list[product[i].id] = 0;
         };
+        cart_add_none_text.addEventListener('click', () => {
+            add_none_text.classList.add('hide');
+            cart_add_none_text.classList.add('hide');
+            plus.classList.remove('hide');
+            cart_plus.classList.remove('hide');
+            minus.classList.remove('hide');
+            add_text.classList.remove('hide');
+            add_text.textContent = parseInt(add_text.textContent) + 1;
+            cart_minus.classList.remove('hide');
+            cart_add_text.classList.remove('hide');
+            cart_add_text.textContent = parseInt(cart_add_text.textContent) + 1;
+            if ((parseInt(add_text.textContent) > parseInt(count.textContent.slice(11, -4)))) {
+                add_text.textContent = parseInt(add_text.textContent) - 1;
+                cart_add_text.textContent = parseInt(cart_add_text.textContent) - 1;
+            } else {
+                basket_products_list[product[i].id] += 1;
+                console.log(basket_products_list);
+                add_product(product[i].id);
+            };
+            if ((parseInt(add_text.textContent) == parseInt(count.textContent.slice(11, -4)))) {
+                plus.classList.add('disactive');
+                cart_plus.classList.add('disactive');
+            };
+        });
+        add_none_text.addEventListener('click', () => {
+            add_none_text.classList.add('hide');
+            cart_add_none_text.classList.add('hide');
+            plus.classList.remove('hide');
+            cart_plus.classList.remove('hide');
+            minus.classList.remove('hide');
+            add_text.classList.remove('hide');
+            add_text.textContent = parseInt(add_text.textContent) + 1;
+            cart_minus.classList.remove('hide');
+            cart_add_text.classList.remove('hide');
+            cart_add_text.textContent = parseInt(cart_add_text.textContent) + 1;
+            if ((parseInt(add_text.textContent) > parseInt(count.textContent.slice(11, -4)))) {
+                add_text.textContent = parseInt(add_text.textContent) - 1;
+                cart_add_text.textContent = parseInt(cart_add_text.textContent) - 1;
+            } else {
+                basket_products_list[product[i].id] += 1;
+                console.log(basket_products_list);
+                add_product(product[i].id);
+            };
+            if ((parseInt(add_text.textContent) == parseInt(count.textContent.slice(11, -4)))) {
+                plus.classList.add('disactive');
+                cart_plus.classList.add('disactive');
+            };
+        });
         plus.addEventListener('click', () => {
             minus.classList.remove('hide');
             add_text.classList.remove('hide');
@@ -457,11 +637,15 @@ function add() { //Манипуляция количеством
             remove_product(product[i].id);
             add_text.textContent = parseInt(add_text.textContent) - 1;
             cart_add_text.textContent = parseInt(cart_add_text.textContent) - 1;
-            if (add_text.textContent < 1) {
+            if (add_text.textContent <= 0) {
+                plus.classList.add('hide');
+                cart_plus.classList.add('hide');
                 minus.classList.add('hide');
                 add_text.classList.add('hide');
                 cart_minus.classList.add('hide');
                 cart_add_text.classList.add('hide');
+                cart_add_none_text.classList.remove('hide');
+                add_none_text.classList.remove('hide');
             };
             plus.classList.remove('disactive');
             cart_plus.classList.remove('disactive');
@@ -481,11 +665,15 @@ function add() { //Манипуляция количеством
             remove_product(product[i].id);
             cart_add_text.textContent = parseInt(cart_add_text.textContent) - 1;
             add_text.textContent = parseInt(add_text.textContent) - 1;
-            if (cart_add_text.textContent < 1) {
-                cart_minus.classList.add('hide');
-                cart_add_text.classList.add('hide');
+            if (cart_add_text.textContent <= 0) {
+                plus.classList.add('hide');
+                cart_plus.classList.add('hide');
                 minus.classList.add('hide');
                 add_text.classList.add('hide');
+                cart_minus.classList.add('hide');
+                cart_add_text.classList.add('hide');
+                cart_add_none_text.classList.remove('hide');
+                add_none_text.classList.remove('hide');
             };
             cart_plus.classList.remove('disactive');
             plus.classList.remove('disactive');
@@ -637,6 +825,29 @@ function show_cart() { //Открытие карточки
             cart_product[i].classList.add('hide');
         });
     };
+    if (admin_flag) {
+        for (let i = 0; i < category.length; i++) {//Открытие карточки продкута
+            let img = category[i].getElementsByClassName('img')[0];
+            let cart_back = cart_category[i].getElementsByClassName('cart_path')[0];
+            img.addEventListener('click', (event) => {
+                event.stopPropagation();
+                catalog.classList.add('hide');
+                cart.classList.remove('hide');
+                for (let j = 0; j < cart_category.length; j++) {
+                    cart_category[j].classList.add('hide');
+                }
+                for (let j = 0; j < cart_product.length; j++) {
+                    cart_product[j].classList.add('hide');
+                }
+                cart_category[i].classList.remove('hide');
+            });
+            cart_back.addEventListener('click', () => {
+                catalog.classList.remove('hide');
+                cart.classList.add('hide');
+                cart_category[i].classList.add('hide');
+            });
+        };
+    }
 };
 
 
@@ -694,12 +905,14 @@ function open_categories() { //открытие категории
     let category = document.getElementsByClassName('category');
     let cart_category = document.getElementsByClassName('cart_category');
     let cart_product = document.getElementsByClassName('cart_product');
+    let add_cart = document.getElementsByClassName('add_cart');
 
     for (let i = 0; i < category.length; i++) {
         let open = category[i];
         open.addEventListener('click', () => {
             let category_id = category[i].id;
             let json_data_new = findById(common_json_data, parseInt(category_id));
+
             path.remove();
             category_list.remove();
             for (let i = 0; i < cart_category.length;) {
@@ -707,6 +920,9 @@ function open_categories() { //открытие категории
             };
             for (let i = 0; i < cart_product.length;) {
                 cart_product[0].remove();
+            };
+            for (let i = 0; i < add_cart.length;) {
+                add_cart[0].remove();
             };
             create_categories(json_data_new, parseInt(category_id));
         });
@@ -720,7 +936,7 @@ function back_to_category() { //Назад в категорию
     let cart_category = document.getElementsByClassName('cart_category');
     let cart_product = document.getElementsByClassName('cart_product');
     let category_name = document.getElementsByClassName('category_name')[0];
-
+    let add_cart = document.getElementsByClassName('add_cart');
 
     path.addEventListener('click', () => {
         if (category_name.innerText != 'Главная') {
@@ -741,6 +957,9 @@ function back_to_category() { //Назад в категорию
             };
             for (let i = 0; i < cart_product.length;) {
                 cart_product[0].remove();
+            };
+            for (let i = 0; i < add_cart.length;) {
+                add_cart[0].remove();
             };
             create_categories(json_data_new, category_father_id);
         }
@@ -1102,7 +1321,7 @@ function form_manag() {
         };
         pay_check();
     });
-    method_courier_but.addEventListener('click', () => {
+    method_courier_info.addEventListener('click', () => {
         choice_delivery_adress.classList.remove('hide');
     });
     choice_delivery_adress.addEventListener('click', function (event) {
@@ -1173,17 +1392,17 @@ function form_manag() {
     });
     phone.addEventListener('blur', function (e) {
         const value = e.target.value;
-        const phoneRegex = /^\+7\d{3}\d{3}\d{2}\d{2}$/; // Регулярное выражение для проверки формата
+        const phoneRegex = /^\+7\d{3}\d{3}\d{2}\d{2}$/;
 
         if (!phoneRegex.test(value)) {
             phone.classList.add('incorrect');
             phone.classList.remove('active_input');
-            form_data.phone = null; // Показываем сообщение об ошибке
+            form_data.phone = null;
             pay_check();
         } else {
             phone.classList.add('active_input');
             phone.classList.remove('incorrect');
-            form_data.phone = value; // Скрываем сообщение об ошибке
+            form_data.phone = value;
             pay_check();
         }
     });
@@ -1380,7 +1599,7 @@ function edit_massage(json_order_data) {
     let method = 'Самовывоз';
     let adress = form_data.adressPickup;
     for (let i = 0; i < json_order_data['data']['items'].length; i++) {
-        products += '<b>' + json_order_data['data']['items'][i]['product']['parent']['design']['title'] + '</b>\n    ' + json_order_data['data']['items'][i]['product']['design']['title'];
+        products += '<b>' + json_order_data['data']['items'][i]['product']['parent']['design']['title'] + '</b>\n    ' + json_order_data['data']['items'][i]['product']['design']['title'] + ' × ' + json_order_data['data']['items'][i]['count'];
         if (i != json_order_data['data']['items'].length - 1) {
             products += '\n'
         }
@@ -1514,7 +1733,7 @@ function edit_massage_admin(json_order_data) {
     let method = 'Самовывоз';
     let adress = form_data.adressPickup;
     for (let i = 0; i < json_order_data['data']['items'].length; i++) {
-        products += '<b>' + json_order_data['data']['items'][i]['product']['parent']['design']['title'] + '</b>\n    ' + json_order_data['data']['items'][i]['product']['design']['title'];
+        products += '<b>' + json_order_data['data']['items'][i]['product']['parent']['design']['title'] + '</b>\n    ' + json_order_data['data']['items'][i]['product']['design']['title'] + ' × ' + json_order_data['data']['items'][i]['count'];
         if (i != json_order_data['data']['items'].length - 1) {
             products += '\n'
         }
@@ -1760,22 +1979,22 @@ function promocode_activate(url, value) {
         headers: my_promocodeHeaders,
         body: JSON.stringify(post_promocodeData),
     })
-    .then((promocode_data) => promocode_data.json())
-    .then((json_promocode_data) => {
-        console.log('Промокод применён:', json_promocode_data);
-        return json_promocode_data; // Возвращаем данные
-    })
-    .catch((error) => {
-        console.error('Ошибка при запросе:', error);
-        return { result: false }; // Возвращаем объект с result: false в случае ошибки
-    });
+        .then((promocode_data) => promocode_data.json())
+        .then((json_promocode_data) => {
+            console.log('Промокод применён:', json_promocode_data);
+            return json_promocode_data; // Возвращаем данные
+        })
+        .catch((error) => {
+            console.error('Ошибка при запросе:', error);
+            return { result: false }; // Возвращаем объект с result: false в случае ошибки
+        });
 }
 
 
 
 function admin() {
     let admin_but = document.getElementsByClassName('admin_but')[0];
-    if (userId == '1000597955' || userId == '1035087579') {
+    if (admin_flag) {
         admin_but.classList.remove('hide');
         let admin = document.getElementsByClassName('admin')[0];
         let admin_body = document.createElement('section');
@@ -1932,7 +2151,7 @@ function block_manag() {
             }, 1000);
         }
     });
-}
+};
 
 
 function delete_manag() {
@@ -1976,7 +2195,7 @@ function delete_manag() {
             }, 1000);
         }
     });
-}
+};
 
 
 function admin_activate(url, value) {
@@ -1995,18 +2214,173 @@ function admin_activate(url, value) {
         headers: my_promocodeHeaders,
         body: JSON.stringify(post_promocodeData),
     })
-    .then((promocode_data) => promocode_data.json())
-    .then((json_promocode_data) => {
-        console.log('Промокод применён:', json_promocode_data);
-        return json_promocode_data; // Возвращаем данные
-    })
-    .catch((error) => {
-        console.error('Ошибка при запросе:', error);
-        return { result: false }; // Возвращаем объект с result: false в случае ошибки
+        .then((promocode_data) => promocode_data.json())
+        .then((json_promocode_data) => {
+            console.log('Промокод применён:', json_promocode_data);
+            return json_promocode_data; // Возвращаем данные
+        })
+        .catch((error) => {
+            console.error('Ошибка при запросе:', error);
+            return { result: false }; // Возвращаем объект с result: false в случае ошибки
+        });
+};
+
+
+function adm_add_category() {
+    let catalog = document.getElementsByClassName('catalog')[0];
+    let add_category_plus = document.getElementsByClassName('add_category_plus')[0];
+    let cart = document.getElementsByClassName('cart ')[0];
+    let add_cart = document.getElementsByClassName('add_cart')[0];
+    let cart_path = document.getElementsByClassName('cart_adm_path')[0];
+    let cart_adm_img = document.getElementsByClassName('cart_adm_img')[0];
+    let cart_img_none = document.getElementsByClassName('cart_img_none')[0];
+    const fileInput = document.getElementById('fileInput');
+    let type_category = document.getElementsByClassName('type_category')[0];
+    let type_product = document.getElementsByClassName('type_product')[0];
+    let cart_name_input = document.getElementsByClassName('cart_name_input')[0];
+    let cart_discript_input = document.getElementsByClassName('cart_discript_input')[0];
+    let cart_count_input = document.getElementsByClassName('cart_count_input')[0];
+    let cart_price_input = document.getElementsByClassName('cart_price_input')[0];
+    let save_category = document.getElementsByClassName('save_category')[0];
+    let category_list = document.getElementsByClassName('category_list')[0];
+
+
+    function add_cart_cheker() {
+        if (type_category.classList.contains('choiced')) {
+            if (cart_name_input.value != 0) {
+                save_category.classList.remove('disactive_but');
+                return true;
+            } else {
+                save_category.classList.add('disactive_but');
+                return false;
+            };
+        } else if (type_product.classList.contains('choiced')) {
+            if (cart_name_input.value != 0 && cart_count_input.value != 0 && cart_price_input.value != 0) {
+                save_category.classList.remove('disactive_but');
+                return true;
+            } else {
+                save_category.classList.add('disactive_but');
+                return false;
+            };
+        };
+    };
+    add_category_plus.addEventListener('click', () => {
+        catalog.classList.add('hide')
+        cart.classList.remove('hide')
+        add_cart.classList.remove('hide')
+        add_cart_cheker();
+        if (category_list.id == 0) {
+            type_product.classList.add('hide');
+        };
     });
-}
+    cart_path.addEventListener('click', () => {
+        catalog.classList.remove('hide')
+        cart.classList.add('hide')
+        add_cart.classList.add('hide')
+    });
+    fileInput.addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                cart_adm_img.src = event.target.result;
+            };
+            cart_adm_img.classList.remove('hide');
+            cart_img_none.classList.add('hide');
+            reader.readAsDataURL(file);
+        };
+    });
+    type_category.addEventListener('click', () => {
+        type_category.classList.add('choiced');
+        type_product.classList.remove('choiced');
+        cart_count_input.classList.add('hide');
+        cart_price_input.classList.add('hide');
+        add_cart_cheker();
+    });
+    type_product.addEventListener('click', () => {
+        type_product.classList.add('choiced');
+        type_category.classList.remove('choiced');
+        cart_count_input.classList.remove('hide');
+        cart_price_input.classList.remove('hide');
+        add_cart_cheker();
+    });
+    cart_name_input.addEventListener('input', () => {
+        add_cart_cheker();
+    });
+    cart_count_input.addEventListener('input', () => {
+        add_cart_cheker();
+    });
+    cart_price_input.addEventListener('input', () => {
+        add_cart_cheker();
+    });
+    save_category.addEventListener('click', () => {
+        if (add_cart_cheker()) {
+            if (type_category.classList.contains('choiced')) {
+                create_category(0, cart_name_input.value, category_list.id, cart_discript_input.value);
+            } else if (type_product.classList.contains('choiced')) {
+                create_category(7, cart_name_input.value, category_list.id, cart_discript_input.value, cart_count_input.value, cart_price_input.value);
+            };
+        };
+    });
+};
+
+function create_category(type, title, category_id, description) {
+    const postData = {
+        bot_id: 251807,
+        type: type,
+        title: title,
+        category_id: parseInt(category_id),
+        description: description,
+        count: 1000
+    };
+    let myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    fetch('https://api.bot-t.com/v1/shop/category/create?token=7723075467:AAEHIRezunqN-fb__mqG4akqIHGZd3r9X5g', {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify(postData),
+    }).then((data) => {
+        return data.json();
+    }).then((json_create_category_data) => {
+        console.log(json_create_category_data);
+        // edit_img_category(json_create_category_data['data']['id']);
+        bott_auth();
+    });
+};
 
 
+function bott_auth() {
+    fetch(`https://bot-t.com/auth/telegram/success?token=1000597955mUCnK-DpnAe-oX2ntt-A5jnvTQVpsh2Y`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'Upgrade-Insecure-Requests': '1',
+            'User-Agent': 'Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/132.0.0.0 Safari\/537.36',
+            'sec-ch-ua': '\"Not A(Brand\";v=\"8\", \"Chromium\";v=\"132\"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '\"Windows\"'
+        },
+    }).then((data) => {
+        return data.json();
+    }).then((json_bott_auth_data) => {
+        console.log(json_bott_auth_data);
+    });
+};
+
+
+function edit_img_category(category_id) {
+    fetch(`https://bot-t.com/lk/common/shop/category/image-add?category_id=${category_id}&bot_id=251807`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'referer': 'https://bot-t.com/lk/common/shop/category/index?bot_id=251807'
+        },
+    }).then((data) => {
+        return data.json();
+    }).then((json_edit_img_category_data) => {
+        console.log(json_edit_img_category_data);
+    });
+};
 
 document.addEventListener('DOMContentLoaded', function () {
     const postData = {
@@ -2031,6 +2405,9 @@ document.addEventListener('DOMContentLoaded', function () {
             userId = urlParams.get('id'); // Получить значение параметра "param1"
         }
         console.log('User ID:', userId);
+        if (userId == '1000597955' || userId == '1035087579') {
+            admin_flag = true;
+        };
         return data.json();
     }).then((json_data) => {
         json_data = json_data['data'];
