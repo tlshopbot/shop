@@ -176,15 +176,17 @@
                             <div class="method_pickup">Самовывоз</div>
                             <div class="method_courier hide">Курьер</div>
                         </div>
-                        <svg class="method_svg" width="11" height="19" viewBox="0 0 11 19" fill="none"
+                        <svg class="method_svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1.5 1.5L8.77409 8.41039C9.17485 8.79111 9.1907 9.42476 8.80948 9.82504L1.5 17.5"
-                                stroke="#0C0C0C" stroke-width="2" stroke-linecap="round" />
+                            <rect x="1" y="1" width="22" height="22" rx="3" stroke-width="2" />
+                            <path
+                                d="M15.0779 6.50136C15.2368 6.34241 15.4255 6.21632 15.6332 6.1303C15.8409 6.04428 16.0635 6 16.2883 6C16.513 6 16.7356 6.04428 16.9433 6.1303C17.151 6.21632 17.3397 6.34241 17.4986 6.50136C17.6576 6.66031 17.7837 6.84901 17.8697 7.05669C17.9557 7.26436 18 7.48695 18 7.71174C18 7.93653 17.9557 8.15912 17.8697 8.3668C17.7837 8.57447 17.6576 8.76317 17.4986 8.92212L9.32855 17.0922L6 18L6.90779 14.6714L15.0779 6.50136Z"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </div>
                     <div class="method_pickup_info">
                         <div class="method_pickup_info_main">
-                            <p class="pickup_address_text">Адрес пункта выдачи</p>
+                            <p class="pickup_address_text">Адрес пункта выдачи *</p>
                             <p class="pickup_address_text_selected hide">Адрес пункта выдачи:</p>
                             <p class="pickup_address hide">Г. Мурманск, Беринга 14, п. 6, эт. 1, кв. 362</p>
                         </div>
@@ -206,7 +208,7 @@
                     </div>
                     <div class="method_courier_info hide">
                         <div class="method_courier_info_main">
-                            <p class="courier_address_text">Адрес доставки</p>
+                            <p class="courier_address_text">Адрес доставки *</p>
                             <p class="courier_address_text_selected hide">Адрес доставки:</p>
                             <p class="courier_address hide">Г. Мурманск, Беринга 14, п. 6, эт. 1, кв. 362</p>
                         </div>
@@ -235,7 +237,7 @@
                     </form>
                 </div>
                 <div class="payment">
-                    <p class="payment_text">Оплата</p>
+                    <p class="payment_text">Оплата *</p>
                     <div class="payment_type">
                         <div class="transfer">Перевод при получении</div>
                         <div class="cash">Наличными при получении</div>
@@ -582,7 +584,7 @@
         let admin_but = document.getElementsByClassName('admin_but')[0];
         let admin_tab = document.getElementsByClassName('admin')[0];
 
-        
+
 
 
         orders_but.addEventListener('click', () => {
