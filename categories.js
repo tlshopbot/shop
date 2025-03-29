@@ -1045,6 +1045,53 @@ function form_manag() {
     let cash = document.getElementsByClassName('cash')[0];
     let pay_but = document.getElementsByClassName('pay_but')[0];
 
+    const hoursContainer = document.querySelector('.hours');
+    let isDragging = false;
+    let startX, scrollLeft;
+
+    // Начало перетаскивания
+    hoursContainer.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.pageX - hoursContainer.offsetLeft;
+        scrollLeft = hoursContainer.scrollLeft;
+    });
+
+    // Во время перетаскивания
+    hoursContainer.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const x = e.pageX - hoursContainer.offsetLeft;
+        const walk = (x - startX) * 1.5; // Умножаем на 1.5 для более плавного скролла
+        hoursContainer.scrollLeft = scrollLeft - walk;
+    });
+
+    // Конец перетаскивания
+    hoursContainer.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+
+    // Выход курсора за пределы контейнера
+    hoursContainer.addEventListener('mouseleave', () => {
+        isDragging = false;
+    });
+
+    // Для touch-устройств (телефоны/планшеты)
+    hoursContainer.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        startX = e.touches[0].pageX - hoursContainer.offsetLeft;
+        scrollLeft = hoursContainer.scrollLeft;
+    });
+
+    hoursContainer.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        const x = e.touches[0].pageX - hoursContainer.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        hoursContainer.scrollLeft = scrollLeft - walk;
+    });
+
+    hoursContainer.addEventListener('touchend', () => {
+        isDragging = false;
+    });
 
 
 
