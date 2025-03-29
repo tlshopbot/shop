@@ -196,7 +196,15 @@ function create_categories(json_data, category_id) { //создание кате
     category_list.id = category_id;
     catalog.append(category_list);
     for (let i = 0; i < json_data.length; i++) { //цикл основных категорий
-        if (json_data[i]['is_hide'] == false && json_data[i]['is_view'] == true) { //если не скрыт
+        let hide = false;
+        if (admin_flag) {
+            if ((json_data[i]['is_hide'] == true) || (json_data[i]['is_hide'] == false && json_data[i]['is_view'] == true)) {
+                hide = true;
+            }
+        } else if (json_data[i]['is_hide'] == false && json_data[i]['is_view'] == true) {
+            hide = true;
+        };
+        if (hide) { //если не скрыт
             let discript = json_data[i]['design']['description'].split('\r\n').join('<br>');
             if (json_data[i]['typeObg']['id'] == '0') { //если категория
                 let category = document.createElement('article');
