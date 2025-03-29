@@ -1072,6 +1072,7 @@ function form_manag() {
         };
     };
     function date_pickup2_manag(hours_msk) {
+        console.log('всё чётко');
         for (let j = 0; j < date_pickup2_hour.length; j++) {
             date_pickup2_hour[j].classList.remove('active_input');
         }
@@ -1135,10 +1136,12 @@ function form_manag() {
             date_pickup2_day.min = `${year_msk}-${month_msk}-${parseInt(day_msk) + 1}`;
             date_pickup2_day.max = `${year_msk}-${month_msk}-${parseInt(day_msk) + 3}`;
         } else if (dayOfWeek == 6) {
+            date_pickup2_manag(0);
             date_pickup2_day.value = `${year_msk}-${month_msk}-${parseInt(day_msk) + 2}`;
             date_pickup2_day.min = `${year_msk}-${month_msk}-${parseInt(day_msk) + 2}`;
             date_pickup2_day.max = `${year_msk}-${month_msk}-${parseInt(day_msk) + 2}`;
         } else if (dayOfWeek == 0) {
+            date_pickup2_manag(0);
             date_pickup2_day.value = `${year_msk}-${month_msk}-${parseInt(day_msk) + 1}`;
             date_pickup2_day.min = `${year_msk}-${month_msk}-${parseInt(day_msk) + 1}`;
             date_pickup2_day.max = `${year_msk}-${month_msk}-${parseInt(day_msk) + 2}`;
