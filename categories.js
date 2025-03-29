@@ -1158,55 +1158,150 @@ function form_manag() {
         };
     };
 
+    // function date_pickup1_hour_num_manag() {
+    //     if (!(date_pickup1_hour[date_pickup1_hour.length - 1].textContent.split(":")[0] - hours_msk <= 0)) {
+    //         date_pickup1_manag(hours_msk);
+    //         date_pickup1_day.value = `${year_msk}-${month_msk}-${day_msk}`;
+    //         date_pickup1_day.min = `${year_msk}-${month_msk}-${day_msk}`;
+    //         date_pickup1_day.max = `${year_msk}-${month_msk}-${parseInt(day_msk) + 2}`;
+    //     } else {
+    //         date_pickup1_manag(0);
+    //         date_pickup1_day.value = `${year_msk}-${month_msk}-${parseInt(day_msk) + 1}`;
+    //         date_pickup1_day.min = `${year_msk}-${month_msk}-${parseInt(day_msk) + 1}`;
+    //         date_pickup1_day.max = `${year_msk}-${month_msk}-${parseInt(day_msk) + 3}`;
+    //     };
+    // };
+    // function date_pickup2_hour_num_manag() {
+    //     if (!(date_pickup2_hour[date_pickup2_hour.length - 1].textContent.split(":")[0] - hours_msk <= 0) && !(dayOfWeek == 0) && !(dayOfWeek == 6)) {
+    //         date_pickup2_manag(hours_msk);
+    //         date_pickup2_day.value = `${year_msk}-${month_msk}-${day_msk}`;
+    //         date_pickup2_day.min = `${year_msk}-${month_msk}-${day_msk}`;
+    //         date_pickup2_day.max = `${year_msk}-${month_msk}-${parseInt(day_msk) + 2}`;
+    //     } else if ((date_pickup2_hour[date_pickup2_hour.length - 1].textContent.split(":")[0] - hours_msk <= 0) && !(dayOfWeek == 0) && !(dayOfWeek == 6)) {
+    //         date_pickup2_manag(0);
+    //         date_pickup2_day.value = `${year_msk}-${month_msk}-${parseInt(day_msk) + 1}`;
+    //         date_pickup2_day.min = `${year_msk}-${month_msk}-${parseInt(day_msk) + 1}`;
+    //         date_pickup2_day.max = `${year_msk}-${month_msk}-${parseInt(day_msk) + 3}`;
+    //     } else if (dayOfWeek == 6) {
+    //         date_pickup2_manag(0);
+    //         date_pickup2_day.value = `${year_msk}-${month_msk}-${parseInt(day_msk) + 2}`;
+    //         date_pickup2_day.min = `${year_msk}-${month_msk}-${parseInt(day_msk) + 2}`;
+    //         date_pickup2_day.max = `${year_msk}-${month_msk}-${parseInt(day_msk) + 2}`;
+    //     } else if (dayOfWeek == 0) {
+    //         date_pickup2_manag(0);
+    //         date_pickup2_day.value = `${year_msk}-${month_msk}-${parseInt(day_msk) + 1}`;
+    //         date_pickup2_day.min = `${year_msk}-${month_msk}-${parseInt(day_msk) + 1}`;
+    //         date_pickup2_day.max = `${year_msk}-${month_msk}-${parseInt(day_msk) + 2}`;
+    //     };
+    // };
+    // function date_courier_hour_num_manag() {
+    //     if (!(date_courier_hour[date_courier_hour.length - 1].textContent.split(":")[0] - hours_msk <= 0)) {
+    //         date_courier_manag(hours_msk);
+    //         date_courier_day.value = `${year_msk}-${month_msk}-${day_msk}`;
+    //         date_courier_day.min = `${year_msk}-${month_msk}-${day_msk}`;
+    //         date_courier_day.max = `${year_msk}-${month_msk}-${parseInt(day_msk) + 2}`;
+    //     } else {
+    //         date_courier_manag(0);
+    //         date_courier_day.value = `${year_msk}-${month_msk}-${parseInt(day_msk) + 1}`;
+    //         date_courier_day.min = `${year_msk}-${month_msk}-${parseInt(day_msk) + 1}`;
+    //         date_courier_day.max = `${year_msk}-${month_msk}-${parseInt(day_msk) + 3}`;
+    //     };
+    // };
+
+    function getNextDays(year, month, day, daysToAdd) {
+        const date = new Date(year, month - 1, day); // month - 1, так как в JS месяцы 0-11
+        date.setDate(date.getDate() + daysToAdd);
+        
+        return {
+            year: date.getFullYear(),
+            month: String(date.getMonth() + 1).padStart(2, '0'), // +1 и форматирование до 2 цифр
+            day: String(date.getDate()).padStart(2, '0')
+        };
+    }
+    
     function date_pickup1_hour_num_manag() {
-        if (!(date_pickup1_hour[date_pickup1_hour.length - 1].textContent.split(":")[0] - hours_msk <= 0)) {
+        const lastHour = parseInt(date_pickup1_hour[date_pickup1_hour.length - 1].textContent.split(":")[0]);
+        const isTodayAvailable = lastHour - hours_msk > 0;
+        
+        if (isTodayAvailable) {
             date_pickup1_manag(hours_msk);
-            date_pickup1_day.value = `${year_msk}-${month_msk}-${day_msk}`;
-            date_pickup1_day.min = `${year_msk}-${month_msk}-${day_msk}`;
-            date_pickup1_day.max = `${year_msk}-${month_msk}-${parseInt(day_msk) + 2}`;
+            const nextDay = getNextDays(year_msk, month_msk, day_msk, 0);
+            const maxDay = getNextDays(year_msk, month_msk, day_msk, 2);
+            
+            date_pickup1_day.value = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
+            date_pickup1_day.min = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
+            date_pickup1_day.max = `${maxDay.year}-${maxDay.month}-${maxDay.day}`;
         } else {
             date_pickup1_manag(0);
-            date_pickup1_day.value = `${year_msk}-${month_msk}-${parseInt(day_msk) + 1}`;
-            date_pickup1_day.min = `${year_msk}-${month_msk}-${parseInt(day_msk) + 1}`;
-            date_pickup1_day.max = `${year_msk}-${month_msk}-${parseInt(day_msk) + 3}`;
-        };
-    };
+            const nextDay = getNextDays(year_msk, month_msk, day_msk, 1);
+            const maxDay = getNextDays(year_msk, month_msk, day_msk, 3);
+            
+            date_pickup1_day.value = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
+            date_pickup1_day.min = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
+            date_pickup1_day.max = `${maxDay.year}-${maxDay.month}-${maxDay.day}`;
+        }
+    }
+    
     function date_pickup2_hour_num_manag() {
-        if (!(date_pickup2_hour[date_pickup2_hour.length - 1].textContent.split(":")[0] - hours_msk <= 0) && !(dayOfWeek == 0) && !(dayOfWeek == 6)) {
+        const lastHour = parseInt(date_pickup2_hour[date_pickup2_hour.length - 1].textContent.split(":")[0]);
+        const isTodayAvailable = lastHour - hours_msk > 0;
+        
+        if (isTodayAvailable && ![0, 6].includes(dayOfWeek)) {
             date_pickup2_manag(hours_msk);
-            date_pickup2_day.value = `${year_msk}-${month_msk}-${day_msk}`;
-            date_pickup2_day.min = `${year_msk}-${month_msk}-${day_msk}`;
-            date_pickup2_day.max = `${year_msk}-${month_msk}-${parseInt(day_msk) + 2}`;
-        } else if ((date_pickup2_hour[date_pickup2_hour.length - 1].textContent.split(":")[0] - hours_msk <= 0) && !(dayOfWeek == 0) && !(dayOfWeek == 6)) {
+            const nextDay = getNextDays(year_msk, month_msk, day_msk, 0);
+            const maxDay = getNextDays(year_msk, month_msk, day_msk, 2);
+            
+            date_pickup2_day.value = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
+            date_pickup2_day.min = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
+            date_pickup2_day.max = `${maxDay.year}-${maxDay.month}-${maxDay.day}`;
+        } else if (!isTodayAvailable && ![0, 6].includes(dayOfWeek)) {
             date_pickup2_manag(0);
-            date_pickup2_day.value = `${year_msk}-${month_msk}-${parseInt(day_msk) + 1}`;
-            date_pickup2_day.min = `${year_msk}-${month_msk}-${parseInt(day_msk) + 1}`;
-            date_pickup2_day.max = `${year_msk}-${month_msk}-${parseInt(day_msk) + 3}`;
-        } else if (dayOfWeek == 6) {
+            const nextDay = getNextDays(year_msk, month_msk, day_msk, 1);
+            const maxDay = getNextDays(year_msk, month_msk, day_msk, 3);
+            
+            date_pickup2_day.value = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
+            date_pickup2_day.min = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
+            date_pickup2_day.max = `${maxDay.year}-${maxDay.month}-${maxDay.day}`;
+        } else if (dayOfWeek === 6) {
             date_pickup2_manag(0);
-            date_pickup2_day.value = `${year_msk}-${month_msk}-${parseInt(day_msk) + 2}`;
-            date_pickup2_day.min = `${year_msk}-${month_msk}-${parseInt(day_msk) + 2}`;
-            date_pickup2_day.max = `${year_msk}-${month_msk}-${parseInt(day_msk) + 2}`;
-        } else if (dayOfWeek == 0) {
+            const nextDay = getNextDays(year_msk, month_msk, day_msk, 2);
+            
+            date_pickup2_day.value = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
+            date_pickup2_day.min = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
+            date_pickup2_day.max = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
+        } else if (dayOfWeek === 0) {
             date_pickup2_manag(0);
-            date_pickup2_day.value = `${year_msk}-${month_msk}-${parseInt(day_msk) + 1}`;
-            date_pickup2_day.min = `${year_msk}-${month_msk}-${parseInt(day_msk) + 1}`;
-            date_pickup2_day.max = `${year_msk}-${month_msk}-${parseInt(day_msk) + 2}`;
-        };
-    };
+            const nextDay = getNextDays(year_msk, month_msk, day_msk, 1);
+            const maxDay = getNextDays(year_msk, month_msk, day_msk, 2);
+            
+            date_pickup2_day.value = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
+            date_pickup2_day.min = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
+            date_pickup2_day.max = `${maxDay.year}-${maxDay.month}-${maxDay.day}`;
+        }
+    }
+    
     function date_courier_hour_num_manag() {
-        if (!(date_courier_hour[date_courier_hour.length - 1].textContent.split(":")[0] - hours_msk <= 0)) {
+        const lastHour = parseInt(date_courier_hour[date_courier_hour.length - 1].textContent.split(":")[0]);
+        const isTodayAvailable = lastHour - hours_msk > 0;
+        
+        if (isTodayAvailable) {
             date_courier_manag(hours_msk);
-            date_courier_day.value = `${year_msk}-${month_msk}-${day_msk}`;
-            date_courier_day.min = `${year_msk}-${month_msk}-${day_msk}`;
-            date_courier_day.max = `${year_msk}-${month_msk}-${parseInt(day_msk) + 2}`;
+            const nextDay = getNextDays(year_msk, month_msk, day_msk, 0);
+            const maxDay = getNextDays(year_msk, month_msk, day_msk, 2);
+            
+            date_courier_day.value = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
+            date_courier_day.min = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
+            date_courier_day.max = `${maxDay.year}-${maxDay.month}-${maxDay.day}`;
         } else {
             date_courier_manag(0);
-            date_courier_day.value = `${year_msk}-${month_msk}-${parseInt(day_msk) + 1}`;
-            date_courier_day.min = `${year_msk}-${month_msk}-${parseInt(day_msk) + 1}`;
-            date_courier_day.max = `${year_msk}-${month_msk}-${parseInt(day_msk) + 3}`;
-        };
-    };
+            const nextDay = getNextDays(year_msk, month_msk, day_msk, 1);
+            const maxDay = getNextDays(year_msk, month_msk, day_msk, 3);
+            
+            date_courier_day.value = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
+            date_courier_day.min = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
+            date_courier_day.max = `${maxDay.year}-${maxDay.month}-${maxDay.day}`;
+        }
+    }
 
     date_pickup1_day.addEventListener('input', () => {
         if (date_pickup1_day.value == `${year_msk}-${month_msk}-${day_msk}`) {
@@ -1231,14 +1326,14 @@ function form_manag() {
         };
     });
 
-    date_pickup2_day.addEventListener('change', function () {
-        // Проверяем, является ли день субботой (6) или воскресеньем (0)
-        if (dayOfWeek === 0) {
-            this.value = `${year_msk}-${month_msk}-${parseInt(day_msk) + 1}`;
-        } else if (dayOfWeek === 6) {
-            this.value = `${year_msk}-${month_msk}-${parseInt(day_msk) + 2}`;
-        }
-    });
+    // date_pickup2_day.addEventListener('change', function () {
+    //     // Проверяем, является ли день субботой (6) или воскресеньем (0)
+    //     if (dayOfWeek === 0) {
+    //         this.value = `${year_msk}-${month_msk}-${parseInt(day_msk) + 1}`;
+    //     } else if (dayOfWeek === 6) {
+    //         this.value = `${year_msk}-${month_msk}-${parseInt(day_msk) + 2}`;
+    //     }
+    // });
 
     date_pickup1_day.addEventListener('change', function () {
         const selectedDate = new Date(this.value);
