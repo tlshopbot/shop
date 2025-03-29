@@ -161,11 +161,13 @@ main::-webkit-scrollbar {
     font-weight: 500;
     margin: 9px;
     font-size: 16px;
+    cursor: pointer;
 }
 .cart_add_none_text {
     font-weight: 500;
     margin: 9px;
     font-size: 18px;
+    cursor: pointer;
 }
 
 
@@ -486,6 +488,7 @@ main::-webkit-scrollbar {
     font-size: 16px;
     border-radius: 8px;
     padding: 10px;
+    cursor: pointer;
 }
 .hours {
     margin-top: 10px;
@@ -493,9 +496,14 @@ main::-webkit-scrollbar {
     overflow: scroll;
     scrollbar-width: none; /* Скрыть скроллбар в Firefox */
     -ms-overflow-style: none; /* Скрыть скроллбар в IE и Edge */
+    cursor: pointer; /* Курсор "рука" в обычном состоянии */
+    user-select: none; /* Запрет выделения текста при перетаскивании */
 }
 .hours::-webkit-scrollbar {
     display: none; /* Скрыть скроллбар в Chrome, Safari и Opera */
+}
+.hours:active {
+    cursor: grabbing; /* Курсор "захваченная рука" при перетаскивании */
 }
 .hour {
     margin-right: 5px;
@@ -544,7 +552,6 @@ main::-webkit-scrollbar {
     border: 1px solid #454545;
     padding-left: 16px;
     padding-right: 16px;
-    cursor: pointer;
 }
 .phone::placeholder {
     color: #454545;
@@ -552,7 +559,6 @@ main::-webkit-scrollbar {
 }
 .comment {
     margin-top: 15px;
-    cursor: pointer;
 }
 .comment::placeholder {
     color: #454545;
@@ -670,6 +676,7 @@ main::-webkit-scrollbar {
     text-align: center;
     flex-direction: column;
     font-size: 16px;
+    cursor: pointer;
 }
 .choice_close, .choice_adress_close, .choice_delivery_close {
     margin-top: 28px;
@@ -686,6 +693,7 @@ main::-webkit-scrollbar {
     color: #F6F6F6;
     font-size: 16px;
     margin-bottom: 36px;
+    cursor: pointer;
 }
 .choice_adress>* {
     float: left;
@@ -698,6 +706,7 @@ main::-webkit-scrollbar {
     border: 1px solid #b1b1b1;
     border-radius: 8px;
     margin-bottom: 15px;
+    cursor: pointer;
 }
 .choice_point_name, .choice_time_name {
     color: #750DC5;
@@ -1006,7 +1015,8 @@ nav>p {
 .path, .cart_path, .basket_path, .form_path, .category, .img, .minus, .plus, .basket_product_minus, .basket_product_plus, .delete, .result_but, 
 .basket_product_trash, .method_toggle, .method_pickup_info, .method_courier_info, .phone, .comment, .transfer, .cash, .pay_but, nav, .profile_path, 
 .orders_but, .help_but, .rules_but, .orders_path, .help_path, .rules_path, .promocode_input, .check_promocode, .admin_path, .balance_input, .check_balance, .block_input, .check_block,
-.delete_input, .check_delete {
+.delete_input, .check_delete, .add_none_text, .cart_add_none_text, .choice_adress_pickup, .choice_adress_pickup1, .choice_close, .choice_adress_close, .choice_delivery_close, .hours,
+.day, .choice_pickup, .choice_courier {
     -webkit-tap-highlight-color: transparent; /* Убирает подсветку на iOS/Safari */
     tap-highlight-color: transparent; /* Для некоторых Android-браузеров */
     outline: none; /* Убирает outline при фокусе (необязательно) */
