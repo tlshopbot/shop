@@ -49,7 +49,6 @@ function get_user_key() {
         return user_key_data.json();
     }).then((json_user_key_data) => {
         user_key = json_user_key_data['data']['secret_user_key'];
-        console.log(json_user_key_data);
         user_id = json_user_key_data['data']['id'];
         user_data = json_user_key_data;
     }).then(() => {
@@ -77,13 +76,10 @@ function get_basket() {
     }).then((basket_data) => {
         return basket_data.json();
     }).then((json_basket_data) => {
-        console.log('Корзина:');
-        console.log(json_basket_data['data']);
         basket_list = json_basket_data['data'];
         for (let i = 0; i < basket_list['items'].length; i++) {
             basket_products_list[basket_list['items'][i]['id']] = basket_list['items'][i]['count'];
         };
-        console.log(basket_products_list);
         create_basket(basket_list);
     });
 };
@@ -125,8 +121,6 @@ function add_product(product_id) {
     }).then((add_product_data) => {
         return add_product_data.json();
     }).then((json_add_product_data) => {
-        console.log('Добавлено:');
-        console.log(json_add_product_data);
         get_basket();
     });
 };
@@ -148,8 +142,6 @@ function remove_product(product_id) {
     }).then((remove_product_data) => {
         return remove_product_data.json();
     }).then((json_remove_product_data) => {
-        console.log('Удалено:');
-        console.log(json_remove_product_data);
         get_basket();
     });
 };
@@ -166,7 +158,6 @@ function uppdate_categories() {
 
 
 function create_categories(json_data, category_id) { //создание категорий
-    console.log(json_data);
     if (category_id == 0) {
         let path = document.createElement('section');
         path.classList.add('path');
@@ -568,7 +559,6 @@ function add() { //Манипуляция количеством
                 cart_add_text.textContent = parseInt(cart_add_text.textContent) - 1;
             } else {
                 basket_products_list[product[i].id] += 1;
-                console.log(basket_products_list);
                 add_product(product[i].id);
             };
             if ((parseInt(add_text.textContent) == parseInt(count.textContent.slice(11, -4)))) {
@@ -592,7 +582,6 @@ function add() { //Манипуляция количеством
                 cart_add_text.textContent = parseInt(cart_add_text.textContent) - 1;
             } else {
                 basket_products_list[product[i].id] += 1;
-                console.log(basket_products_list);
                 add_product(product[i].id);
             };
             if ((parseInt(add_text.textContent) == parseInt(count.textContent.slice(11, -4)))) {
@@ -612,7 +601,6 @@ function add() { //Манипуляция количеством
                 cart_add_text.textContent = parseInt(cart_add_text.textContent) - 1;
             } else {
                 basket_products_list[product[i].id] += 1;
-                console.log(basket_products_list);
                 add_product(product[i].id);
             };
             if ((parseInt(add_text.textContent) == parseInt(count.textContent.slice(11, -4)))) {
@@ -632,7 +620,6 @@ function add() { //Манипуляция количеством
                 add_text.textContent = parseInt(add_text.textContent) - 1;
             } else {
                 basket_products_list[product[i].id] += 1;
-                console.log(basket_products_list);
                 add_product(product[i].id);
             };
             if ((parseInt(cart_add_text.textContent) == parseInt(cart_count.textContent.slice(11, -4)))) {
@@ -757,8 +744,6 @@ function delete_product() {
             }).then((delete_product_data) => {
                 return delete_product_data.json();
             }).then((json_delete_product_data) => {
-                console.log('Удалено полностью:');
-                console.log(json_delete_product_data);
                 get_basket();
             });
             product.remove();
@@ -794,9 +779,6 @@ function delete_all_product() {
             body: JSON.stringify(post_delete_all_productData),
         }).then((delete_all_product_data) => {
             return delete_all_product_data.json();
-        }).then((json_delete_all_product_data) => {
-            console.log('Удалено все продукты:');
-            console.log(json_delete_all_product_data);
         });
         let basket_full = document.getElementsByClassName('basket_full')[0];
         let basket_empty = document.getElementsByClassName('basket_empty')[0];
@@ -1119,7 +1101,6 @@ function form_manag() {
         };
     };
     function date_pickup2_manag(hours_msk) {
-        console.log('всё чётко');
         for (let j = 0; j < date_pickup2_hour.length; j++) {
             date_pickup2_hour[j].classList.remove('active_input');
         }
@@ -1668,7 +1649,6 @@ function form_manag() {
             create_order(form_data);
             load();
         };
-        console.log(form_data);
     });
     function pay_check() {
         if (form_data.method == "pickup") {
@@ -1739,8 +1719,6 @@ function create_order() {
     }).then((order_data) => {
         return order_data.json();
     }).then((json_order_data) => {
-        console.log('Создан заказ:');
-        console.log(json_order_data);
         edit_massage(json_order_data);
     });
 }
@@ -1799,8 +1777,6 @@ ${products}
     }).then((edit_massage_data) => {
         return edit_massage_data.json();
     }).then((json_edit_massage_data) => {
-        console.log('Изменено сообщение:');
-        console.log(json_edit_massage_data);
         send_massage(json_order_data);
     });
 };
@@ -1823,8 +1799,6 @@ function send_massage(json_order_data) {
     }).then((send_massage_data) => {
         return send_massage_data.json();
     }).then((json_send_massage_data) => {
-        console.log('Отправленно сообщение:');
-        console.log(json_send_massage_data);
         send_feedback(json_order_data);
     });
 };
@@ -1847,8 +1821,6 @@ function send_feedback(json_order_data) {
     }).then((send_feedback_data) => {
         return send_feedback_data.json();
     }).then((json_send_feedback_data) => {
-        console.log('Отправленно сообщение:');
-        console.log(json_send_feedback_data);
         edit_feedback(json_order_data);
     });
 };
@@ -1873,8 +1845,6 @@ function edit_feedback(json_order_data) {
     }).then((edit_feedback_data) => {
         return edit_feedback_data.json();
     }).then((json_edit_feedback_data) => {
-        console.log('обратная связь изменина:');
-        console.log(json_edit_feedback_data);
         edit_massage_admin(json_order_data)
     });
 };
@@ -1931,8 +1901,6 @@ ${products}
     }).then((edit_massage_data) => {
         return edit_massage_data.json();
     }).then((json_edit_massage_data) => {
-        console.log('Изменено сообщение для админа:');
-        console.log(json_edit_massage_data);
         send_massage_admin1(430798);
     });
 };
@@ -1955,8 +1923,6 @@ function send_massage_admin1(id) {
     }).then((send_massage_data) => {
         return send_massage_data.json();
     }).then((json_send_massage_data) => {
-        console.log('Отправленно сообщение админам:');
-        console.log(json_send_massage_data);
         send_massage_admin2(3278747);
     });
 };
@@ -1978,9 +1944,8 @@ function send_massage_admin2(id) {
     }).then((send_massage_data) => {
         return send_massage_data.json();
     }).then((json_send_massage_data) => {
-        console.log('Отправленно сообщение админам:');
-        console.log(json_send_massage_data);
         window.close();
+        Telegram.WebApp.close();
     });
 };
 
@@ -2025,8 +1990,6 @@ async function create_orders_list() {
 
             const json_orders_data = await response.json();
 
-            console.log('Заказы:');
-            console.log(json_orders_data);
 
             const orders_list = document.getElementsByClassName('orders_list')[0];
 
@@ -2134,7 +2097,6 @@ function promocode_activate(url, value) {
     })
         .then((promocode_data) => promocode_data.json())
         .then((json_promocode_data) => {
-            console.log('Промокод применён:', json_promocode_data);
             return json_promocode_data; // Возвращаем данные
         })
         .catch((error) => {
@@ -2191,8 +2153,6 @@ function admin() {
         }).then((json_get_users_data) => {
             let users = document.getElementsByClassName('users')[0];
             users.innerHTML = 'Пользователи: ' + json_get_users_data['data'];
-            console.log('Пользователи:');
-            console.log(json_get_users_data);
             balance_manag();
             block_manag();
         });
@@ -2210,8 +2170,6 @@ function admin() {
         }).then((json_get_order_count_data) => {
             let orders = document.getElementsByClassName('orders')[0];
             orders.innerHTML = 'Заказы: ' + json_get_order_count_data['data'];
-            console.log('Заказы:');
-            console.log(json_get_order_count_data);
             delete_manag();
         });
     };
@@ -2369,7 +2327,6 @@ function admin_activate(url, value) {
     })
         .then((promocode_data) => promocode_data.json())
         .then((json_promocode_data) => {
-            console.log('Промокод применён:', json_promocode_data);
             return json_promocode_data; // Возвращаем данные
         })
         .catch((error) => {
@@ -2495,8 +2452,6 @@ function create_category(type, title, category_id, description) {
     }).then((data) => {
         return data.json();
     }).then((json_create_category_data) => {
-        console.log(json_create_category_data);
-        // edit_img_category(json_create_category_data['data']['id']);
         bott_auth();
     });
 };
@@ -2515,8 +2470,6 @@ function bott_auth() {
         },
     }).then((data) => {
         return data.json();
-    }).then((json_bott_auth_data) => {
-        console.log(json_bott_auth_data);
     });
 };
 
@@ -2530,12 +2483,11 @@ function edit_img_category(category_id) {
         },
     }).then((data) => {
         return data.json();
-    }).then((json_edit_img_category_data) => {
-        console.log(json_edit_img_category_data);
     });
 };
 
 document.addEventListener('DOMContentLoaded', function () {
+    Telegram.WebApp.expand();
     const postData = {
         bot_id: 251807,
     };
@@ -2546,18 +2498,13 @@ document.addEventListener('DOMContentLoaded', function () {
         headers: myHeaders,
         body: JSON.stringify(postData),
     }).then((data) => {
-        console.log('Telegram.WebApp:', Telegram.WebApp);
-        console.log('initDataUnsafe:', Telegram.WebApp.initDataUnsafe);
         let user = Telegram.WebApp.initDataUnsafe.user;
         if (user) {
-            console.log('User:', user);
             userId = user['id'];
         } else {
             const urlParams = new URLSearchParams(window.location.search);
-            console.log(urlParams);
             userId = urlParams.get('id'); // Получить значение параметра "param1"
         }
-        console.log('User ID:', userId);
         if (userId == '1000597955' || userId == '1035087579') {
             admin_flag = true;
         };
