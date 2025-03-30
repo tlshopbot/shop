@@ -80,9 +80,21 @@ function get_basket() {
         for (let i = 0; i < basket_list['items'].length; i++) {
             basket_products_list[basket_list['items'][i]['id']] = basket_list['items'][i]['count'];
         };
-        create_basket(basket_list);
+        if (basket_list['warnings'][0]) {
+            new Promise(() => {
+                for (let i = 0; i < basket_list['warnings'].length; i++) {
+                    remove_product(basket_list['warnings'][i]['category_id']);
+                }
+            }).then(() => {
+                get_basket();
+            });
+        } else {
+            create_basket(basket_list);
+        };
     });
 };
+
+
 
 
 function get_count() {
