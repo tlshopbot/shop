@@ -422,12 +422,11 @@ main::-webkit-scrollbar {
 
 
 
-.method, .date_pickup1, .date_pickup2, .date_courier, .contact, .promocode {
+.method, .contact, .promocode {
     margin-left: 16px;
     margin-right: 16px;
 }
 .method {
-    margin-top: 10px;
     border: 1px solid #750DC5;
     border-radius: 8px;
 }
@@ -480,8 +479,15 @@ main::-webkit-scrollbar {
 .method_pickup_but_change, .method_pickup_but_add, .method_courier_but_change, .method_courier_but_add, .method_svg {
     stroke: #454545;
 }
+.time {
+    width: calc(100% - 32px);
+    margin-left: 16px;
+    margin-right: 16px;
+}
 .date_pickup1, .date_pickup2, .date_courier {
+    margin-top: 20px;
     margin-right: 0;
+    width: 100%;
 }
 .day {
     border: 1px solid #000000;
@@ -520,16 +526,13 @@ main::-webkit-scrollbar {
 .hour:last-child {
     margin-right: 0;
 }
-.hours:last-child {
-    margin-right: 16px;
-}
-.contact, .promocode, .user_balance, .user_block, .order_delete {
+.contact, .promocode, .user_balance, .user_block, .order_delete, .time {
     margin-top: 41.5px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.contact_name, .promocode_name, .balance_name, .block_name, .delete_name {
+.contact_name, .promocode_name, .balance_name, .block_name, .delete_name, .time_name {
     font-size: 18px;
 }
 .form_phone {
