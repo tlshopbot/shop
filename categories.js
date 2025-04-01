@@ -992,6 +992,7 @@ function form_manag() {
     let adress_pickup;
     let adress_courier;
     let form_back = document.getElementsByClassName('form_back')[0];
+    let time = document.getElementsByClassName('time')[0];
     let date_pickup1 = document.getElementsByClassName('date_pickup1')[0];
     let date_pickup2 = document.getElementsByClassName('date_pickup2')[0];
     let date_courier = document.getElementsByClassName('date_courier')[0];
@@ -1204,23 +1205,23 @@ function form_manag() {
     function getNextDays(year, month, day, daysToAdd) {
         const date = new Date(year, month - 1, day); // month - 1, так как в JS месяцы 0-11
         date.setDate(date.getDate() + daysToAdd);
-        
+
         return {
             year: date.getFullYear(),
             month: String(date.getMonth() + 1).padStart(2, '0'), // +1 и форматирование до 2 цифр
             day: String(date.getDate()).padStart(2, '0')
         };
     }
-    
+
     function date_pickup1_hour_num_manag() {
         const lastHour = parseInt(date_pickup1_hour[date_pickup1_hour.length - 1].textContent.split(":")[0]);
         const isTodayAvailable = lastHour - hours_msk > 0;
-        
+
         if (isTodayAvailable) {
             date_pickup1_manag(hours_msk);
             const nextDay = getNextDays(year_msk, month_msk, day_msk, 0);
             const maxDay = getNextDays(year_msk, month_msk, day_msk, 2);
-            
+
             date_pickup1_day.value = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
             date_pickup1_day.min = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
             date_pickup1_day.max = `${maxDay.year}-${maxDay.month}-${maxDay.day}`;
@@ -1228,22 +1229,22 @@ function form_manag() {
             date_pickup1_manag(0);
             const nextDay = getNextDays(year_msk, month_msk, day_msk, 1);
             const maxDay = getNextDays(year_msk, month_msk, day_msk, 3);
-            
+
             date_pickup1_day.value = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
             date_pickup1_day.min = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
             date_pickup1_day.max = `${maxDay.year}-${maxDay.month}-${maxDay.day}`;
         }
     }
-    
+
     function date_pickup2_hour_num_manag() {
         const lastHour = parseInt(date_pickup2_hour[date_pickup2_hour.length - 1].textContent.split(":")[0]);
         const isTodayAvailable = lastHour - hours_msk > 0;
-        
+
         if (isTodayAvailable && ![0, 6].includes(dayOfWeek)) {
             date_pickup2_manag(hours_msk);
             const nextDay = getNextDays(year_msk, month_msk, day_msk, 0);
             const maxDay = getNextDays(year_msk, month_msk, day_msk, 2);
-            
+
             date_pickup2_day.value = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
             date_pickup2_day.min = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
             date_pickup2_day.max = `${maxDay.year}-${maxDay.month}-${maxDay.day}`;
@@ -1251,14 +1252,14 @@ function form_manag() {
             date_pickup2_manag(0);
             const nextDay = getNextDays(year_msk, month_msk, day_msk, 1);
             const maxDay = getNextDays(year_msk, month_msk, day_msk, 3);
-            
+
             date_pickup2_day.value = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
             date_pickup2_day.min = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
             date_pickup2_day.max = `${maxDay.year}-${maxDay.month}-${maxDay.day}`;
         } else if (dayOfWeek === 6) {
             date_pickup2_manag(0);
             const nextDay = getNextDays(year_msk, month_msk, day_msk, 2);
-            
+
             date_pickup2_day.value = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
             date_pickup2_day.min = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
             date_pickup2_day.max = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
@@ -1266,22 +1267,22 @@ function form_manag() {
             date_pickup2_manag(0);
             const nextDay = getNextDays(year_msk, month_msk, day_msk, 1);
             const maxDay = getNextDays(year_msk, month_msk, day_msk, 2);
-            
+
             date_pickup2_day.value = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
             date_pickup2_day.min = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
             date_pickup2_day.max = `${maxDay.year}-${maxDay.month}-${maxDay.day}`;
         }
     }
-    
+
     function date_courier_hour_num_manag() {
         const lastHour = parseInt(date_courier_hour[date_courier_hour.length - 1].textContent.split(":")[0]);
         const isTodayAvailable = lastHour - hours_msk > 0;
-        
+
         if (isTodayAvailable) {
             date_courier_manag(hours_msk);
             const nextDay = getNextDays(year_msk, month_msk, day_msk, 0);
             const maxDay = getNextDays(year_msk, month_msk, day_msk, 2);
-            
+
             date_courier_day.value = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
             date_courier_day.min = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
             date_courier_day.max = `${maxDay.year}-${maxDay.month}-${maxDay.day}`;
@@ -1289,7 +1290,7 @@ function form_manag() {
             date_courier_manag(0);
             const nextDay = getNextDays(year_msk, month_msk, day_msk, 1);
             const maxDay = getNextDays(year_msk, month_msk, day_msk, 3);
-            
+
             date_courier_day.value = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
             date_courier_day.min = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
             date_courier_day.max = `${maxDay.year}-${maxDay.month}-${maxDay.day}`;
@@ -1396,8 +1397,10 @@ function form_manag() {
             date_courier.classList.add('hide');
             if (adress_pickup == choice_adress_pickup.getElementsByClassName('choice_point')[0].textContent) {
                 date_pickup1.classList.remove('hide');
+                time.classList.remove('hide');
             } else if (adress_pickup == choice_adress_pickup1.getElementsByClassName('choice_point')[0].textContent) {
                 date_pickup2.classList.remove('hide');
+                time.classList.remove('hide');
             };
             pay_text_sum.textContent = basket_list['sum_full'];
         } else if (delivery == 'courier') {
@@ -1407,8 +1410,10 @@ function form_manag() {
             method_courier_info.classList.remove('hide');
             date_pickup2.classList.add('hide');
             date_pickup1.classList.add('hide');
+            time.classList.add('hide');
             if (adress_courier) {
                 date_courier.classList.remove('hide');
+                time.classList.remove('hide');
             };
             if (parseInt(basket_list['sum_full'].slice(0, -2)) < 1000) {
                 pay_text_sum.textContent = parseInt(basket_list['sum_full'].slice(0, -2)) + 150 + ' ₽';
@@ -1458,11 +1463,13 @@ function form_manag() {
             date_courier.classList.add('hide');
             date_pickup2.classList.remove('hide');
             date_pickup1.classList.add('hide');
+            time.classList.remove('hide');
             date_pickup2_hour_num_manag();
         } else if (adress_pickup == choice_adress_pickup.getElementsByClassName('choice_point')[0].textContent) {
             date_courier.classList.add('hide');
             date_pickup2.classList.add('hide');
             date_pickup1.classList.remove('hide');
+            time.classList.remove('hide');
             date_pickup1_hour_num_manag();
         };
         pay_check();
@@ -1505,6 +1512,7 @@ function form_manag() {
             date_courier.classList.remove('hide');
             date_pickup2.classList.add('hide');
             date_pickup1.classList.add('hide');
+            time.classList.remove('hide');
             date_courier_hour_num_manag();
         } else {
             delivery_adress.classList.add('incorrect');
@@ -1747,9 +1755,12 @@ function edit_massage(json_order_data) {
             products += '\n'
         }
     };
-    if (form_data.method == 'courier' && parseInt(json_order_data['data']['price'].slice(0, -2)) < 1000) {
-        price = parseInt(json_order_data['data']['price'].slice(0, -2)) + 150 + ' ₽';
+    if (form_data.method == 'courier' && parseInt(json_order_data['data']['price'].split(" ").join("").slice(0, -1)) < 1000) {
+        price = parseInt(json_order_data['data']['price'].split(" ").join("").slice(0, -1)) + 150 + ' ₽';
     };
+    
+    console.log(json_order_data['data']['price']);
+
     if (form_data.method == 'courier') {
         method = 'Курьер';
         adress = form_data.adressCourier;
@@ -1873,8 +1884,8 @@ function edit_massage_admin(json_order_data) {
             products += '\n'
         }
     };
-    if (form_data.method == 'courier' && parseInt(json_order_data['data']['price'].slice(0, -2)) < 1000) {
-        price = parseInt(json_order_data['data']['price'].slice(0, -2)) + 150 + ' ₽';
+    if (form_data.method == 'courier' && parseInt(json_order_data['data']['price'].split(" ").join("").slice(0, -1)) < 1000) {
+        price = parseInt(json_order_data['data']['price'].split(" ").join("").slice(0, -1)) + 150 + ' ₽';
     };
     if (form_data.method == 'courier') {
         method = 'Курьер';
@@ -2523,6 +2534,28 @@ document.addEventListener('DOMContentLoaded', function () {
         return data.json();
     }).then((json_data) => {
         json_data = json_data['data'];
+        if (admin_flag) {
+            console.log(json_data);
+            let product_list = '';
+            let product_list_price = 0;
+            for (let i = 0; i < json_data.length; i++) {
+                if (json_data[i]['is_hide'] == false && json_data[i]['is_view'] == true) {
+                    product_list = product_list + '➖' + json_data[i]['design']['title'] + '➖' + '\n';
+                    for (let j = 0; j < json_data[i]['children'].length; j++) {
+                        if (json_data[i]['children'][j]['is_hide'] == false && json_data[i]['children'][j]['is_view'] == true) {
+                            product_list = product_list + '  ➖' + json_data[i]['children'][j]['design']['title'] + '➖' + '\n';
+                            for (let k = 0; k < json_data[i]['children'][j]['children'].length; k++) {
+                                if (json_data[i]['children'][j]['children'][k]['is_hide'] == false && json_data[i]['children'][j]['children'][k]['is_view'] == true) {
+                                    product_list_price += (json_data[i]['children'][j]['children'][k]['price']['full']).slice(0, -2);
+                                    product_list = product_list + '    ' + json_data[i]['children'][j]['children'][k]['design']['title'] + '\n';
+                                };
+                            };
+                        };
+                    };
+                };
+            };
+            console.log(product_list);
+        };
         common_json_data = json_data;
         create_categories(json_data, 0);
         get_user_key();
