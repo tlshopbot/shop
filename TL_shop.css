@@ -8,9 +8,10 @@ ul, li {
 }
 body {
     font-family: "Roboto", sans-serif;
-    color: #0C0C0C;
+    color: #0c0c0c;
     font-weight: 400;
     font-style: normal;
+    background-color: #ffffff;
 }
 main {
     height: calc(100vh - 60px);
@@ -101,6 +102,19 @@ main::-webkit-scrollbar {
     line-height: 20px;
     margin-top: 12px;
 }
+.manage_category {
+    margin-top: 24px;
+    display: flex;
+}
+.manage_product{
+    display: flex;
+    position: absolute;
+    left: 137px;
+    bottom: 11px;
+}
+.remove_category_svg {
+    fill: #d92550;
+}
 .price_info {
     margin-top: 20px;
     display: flex;
@@ -128,7 +142,7 @@ main::-webkit-scrollbar {
     border-radius: 4px;
     min-width: 110px;
 }
-.add_category_plus, .upload_img {
+.add_category_plus, .upload_img, .upload_img_change {
     display: flex;
     align-items: center;
     border: 2px solid #750DC5;
@@ -190,24 +204,24 @@ main::-webkit-scrollbar {
 .cart_product {
     height: calc(100% - 80px);
 }
-.cart_info {
+.cart_info, .cart_info_change {
     margin-left: 16px;
     margin-right: 16px;
 }
 .cart_container {
     position: relative;
 }
-.cart_img, .cart_img_none, .cart_adm_img {
+.cart_img, .cart_img_none, .cart_adm_img, .cart_img_change, .cart_img_none_change {
     width: calc(100vw - 32px);
     height: calc(100vw - 32px);
 }
-.upload_img {
+.upload_img, .upload_img_change {
     position: absolute;
     right: 0px;
     bottom: 16px;
     background-color: #ffffff;
 }
-#fileInput {
+#fileInput, .fileInput_change {
     display: none;
 }
 .type_toggle {
@@ -226,7 +240,7 @@ main::-webkit-scrollbar {
     padding-bottom: 10px;
     width: 49%;
 }
-.cart_name, .cart_name_input {
+.cart_name, .cart_name_input, .cart_name_input_change {
     margin-top: 28px;
     font-size: 20px;
 }
@@ -234,13 +248,13 @@ main::-webkit-scrollbar {
     margin-top: 24px;
     font-size: 16px;
 }
-.cart_discript, .cart_discript_input {
+.cart_discript, .cart_discript_input, .cart_discript_input_change {
     margin-top: 20px;
     font-size: 14px;
     font-weight: 300;
     color: #454545;
 }
-.cart_name_input, .cart_discript_input, .cart_count_input, .cart_price_input {
+.cart_name_input, .cart_discript_input, .cart_count_input, .cart_price_input, .cart_name_input_change, .cart_discript_input_change, .cart_count_input_change, .cart_price_input_change {
     border: 1px solid #505050;
     border-radius: 8px;
     padding: 5px;
@@ -526,19 +540,19 @@ main::-webkit-scrollbar {
 .hour:last-child {
     margin-right: 0;
 }
-.contact, .promocode, .user_balance, .user_block, .order_delete, .time {
+.contact, .promocode, .user_balance, .user_block, .order_complete, .order_delete, .time {
     margin-top: 41.5px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.contact_name, .promocode_name, .balance_name, .block_name, .delete_name, .time_name {
+.contact_name, .promocode_name, .balance_name, .block_name, .complete_name, .delete_name, .time_name {
     font-size: 18px;
 }
 .form_phone {
     width: 100%;
 }
-.phone, .comment, .promocode_input, .balance_input, .block_input, .delete_input {
+.phone, .comment, .promocode_input, .balance_input, .block_input, .complete_input, .delete_input {
     box-sizing: border-box;
     margin-top: 20px;
     border: 1px solid #454545;
@@ -618,7 +632,7 @@ main::-webkit-scrollbar {
     font-size: 18px;
     font-weight: 500;
 }
-.pay_but, .check_promocode, .check_block, .check_balance, .check_delete, .save_category {
+.pay_but, .check_promocode, .check_block, .check_balance, .check_complete, .check_delete, .save_category, .save_category_change {
     margin-top: 20px;
     width: calc(100% - 108px);
     min-width: 80px;
@@ -633,7 +647,7 @@ main::-webkit-scrollbar {
     margin-left: 5px;
     cursor: pointer;
 }
-.pay_but_text, .check_promocode_text, .check_balance_text, .check_block_text, .check_delete_text, .check_promocode_text, .save_category_text {
+.pay_but_text, .check_promocode_text, .check_balance_text, .check_block_text, .check_complete_text, .check_delete_text, .check_promocode_text, .save_category_text {
     font-size: 16px;
     color: #F6F6F6;
     font-weight: 500;
@@ -956,7 +970,7 @@ nav>p {
 }
 
 
-.loading {
+.loading, .loading_cart, .loading_cart_change {
     width: 100%;
     height: 100%;
     display: flex;
@@ -1015,13 +1029,19 @@ nav>p {
 .incorrect_svg {
     stroke: #FF0000;
 }
+.not_view {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.5);
+    pointer-events: none;
+}
 .path, .cart_path, .basket_path, .form_path, .category, .img, .minus, .plus, .basket_product_minus, .basket_product_plus, .delete, .result_but, 
 .basket_product_trash, .method_toggle, .method_pickup_info, .method_courier_info, .phone, .comment, .transfer, .cash, .pay_but, nav, .profile_path, 
 .orders_but, .help_but, .rules_but, .orders_path, .help_path, .rules_path, .promocode_input, .check_promocode, .admin_path, .balance_input, .check_balance, .block_input, .check_block,
 .delete_input, .check_delete, .add_none_text, .cart_add_none_text, .choice_adress_pickup, .choice_adress_pickup1, .choice_close, .choice_adress_close, .choice_delivery_close, .hours,
 .day, .choice_pickup, .choice_courier {
     -webkit-tap-highlight-color: transparent; /* Убирает подсветку на iOS/Safari */
-    tap-highlight-color: transparent; /* Для некоторых Android-браузеров */
     outline: none; /* Убирает outline при фокусе (необязательно) */
     user-select: none; /* Отключает выделение текста при тапе (опционально) */
 }
