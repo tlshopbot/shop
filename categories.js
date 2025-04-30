@@ -1575,15 +1575,15 @@ function form_manag() {
     choice_adress_pickup.addEventListener('click', () => {
         adress_pickup = choice_adress_pickup.getElementsByClassName('choice_point')[0].textContent;
         form_data.adressPickup = choice_adress_pickup.getElementsByClassName('choice_point')[0].textContent;
-        // choice_adress_pickup1.classList.remove('choiced');    изменить
+        choice_adress_pickup1.classList.remove('choiced');
         choice_adress_pickup.classList.add('choiced');
     });
-    // choice_adress_pickup1.addEventListener('click', () => {     изменить
-    //     adress_pickup = choice_adress_pickup1.getElementsByClassName('choice_point')[0].textContent;
-    //     form_data.adressPickup = choice_adress_pickup1.getElementsByClassName('choice_point')[0].textContent;
-    //     choice_adress_pickup1.classList.add('choiced');
-    //     choice_adress_pickup.classList.remove('choiced');
-    // });
+    choice_adress_pickup1.addEventListener('click', () => {
+        adress_pickup = choice_adress_pickup1.getElementsByClassName('choice_point')[0].textContent;
+        form_data.adressPickup = choice_adress_pickup1.getElementsByClassName('choice_point')[0].textContent;
+        choice_adress_pickup1.classList.add('choiced');
+        choice_adress_pickup.classList.remove('choiced');
+    });
     choice_adress_close.addEventListener('click', () => {
         method_pickup_but_change.classList.add('hide');
         method_pickup_but_add.classList.remove('hide');
@@ -1598,14 +1598,13 @@ function form_manag() {
             pay_check();
             pickup_address.textContent = adress_pickup;
         };
-        // if (adress_pickup == choice_adress_pickup1.getElementsByClassName('choice_point')[0].textContent) {   изменить
-        //     date_courier.classList.add('hide');
-        //     date_pickup2.classList.remove('hide');
-        //     date_pickup1.classList.add('hide');
-        //     time.classList.remove('hide');
-        //     date_pickup2_hour_num_manag();
-        // } else 
-        if (adress_pickup == choice_adress_pickup.getElementsByClassName('choice_point')[0].textContent) {
+        if (adress_pickup == choice_adress_pickup1.getElementsByClassName('choice_point')[0].textContent) {
+            date_courier.classList.add('hide');
+            date_pickup2.classList.remove('hide');
+            date_pickup1.classList.add('hide');
+            time.classList.remove('hide');
+            date_pickup2_hour_num_manag();
+        } else if (adress_pickup == choice_adress_pickup.getElementsByClassName('choice_point')[0].textContent) {
             date_courier.classList.add('hide');
             date_pickup2.classList.add('hide');
             date_pickup1.classList.remove('hide');
