@@ -33,15 +33,40 @@ let form_data = {
 let admin_flag = false;
 
 
+// async function get_user_key() {
+//     try {
+//         const response = await fetch('https://tl-shop.click/api/get-user-key', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({
+//                 bot_id: 0,
+//                 telegram_id: parseInt(userId)
+//             }),
+//         });
+
+//         const data = await response.json();
+
+//         if (data.success) {
+//             console.log(data);
+//         } else {
+//             console.log(data.error)
+//         }
+//     } catch (error) {
+//         console.error('Error:', error);
+//     }
+// };
+
 
 function get_user_key() {
     const post_user_keyData = {
-        bot_id: bot_id,
+        bot_id: 0,
         telegram_id: userId
     };
     let my_user_keyHeaders = new Headers();
     my_user_keyHeaders.append('Content-Type', 'application/json');
-    fetch('https://api.bot-t.com/v1/bot/user/view-by-telegram-id?token=7723075467:AAEHIRezunqN-fb__mqG4akqIHGZd3r9X5g', {
+    fetch('https://tl-shop.click/api/get-user-key', {
         method: 'POST',
         headers: my_user_keyHeaders,
         body: JSON.stringify(post_user_keyData),
@@ -159,7 +184,6 @@ function remove_product(product_id) {
 };
 
 
-
 function uppdate_categories() {
     let category_list = document.getElementsByClassName('category_list')[0];
     let path = document.getElementsByClassName('path')[0];
@@ -170,6 +194,7 @@ function uppdate_categories() {
 
 
 function create_categories(json_data, category_id) { //создание категорий
+    let catalog = document.getElementById('catalog');
     if (category_id == 0) {
         let path = document.createElement('section');
         path.classList.add('path');
@@ -200,9 +225,15 @@ function create_categories(json_data, category_id) { //создание кате
     catalog.append(category_list);
     for (let i = 0; i < json_data.length; i++) { //цикл основных категорий
         let hide = false;
+        let view = '';
+        let hide_eye = 'hide';
+        let show_eye = '';
         if (admin_flag) {
-            if ((json_data[i]['is_hide'] == true) || (json_data[i]['is_hide'] == false && json_data[i]['is_view'] == true)) {
-                hide = true;
+            hide = true;
+            if (json_data[i]['is_hide'] == true && json_data[i]['is_view'] == false) {
+                view = `<div class="not_view"></div>`;
+                show_eye = 'hide';
+                hide_eye = '';
             }
         } else if (json_data[i]['is_hide'] == false && json_data[i]['is_view'] == true) {
             hide = true;
@@ -212,7 +243,34 @@ function create_categories(json_data, category_id) { //создание кате
             if (json_data[i]['typeObg']['id'] == '0') { //если категория
                 let category = document.createElement('article');
                 category_list.append(category);
-                category.outerHTML = `<article class="category" id="${json_data[i]['id']}">
+                if (admin_flag) {
+                    category.outerHTML = `<article class="category" id="${json_data[i]['id']}">
+                        <div class="container">
+                            <img src="${json_data[i]['design']['image']}" class="img" loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false" style="object-fit: contain; object-position: 50% 50%;"></img>
+                        </div>
+                        <div class="info">
+                            <p class="name">${json_data[i]['design']['title']}</p>
+                            <p class="discript">${discript}</p>
+                            <div class="manage_category">
+                                <svg class="remove_category_svg" width="25" height="25" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M8.9375 28C8.21563 28 7.59744 27.7387 7.08294 27.216C6.56844 26.6933 6.31163 26.0658 6.3125 25.3333V8H6C5.44772 8 5 7.55228 5 7C5 6.44772 5.44772 6 6 6H11.5625V5C11.5625 4.44772 12.0102 4 12.5625 4H18.4375C18.9898 4 19.4375 4.44772 19.4375 5V6H25C25.5523 6 26 6.44772 26 7C26 7.55228 25.5523 8 25 8H24.6875V25.3333C24.6875 26.0667 24.4303 26.6947 23.9158 27.2173C23.4013 27.74 22.7835 28.0009 22.0625 28H8.9375ZM22.7158 8H8.5V26L22.7158 26V8ZM12 21.6667C12 22.219 12.4477 22.6667 13 22.6667C13.5523 22.6667 14 22.219 14 21.6667V11.6667C14 11.1144 13.5523 10.6667 13 10.6667C12.4477 10.6667 12 11.1144 12 11.6667V21.6667ZM17 21.6667C17 22.219 17.4477 22.6667 18 22.6667C18.5523 22.6667 19 22.219 19 21.6667V11.6667C19 11.1144 18.5523 10.6667 18 10.6667C17.4477 10.6667 17 11.1144 17 11.6667V21.6667Z"></path>
+                                </svg>
+                                <svg class="show_category_svg ${show_eye}" width="25" height="25" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M20.0009 16C20.0009 18.2092 18.2101 20 16.0009 20C13.7919 20 12.001 18.2092 12.001 16C12.001 13.7908 13.7919 12 16.0009 12C18.2101 12 20.0009 13.7908 20.0009 16Z" stroke="black" stroke-width="2.66667" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M16.0016 6.66663C10.0314 6.66663 4.97773 10.5905 3.27869 16C4.9777 21.4094 10.0314 25.3333 16.0016 25.3333C21.9718 25.3333 27.0255 21.4094 28.7246 16C27.0255 10.5905 21.9718 6.66663 16.0016 6.66663Z" stroke="black" stroke-width="2.66667" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <svg class="hide_category_svg ${hide_eye}" width="25" height="25" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3.99865 4L27.9986 28M13.1244 13.2182C12.4275 13.9381 11.9987 14.9189 11.9987 16C11.9987 18.2092 13.7896 20 15.9986 20C17.0953 20 18.0889 19.5587 18.8114 18.844M8.66532 8.86287C6.13292 10.5338 4.20403 13.0453 3.276 16C4.975 21.4095 10.0287 25.3333 15.9989 25.3333C18.6508 25.3333 21.1218 24.5592 23.1984 23.2245M14.6653 6.73252C15.104 6.68897 15.5489 6.66667 15.9989 6.66667C21.9692 6.66667 27.0229 10.5905 28.7218 16C28.3476 17.192 27.8102 18.3117 27.1362 19.3333" stroke="black" stroke-width="2.66667" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <svg class="duplicate_category_svg" width="25" height="25" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M25.12 8.53565V23.963C25.1191 24.169 25.0368 24.3662 24.891 24.5116C24.7452 24.6571 24.5478 24.739 24.3419 24.7394H21.856V27.227C21.8556 27.4333 21.7734 27.6309 21.6276 27.7767C21.4818 27.9226 21.2841 28.0047 21.0779 28.0051H7.65811C7.45188 28.0047 7.25422 27.9226 7.1084 27.7767C6.96257 27.6309 6.88045 27.4333 6.88 27.227V8.3807C6.88045 8.17447 6.96257 7.97682 7.1084 7.83099C7.25422 7.68516 7.45188 7.60304 7.65811 7.6026H10.144V5.11502C10.1444 4.90879 10.2266 4.71113 10.3724 4.56531C10.5182 4.41948 10.7159 4.33736 10.9221 4.33691H20.9213L25.12 8.53565ZM19.9899 13.2615H17.0577C16.8226 13.2607 16.5973 13.1669 16.4311 13.0006C16.2648 12.8343 16.171 12.6091 16.1701 12.374V9.4687H8.74611V26.1373H19.9916L19.9899 13.2615ZM12.0118 6.2047V7.6026H17.6573L19.5015 9.44681C19.4569 9.3401 19.434 9.2256 19.4341 9.10997V6.2047H12.0118ZM21.856 11.8013V22.8733H23.2539V9.99755H20.3234C20.2077 9.99768 20.0932 9.97478 19.9865 9.93018L21.856 11.8013Z" fill="black"/>
+                                </svg>
+                            </div>
+                        </div>
+                        ${view}
+                    </article>`;
+                } else {
+                    category.outerHTML = `<article class="category" id="${json_data[i]['id']}">
                         <div class="container">
                             <img src="${json_data[i]['design']['image']}" class="img" loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false" style="object-fit: contain; object-position: 50% 50%;"></img>
                         </div>
@@ -221,10 +279,20 @@ function create_categories(json_data, category_id) { //создание кате
                             <p class="discript">${discript}</p>
                         </div>
                     </article>`;
+                }
                 let cart_category = document.createElement('article');
                 cart.append(cart_category);
-                if (false) {
+                if (admin_flag) {
+                    let img_flag = 'hide';
+                    let svg_flag = '';
+                    if (json_data[i]['design']['image']) {
+                        img_flag = '';
+                        svg_flag = 'hide';
+                    }
                     cart_category.outerHTML = `<article class="cart_category hide" id="cart_${json_data[i]['id']}">
+                        <div class="loading_cart_change hide">
+                            <div class="spinner"></div>
+                        </div>
                         <div class="cart_path">
                             <svg class="cart_back" width="10" height="19" viewBox="0 0 10 19" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -233,20 +301,25 @@ function create_categories(json_data, category_id) { //создание кате
                             </svg>
                             <p class="cart_path_name">Карточка категории</p>
                         </div>
-                        <div class="cart_info">
+                        <div class="cart_info_change" id="category_${json_data[i]['id']}">
                             <div class="cart_container">
-                                <img src="${json_data[i]['design']['image']}" class="cart_img_change" loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false" style="object-fit: contain; object-position: 50% 50%;"></img>
-                                <label for="fileInput" class="upload_img_change">
-                                    <svg class="add_category_svg_change" width="28" height="28" viewBox="0 0 14 14" fill="none"
+                                <svg class="cart_img_none_change ${svg_flag}" width="1629" height="1629" viewBox="0 0 1629 1629" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M773.667 0.466655C742.067 2.73332 726.867 4.19999 709.4 6.46666C531.133 29.4 366.467 110.467 238.467 238.467C118.467 358.467 38.5999 512.733 11.1333 677.667C2.73328 728.333 0.466614 757.8 0.466614 814.333C0.466614 860.467 1.39995 878.733 5.79995 914.333C28.0666 1094.73 109.267 1261.13 238.467 1390.2C362.867 1514.6 523.267 1595.4 695.133 1620.33C740.867 1626.87 761 1628.2 814.333 1628.2C867.667 1628.2 887.8 1626.87 933.533 1620.33C1149 1589.13 1344.6 1470.33 1474.33 1291.67C1547.53 1191 1597.27 1072.47 1617.53 951C1625.93 900.333 1628.2 870.867 1628.2 814.333C1628.2 768.2 1627.27 749.933 1622.87 714.333C1600.6 533.933 1519.4 367.533 1390.2 238.467C1264.73 112.867 1103.4 32.2 929 7.66666C891.667 2.46666 868.867 0.866655 824.333 0.466655C800.2 0.199988 777.4 0.199988 773.667 0.466655ZM878.333 116.333C1043.13 131.8 1193 202.2 1309.67 319C1461 470.2 1534.47 679.8 1510.87 892.333C1495.27 1033 1437 1166.07 1343.8 1273.4L1332.33 1286.6L1327 1280.73C1324.07 1277.53 1197.67 1142.07 1046.2 979.667C894.733 817.267 682.867 589.933 575.267 474.6L379.667 264.733L386.733 259.133C407.267 242.6 445.267 217.667 476.333 200.333C567.933 149.267 677.4 118.467 785 113.8C805 113 857 114.333 878.333 116.333ZM482.333 541.667C578.067 644.333 789.667 871.267 952.6 1046.07L1249 1363.93L1241.93 1369.53C1211.67 1393.93 1156.73 1427.93 1117 1446.73C1040.33 1483 963.667 1504.07 877 1512.47C828.867 1517.13 761 1515.13 710.333 1507.53C561 1484.87 425.933 1416.6 319 1309.67C167.667 1158.47 94.2 948.867 117.8 736.333C133.4 595.667 191.667 462.6 284.867 355.267L296.333 342.067L302.333 348.6C305.667 352.2 386.6 439.133 482.333 541.667Z" fill="#505050"/>
+                                </svg>
+                                <img src="${json_data[i]['design']['image']}" class="cart_img_change ${img_flag}" loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false" style="object-fit: contain; object-position: 50% 50%;"></img>
+                                <label for="fileInput_${json_data[i]['id']}" class="upload_img_change">
+                                    <svg class="add_category_svg" width="28" height="28" viewBox="0 0 14 14" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path d="M7 1V13" stroke-width="2" stroke-linecap="round" />
                                         <path d="M1 7H13" stroke-width="2" stroke-linecap="round" />
                                     </svg>
                                 </label>
                             </div>
-                            <input type="file" class="fileInput_change" id="fileInput" accept="image/*" required>
+                            <input type="file" class="fileInput_change" id="fileInput_${json_data[i]['id']}" accept="image/*" required>
                             <input class="cart_name_input_change" type="text" value="${json_data[i]['design']['title']}" placeholder="Название" />
                             <textarea class="cart_discript_input_change" type="text" placeholder="Описание" rows="4">${json_data[i]['design']['description']}</textarea>
+                            <input class="cart_count_input_change hide" type="text" value="${json_data[i]['setting']['count']}" placeholder="Количество" />
+                            <input class="cart_price_input_change hide" type="text" value="${json_data[i]['price']['full'].slice(0, -2)}" placeholder="Цена" />
                         </div>
                         <div class="save_category_change disactive_but">
                             <p class="save_category_text">Сохранить</p>
@@ -284,7 +357,53 @@ function create_categories(json_data, category_id) { //создание кате
                 };
                 let product = document.createElement('product');
                 category_list.append(product);
-                product.outerHTML = `<article class="product" id="${json_data[i]['id']}">
+                if (admin_flag) {
+                    product.outerHTML = `<article class="product" id="${json_data[i]['id']}">
+                    <div class="container">
+                        <img src="${json_data[i]['design']['image']}" class="img" loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false" style="object-fit: contain; object-position: 50% 50%;"></img>
+                    </div>
+                    <div class="info">
+                        <p class="name">${json_data[i]['design']['title']}</p>
+
+                        <div class="discript">${discript}</div>
+                        <div class="price_info">
+                            <p class="count">В наличии: ${json_data[i]['setting']['count']} шт.</p>
+                            <p class="price">${json_data[i]['price']['full']}</p>
+                        </div>
+                        <div class="manage_product">
+                            <svg class="remove_category_svg" width="25" height="25" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.9375 28C8.21563 28 7.59744 27.7387 7.08294 27.216C6.56844 26.6933 6.31163 26.0658 6.3125 25.3333V8H6C5.44772 8 5 7.55228 5 7C5 6.44772 5.44772 6 6 6H11.5625V5C11.5625 4.44772 12.0102 4 12.5625 4H18.4375C18.9898 4 19.4375 4.44772 19.4375 5V6H25C25.5523 6 26 6.44772 26 7C26 7.55228 25.5523 8 25 8H24.6875V25.3333C24.6875 26.0667 24.4303 26.6947 23.9158 27.2173C23.4013 27.74 22.7835 28.0009 22.0625 28H8.9375ZM22.7158 8H8.5V26L22.7158 26V8ZM12 21.6667C12 22.219 12.4477 22.6667 13 22.6667C13.5523 22.6667 14 22.219 14 21.6667V11.6667C14 11.1144 13.5523 10.6667 13 10.6667C12.4477 10.6667 12 11.1144 12 11.6667V21.6667ZM17 21.6667C17 22.219 17.4477 22.6667 18 22.6667C18.5523 22.6667 19 22.219 19 21.6667V11.6667C19 11.1144 18.5523 10.6667 18 10.6667C17.4477 10.6667 17 11.1144 17 11.6667V21.6667Z"></path>
+                            </svg>
+                            <svg class="show_category_svg ${show_eye}" width="25" height="25" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20.0009 16C20.0009 18.2092 18.2101 20 16.0009 20C13.7919 20 12.001 18.2092 12.001 16C12.001 13.7908 13.7919 12 16.0009 12C18.2101 12 20.0009 13.7908 20.0009 16Z" stroke="black" stroke-width="2.66667" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M16.0016 6.66663C10.0314 6.66663 4.97773 10.5905 3.27869 16C4.9777 21.4094 10.0314 25.3333 16.0016 25.3333C21.9718 25.3333 27.0255 21.4094 28.7246 16C27.0255 10.5905 21.9718 6.66663 16.0016 6.66663Z" stroke="black" stroke-width="2.66667" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <svg class="hide_category_svg ${hide_eye}" width="25" height="25" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3.99865 4L27.9986 28M13.1244 13.2182C12.4275 13.9381 11.9987 14.9189 11.9987 16C11.9987 18.2092 13.7896 20 15.9986 20C17.0953 20 18.0889 19.5587 18.8114 18.844M8.66532 8.86287C6.13292 10.5338 4.20403 13.0453 3.276 16C4.975 21.4095 10.0287 25.3333 15.9989 25.3333C18.6508 25.3333 21.1218 24.5592 23.1984 23.2245M14.6653 6.73252C15.104 6.68897 15.5489 6.66667 15.9989 6.66667C21.9692 6.66667 27.0229 10.5905 28.7218 16C28.3476 17.192 27.8102 18.3117 27.1362 19.3333" stroke="black" stroke-width="2.66667" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <svg class="duplicate_category_svg" width="25" height="25" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M25.12 8.53565V23.963C25.1191 24.169 25.0368 24.3662 24.891 24.5116C24.7452 24.6571 24.5478 24.739 24.3419 24.7394H21.856V27.227C21.8556 27.4333 21.7734 27.6309 21.6276 27.7767C21.4818 27.9226 21.2841 28.0047 21.0779 28.0051H7.65811C7.45188 28.0047 7.25422 27.9226 7.1084 27.7767C6.96257 27.6309 6.88045 27.4333 6.88 27.227V8.3807C6.88045 8.17447 6.96257 7.97682 7.1084 7.83099C7.25422 7.68516 7.45188 7.60304 7.65811 7.6026H10.144V5.11502C10.1444 4.90879 10.2266 4.71113 10.3724 4.56531C10.5182 4.41948 10.7159 4.33736 10.9221 4.33691H20.9213L25.12 8.53565ZM19.9899 13.2615H17.0577C16.8226 13.2607 16.5973 13.1669 16.4311 13.0006C16.2648 12.8343 16.171 12.6091 16.1701 12.374V9.4687H8.74611V26.1373H19.9916L19.9899 13.2615ZM12.0118 6.2047V7.6026H17.6573L19.5015 9.44681C19.4569 9.3401 19.434 9.2256 19.4341 9.10997V6.2047H12.0118ZM21.856 11.8013V22.8733H23.2539V9.99755H20.3234C20.2077 9.99768 20.0932 9.97478 19.9865 9.93018L21.856 11.8013Z" fill="black"/>
+                            </svg>
+                        </div>
+                        <div class="add">
+                            <p class="add_none_text ${hide_none_flag}">В КОРЗИНУ</p>
+                            <svg class="minus ${hide_flag}" width="14" height="2" viewBox="0 0 14 2" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1 1H13" stroke-width="2" stroke-linecap="round" />
+                            </svg>
+                            </svg>
+                            <p class="add_text ${hide_flag}">${product_count}</p>
+                            <svg class="plus ${hide_flag} ${disactive_flag}" width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7 1V13" stroke-width="2" stroke-linecap="round" />
+                                <path d="M1 7H13" stroke-width="2" stroke-linecap="round" />
+                            </svg>
+                        </div>
+                    </div>
+                    ${view}
+                </article>`
+                } else {
+                    product.outerHTML = `<article class="product" id="${json_data[i]['id']}">
                     <div class="container">
                         <img src="${json_data[i]['design']['image']}" class="img" loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false" style="object-fit: contain; object-position: 50% 50%;"></img>
                     </div>
@@ -312,22 +431,36 @@ function create_categories(json_data, category_id) { //создание кате
                         </div>
                     </div>
                 </article>`
+                }
+                
                 let cart_product = document.createElement('article');
                 cart.append(cart_product);
-                if (false) {
+                if (admin_flag) {
+                    let img_flag = 'hide';
+                    let svg_flag = '';
+                    if (json_data[i]['design']['image']) {
+                        img_flag = '';
+                        svg_flag = 'hide';
+                    }
                     cart_product.outerHTML = `<article class="cart_product hide" id="cart_${json_data[i]['id']}">
+                    <div class="loading_cart_change hide">
+                        <div class="spinner"></div>
+                    </div>
                     <div class="cart_path">
                         <svg class="cart_back" width="10" height="19" viewBox="0 0 10 19" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <path d="M9 1.5L1.72591 8.41039C1.32515 8.79111 1.30929 9.42476 1.69052 9.82504L9 17.5"
                                 stroke="#0C0C0C" stroke-width="2" stroke-linecap="round" />
                         </svg>
-                        <p class="cart_path_name">Карточка продукта</p>
+                        <p class="cart_path_name">Карточка товара</p>
                     </div>
-                    <div class="cart_info">
+                    <div class="cart_info_change" id="product_${json_data[i]['id']}">
                         <div class="cart_container">
-                            <img src="${json_data[i]['design']['image']}" class="cart_img_change" loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false" style="object-fit: contain; object-position: 50% 50%;"></img>
-                            <label for="fileInput" class="upload_img_change">
+                            <svg class="cart_img_none_change ${svg_flag}" width="1629" height="1629" viewBox="0 0 1629 1629" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M773.667 0.466655C742.067 2.73332 726.867 4.19999 709.4 6.46666C531.133 29.4 366.467 110.467 238.467 238.467C118.467 358.467 38.5999 512.733 11.1333 677.667C2.73328 728.333 0.466614 757.8 0.466614 814.333C0.466614 860.467 1.39995 878.733 5.79995 914.333C28.0666 1094.73 109.267 1261.13 238.467 1390.2C362.867 1514.6 523.267 1595.4 695.133 1620.33C740.867 1626.87 761 1628.2 814.333 1628.2C867.667 1628.2 887.8 1626.87 933.533 1620.33C1149 1589.13 1344.6 1470.33 1474.33 1291.67C1547.53 1191 1597.27 1072.47 1617.53 951C1625.93 900.333 1628.2 870.867 1628.2 814.333C1628.2 768.2 1627.27 749.933 1622.87 714.333C1600.6 533.933 1519.4 367.533 1390.2 238.467C1264.73 112.867 1103.4 32.2 929 7.66666C891.667 2.46666 868.867 0.866655 824.333 0.466655C800.2 0.199988 777.4 0.199988 773.667 0.466655ZM878.333 116.333C1043.13 131.8 1193 202.2 1309.67 319C1461 470.2 1534.47 679.8 1510.87 892.333C1495.27 1033 1437 1166.07 1343.8 1273.4L1332.33 1286.6L1327 1280.73C1324.07 1277.53 1197.67 1142.07 1046.2 979.667C894.733 817.267 682.867 589.933 575.267 474.6L379.667 264.733L386.733 259.133C407.267 242.6 445.267 217.667 476.333 200.333C567.933 149.267 677.4 118.467 785 113.8C805 113 857 114.333 878.333 116.333ZM482.333 541.667C578.067 644.333 789.667 871.267 952.6 1046.07L1249 1363.93L1241.93 1369.53C1211.67 1393.93 1156.73 1427.93 1117 1446.73C1040.33 1483 963.667 1504.07 877 1512.47C828.867 1517.13 761 1515.13 710.333 1507.53C561 1484.87 425.933 1416.6 319 1309.67C167.667 1158.47 94.2 948.867 117.8 736.333C133.4 595.667 191.667 462.6 284.867 355.267L296.333 342.067L302.333 348.6C305.667 352.2 386.6 439.133 482.333 541.667Z" fill="#505050"/>
+                            </svg>
+                            <img src="${json_data[i]['design']['image']}" class="cart_img_change ${img_flag}" loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false" style="object-fit: contain; object-position: 50% 50%;"></img>
+                            <label for="fileInput_${json_data[i]['id']}" class="upload_img_change">
                                 <svg class="add_category_svg" width="28" height="28" viewBox="0 0 14 14" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path d="M7 1V13" stroke-width="2" stroke-linecap="round" />
@@ -335,7 +468,7 @@ function create_categories(json_data, category_id) { //создание кате
                                 </svg>
                             </label>
                         </div>
-                        <input type="file" class="fileInput_change" id="fileInput" accept="image/*" required>
+                        <input type="file" class="fileInput_change" id="fileInput_${json_data[i]['id']}" accept="image/*" required>
                         <input class="cart_name_input_change" type="text" value="${json_data[i]['design']['title']}" placeholder="Название" />
                         <textarea class="cart_discript_input_change" type="text" placeholder="Описание" rows="4">${json_data[i]['design']['description']}</textarea>
                         <input class="cart_count_input_change" type="text" value="${json_data[i]['setting']['count']}" placeholder="Количество" />
@@ -343,12 +476,13 @@ function create_categories(json_data, category_id) { //создание кате
                         <div class="cart_price_menu">
                             <p class="cart_price">${json_data[i]['price']['full']}</p>
                             <div class="cart_add">
+                                <p class="cart_add_none_text ${hide_none_flag}">В КОРЗИНУ</p>
                                 <svg class="cart_minus ${hide_flag}" width="14" height="2" viewBox="0 0 14 2" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path d="M1 1H13" stroke-width="2" stroke-linecap="round" />
                                 </svg>
                                 <p class="cart_add_text ${hide_flag}">${product_count}</p>
-                                <svg class="cart_plus ${disactive_flag}" width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                <svg class="cart_plus ${hide_flag} ${disactive_flag}" width="14" height="14" viewBox="0 0 14 14" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path d="M7 1V13" stroke-width="2" stroke-linecap="round" />
                                     <path d="M1 7H13" stroke-width="2" stroke-linecap="round" />
@@ -368,7 +502,7 @@ function create_categories(json_data, category_id) { //создание кате
                             <path d="M9 1.5L1.72591 8.41039C1.32515 8.79111 1.30929 9.42476 1.69052 9.82504L9 17.5"
                                 stroke="#0C0C0C" stroke-width="2" stroke-linecap="round" />
                         </svg>
-                        <p class="cart_path_name">Карточка продукта</p>
+                        <p class="cart_path_name">Карточка товара</p>
                     </div>
                     <div class="cart_info">
                         <img src="${json_data[i]['design']['image']}" class="cart_img" loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false" style="object-fit: contain; object-position: 50% 50%;"></img>
@@ -414,6 +548,9 @@ function create_categories(json_data, category_id) { //создание кате
         let add_cart = document.createElement('article');
         cart.append(add_cart)
         add_cart.outerHTML = `<article class="add_cart hide">
+                    <div class="loading_cart hide">
+                        <div class="spinner"></div>
+                    </div>
                     <div class="cart_adm_path">
                         <svg class="cart_back" width="10" height="19" viewBox="0 0 10 19" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -451,6 +588,8 @@ function create_categories(json_data, category_id) { //создание кате
                     </div>
                 </article>`
         adm_add_category();
+        adm_change_category();
+        adm_manage_category();
     }
     show_cart();
     add();
@@ -1436,15 +1575,15 @@ function form_manag() {
     choice_adress_pickup.addEventListener('click', () => {
         adress_pickup = choice_adress_pickup.getElementsByClassName('choice_point')[0].textContent;
         form_data.adressPickup = choice_adress_pickup.getElementsByClassName('choice_point')[0].textContent;
-        choice_adress_pickup1.classList.remove('choiced');
+        // choice_adress_pickup1.classList.remove('choiced');    изменить
         choice_adress_pickup.classList.add('choiced');
     });
-    choice_adress_pickup1.addEventListener('click', () => {
-        adress_pickup = choice_adress_pickup1.getElementsByClassName('choice_point')[0].textContent;
-        form_data.adressPickup = choice_adress_pickup1.getElementsByClassName('choice_point')[0].textContent;
-        choice_adress_pickup1.classList.add('choiced');
-        choice_adress_pickup.classList.remove('choiced');
-    });
+    // choice_adress_pickup1.addEventListener('click', () => {     изменить
+    //     adress_pickup = choice_adress_pickup1.getElementsByClassName('choice_point')[0].textContent;
+    //     form_data.adressPickup = choice_adress_pickup1.getElementsByClassName('choice_point')[0].textContent;
+    //     choice_adress_pickup1.classList.add('choiced');
+    //     choice_adress_pickup.classList.remove('choiced');
+    // });
     choice_adress_close.addEventListener('click', () => {
         method_pickup_but_change.classList.add('hide');
         method_pickup_but_add.classList.remove('hide');
@@ -1459,13 +1598,14 @@ function form_manag() {
             pay_check();
             pickup_address.textContent = adress_pickup;
         };
-        if (adress_pickup == choice_adress_pickup1.getElementsByClassName('choice_point')[0].textContent) {
-            date_courier.classList.add('hide');
-            date_pickup2.classList.remove('hide');
-            date_pickup1.classList.add('hide');
-            time.classList.remove('hide');
-            date_pickup2_hour_num_manag();
-        } else if (adress_pickup == choice_adress_pickup.getElementsByClassName('choice_point')[0].textContent) {
+        // if (adress_pickup == choice_adress_pickup1.getElementsByClassName('choice_point')[0].textContent) {   изменить
+        //     date_courier.classList.add('hide');
+        //     date_pickup2.classList.remove('hide');
+        //     date_pickup1.classList.add('hide');
+        //     time.classList.remove('hide');
+        //     date_pickup2_hour_num_manag();
+        // } else 
+        if (adress_pickup == choice_adress_pickup.getElementsByClassName('choice_point')[0].textContent) {
             date_courier.classList.add('hide');
             date_pickup2.classList.add('hide');
             date_pickup1.classList.remove('hide');
@@ -1719,8 +1859,8 @@ let json_order_data;
 
 
 function load() {
-    let loading = document.getElementsByClassName('loading')[0];
-    loading.classList.remove('hide');
+    let create_orders_loading = document.getElementById('create_orders_loading');
+    create_orders_loading.classList.remove('hide');
 };
 
 
@@ -1758,7 +1898,7 @@ function edit_massage(json_order_data) {
     if (form_data.method == 'courier' && parseInt(json_order_data['data']['price'].split(" ").join("").slice(0, -1)) < 1000) {
         price = parseInt(json_order_data['data']['price'].split(" ").join("").slice(0, -1)) + 150 + ' ₽';
     };
-    
+
     console.log(json_order_data['data']['price']);
 
     if (form_data.method == 'courier') {
@@ -1769,8 +1909,8 @@ function edit_massage(json_order_data) {
         adress += '\n💬 ' + form_data.comment;
     }
     const post_edit_massageData = {
-        bot_id: bot_id,
-        message_id: 4199241,
+        bot_id: 0,
+        type: 'msg_id',
         text: `<b>🎉Ваш заказ:</b>
 ➖➖➖➖➖➖➖➖➖➖➖➖
 ${products}
@@ -1793,7 +1933,7 @@ ${products}
     };
     let my_edit_massageHeaders = new Headers();
     my_edit_massageHeaders.append('Content-Type', 'application/json');
-    fetch('https://api.bot-t.com/v1/bot/messagenew/message/update-text?token=7723075467:AAEHIRezunqN-fb__mqG4akqIHGZd3r9X5g', {
+    fetch('https://tl-shop.click/api/update-text', {
         method: 'POST',
         headers: my_edit_massageHeaders,
         body: JSON.stringify(post_edit_massageData),
@@ -1808,14 +1948,13 @@ ${products}
 function send_massage(json_order_data) {
     let id = json_order_data.data.user.id;
     const post_send_massageData = {
-        bot_id: bot_id,
-        limit: 50,
-        message_id: 4199241,
-        user_id: id
+        bot_id: 0,
+        user_id: id,
+        type: 'msg_id'
     };
     let my_send_massageHeaders = new Headers();
     my_send_massageHeaders.append('Content-Type', 'application/json');
-    fetch('https://api.bot-t.com/v1/bot/messagenew/message/test?token=7723075467:AAEHIRezunqN-fb__mqG4akqIHGZd3r9X5g', {
+    fetch('https://tl-shop.click/api/message', {
         method: 'POST',
         headers: my_send_massageHeaders,
         body: JSON.stringify(post_send_massageData),
@@ -1830,14 +1969,13 @@ function send_massage(json_order_data) {
 function send_feedback(json_order_data) {
     let id = json_order_data.data.user.id;
     const post_send_feedbackData = {
-        bot_id: bot_id,
-        limit: 50,
-        message_id: 4199030,
+        bot_id: 0,
+        type: 'fb_id',
         user_id: id
     };
     let my_send_feedbackHeaders = new Headers();
     my_send_feedbackHeaders.append('Content-Type', 'application/json');
-    fetch('https://api.bot-t.com/v1/bot/messagenew/message/test?token=7723075467:AAEHIRezunqN-fb__mqG4akqIHGZd3r9X5g', {
+    fetch('https://tl-shop.click/api/message', {
         method: 'POST',
         headers: my_send_feedbackHeaders,
         body: JSON.stringify(post_send_feedbackData),
@@ -1851,8 +1989,8 @@ function send_feedback(json_order_data) {
 
 function edit_feedback(json_order_data) {
     const post_edit_feedbackData = {
-        bot_id: bot_id,
-        message_id: 4199032,
+        bot_id: 0,
+        type: 'fb_id',
         text: `<b>Обратная связь по заказу:</b> <code>${json_order_data['data']['id']}</code>
 
 <b>Пользователь:</b> ${json_order_data['data']['user']['link']}
@@ -1861,7 +1999,7 @@ function edit_feedback(json_order_data) {
     };
     let my_edit_feedbackHeaders = new Headers();
     my_edit_feedbackHeaders.append('Content-Type', 'application/json');
-    fetch('https://api.bot-t.com/v1/bot/messagenew/message/update-text?token=7723075467:AAEHIRezunqN-fb__mqG4akqIHGZd3r9X5g', {
+    fetch('https://tl-shop.click/api/update-text', {
         method: 'POST',
         headers: my_edit_feedbackHeaders,
         body: JSON.stringify(post_edit_feedbackData),
@@ -1895,8 +2033,8 @@ function edit_massage_admin(json_order_data) {
         adress += '\n💬 ' + form_data.comment;
     }
     const post_edit_massageData = {
-        bot_id: bot_id,
-        message_id: 4199241,
+        bot_id: 0,
+        type: 'msg_id',
         text: `<b>🎉Новая покупка в боте:</b>
 ➖➖➖➖➖➖➖➖➖➖➖➖
 ${products}
@@ -1917,50 +2055,27 @@ ${products}
     };
     let my_edit_massageHeaders = new Headers();
     my_edit_massageHeaders.append('Content-Type', 'application/json');
-    fetch('https://api.bot-t.com/v1/bot/messagenew/message/update-text?token=7723075467:AAEHIRezunqN-fb__mqG4akqIHGZd3r9X5g', {
+    fetch('https://tl-shop.click/api/update-text', {
         method: 'POST',
         headers: my_edit_massageHeaders,
         body: JSON.stringify(post_edit_massageData),
     }).then((edit_massage_data) => {
         return edit_massage_data.json();
     }).then((json_edit_massage_data) => {
-        send_massage_admin1(430798);
+        send_massage_admin();
     });
 };
 
 
 
-function send_massage_admin1(id) {
+function send_massage_admin() {
     const post_send_massageData = {
-        bot_id: bot_id,
-        limit: 50,
-        message_id: 4199241,
-        user_id: id
+        bot_id: 0,
+        type: 'msg_id',
     };
     let my_send_massageHeaders = new Headers();
     my_send_massageHeaders.append('Content-Type', 'application/json');
-    fetch('https://api.bot-t.com/v1/bot/messagenew/message/test?token=7723075467:AAEHIRezunqN-fb__mqG4akqIHGZd3r9X5g', {
-        method: 'POST',
-        headers: my_send_massageHeaders,
-        body: JSON.stringify(post_send_massageData),
-    }).then((send_massage_data) => {
-        return send_massage_data.json();
-    }).then((json_send_massage_data) => {
-        send_massage_admin2(3278747);
-    });
-};
-
-
-function send_massage_admin2(id) {
-    const post_send_massageData = {
-        bot_id: bot_id,
-        limit: 50,
-        message_id: 4199241,
-        user_id: id
-    };
-    let my_send_massageHeaders = new Headers();
-    my_send_massageHeaders.append('Content-Type', 'application/json');
-    fetch('https://api.bot-t.com/v1/bot/messagenew/message/test?token=7723075467:AAEHIRezunqN-fb__mqG4akqIHGZd3r9X5g', {
+    fetch('https://tl-shop.click/api/admin_message', {
         method: 'POST',
         headers: my_send_massageHeaders,
         body: JSON.stringify(post_send_massageData),
@@ -1988,8 +2103,6 @@ function profile_manag() {
 }
 
 
-const controller = new AbortController();
-
 async function create_orders_list() {
     for (let i = 0; i < orders_count / 3; i++) {
         try {
@@ -2005,7 +2118,6 @@ async function create_orders_list() {
 
             // Ожидаем завершения fetch
             const response = await fetch('https://api.bot-t.com/v1/shopcart/order/index', {
-                signal: controller.signal,
                 method: 'POST',
                 headers: my_get_ordersHeaders,
                 body: JSON.stringify(post_get_ordersData),
@@ -2054,6 +2166,7 @@ async function create_orders_list() {
         } catch (error) {
             console.error('Ошибка при загрузке заказов:', error);
         };
+        orders_loading.classList.add('hide');
     };
 };
 
@@ -2154,6 +2267,13 @@ function admin() {
                     </div>
                 </div>
                 <p class="orders">Заказы: </p>
+                <div class="order_complete">
+                    <p class="complete_name">Завершить заказ:</p>
+                    <input class="complete_input" type="text" placeholder="Order ID" />
+                    <div class="check_complete disactive_but">
+                        <p class="check_complete_text">Проверить</p>
+                    </div>
+                </div>
                 <div class="order_delete">
                     <p class="delete_name">Удалить заказ:</p>
                     <input class="delete_input" type="text" placeholder="Order ID" />
@@ -2163,11 +2283,11 @@ function admin() {
                 </div>
             </section>`;
         const post_get_usersData = {
-            bot_id: bot_id,
+            bot_id: 0,
         };
         let my_get_usersHeaders = new Headers();
         my_get_usersHeaders.append('Content-Type', 'application/json');
-        fetch('https://api.bot-t.com/v1/bot/user/count?token=7723075467:AAEHIRezunqN-fb__mqG4akqIHGZd3r9X5g', {
+        fetch('https://tl-shop.click/api/user_count', {
             method: 'POST',
             headers: my_get_usersHeaders,
             body: JSON.stringify(post_get_usersData),
@@ -2180,11 +2300,11 @@ function admin() {
             block_manag();
         });
         const post_get_order_countData = {
-            bot_id: bot_id,
+            bot_id: 0,
         };
         let my_get_order_countHeaders = new Headers();
         my_get_order_countHeaders.append('Content-Type', 'application/json');
-        fetch('https://api.bot-t.com/v1/shopcart/order/main/count?token=7723075467:AAEHIRezunqN-fb__mqG4akqIHGZd3r9X5g', {
+        fetch('https://tl-shop.click/api/order_count', {
             method: 'POST',
             headers: my_get_order_countHeaders,
             body: JSON.stringify(post_get_order_countData),
@@ -2194,6 +2314,7 @@ function admin() {
             let orders = document.getElementsByClassName('orders')[0];
             orders.innerHTML = 'Заказы: ' + json_get_order_count_data['data'];
             delete_manag();
+            complete_manag();
         });
     };
 };
@@ -2215,8 +2336,8 @@ function balance_manag() {
     check_balance.addEventListener('click', async () => { // Добавляем async
         if (!check_balance.classList.contains('disactive_but')) {
             try {
-                const result = await admin_activate('https://api.bot-t.com/v1/bot/user/zero-balance?token=7723075467:AAEHIRezunqN-fb__mqG4akqIHGZd3r9X5g', balance_input.value); // Ждём ответа
-                if (result && result.result) { // Проверяем result на существование
+                const result = await admin_activate('https://tl-shop.click/api/zero-balance', balance_input.value); // Ждём ответа
+                if (result && result.data.result) { // Проверяем result на существование
                     balance_input.classList.add('succes_input'); // Добавляем класс (было remove)
                     setTimeout(() => {
                         balance_input.classList.remove('succes_input');
@@ -2259,8 +2380,8 @@ function block_manag() {
     check_block.addEventListener('click', async () => { // Добавляем async
         if (!check_block.classList.contains('disactive_but')) {
             try {
-                const result = await admin_activate('https://api.bot-t.com/v1/bot/user/ban?token=7723075467:AAEHIRezunqN-fb__mqG4akqIHGZd3r9X5g', block_input.value); // Ждём ответа
-                if (result && result.result) { // Проверяем result на существование
+                const result = await admin_activate('https://tl-shop.click/api/user_ban', block_input.value); // Ждём ответа
+                if (result && result.data.result) { // Проверяем result на существование
                     block_input.classList.add('succes_input'); // Добавляем класс (было remove)
                     setTimeout(() => {
                         block_input.classList.remove('succes_input');
@@ -2303,7 +2424,7 @@ function delete_manag() {
     check_delete.addEventListener('click', async () => { // Добавляем async
         if (!check_delete.classList.contains('disactive_but')) {
             try {
-                const result = await admin_activate('https://api.bot-t.com/v1/shopcart/order/main/delete?token=7723075467:AAEHIRezunqN-fb__mqG4akqIHGZd3r9X5g', delete_input.value); // Ждём ответа
+                const result = await admin_activate('https://tl-shop.click/api/order_delete', delete_input.value); // Ждём ответа
                 if (result && result.result) { // Проверяем result на существование
                     delete_input.classList.add('succes_input'); // Добавляем класс (было remove)
                     setTimeout(() => {
@@ -2332,9 +2453,53 @@ function delete_manag() {
 };
 
 
+function complete_manag() {
+    let complete_input = document.getElementsByClassName('complete_input')[0];
+    let check_complete = document.getElementsByClassName('check_complete')[0];
+
+    complete_input.addEventListener('input', () => {
+        if (complete_input.value) {
+            check_complete.classList.remove('disactive_but');
+        } else {
+            check_complete.classList.add('disactive_but');
+        }
+    });
+
+    check_complete.addEventListener('click', async () => { // Добавляем async
+        if (!check_complete.classList.contains('disactive_but')) {
+            try {
+                const result = await admin_activate('https://tl-shop.click/api/order_complete', complete_input.value); // Ждём ответа
+                if (result && result.result) { // Проверяем result на существование
+                    complete_input.classList.add('succes_input'); // Добавляем класс (было remove)
+                    setTimeout(() => {
+                        complete_input.classList.remove('succes_input');
+                    }, 1000);
+                } else {
+                    complete_input.classList.add('incorrect'); // Добавляем класс (было remove)
+                    setTimeout(() => {
+                        complete_input.classList.remove('incorrect');
+                    }, 1000);
+                }
+            } catch (error) {
+                console.error('Ошибка при активации промокода:', error);
+                complete_input.classList.add('incorrect');
+                setTimeout(() => {
+                    complete_input.classList.remove('incorrect');
+                }, 1000);
+            }
+        } else {
+            complete_input.classList.add('incorrect');
+            setTimeout(() => {
+                complete_input.classList.remove('incorrect');
+            }, 1000);
+        }
+    });
+};
+
+
 function admin_activate(url, value) {
     const post_promocodeData = {
-        bot_id: bot_id,
+        bot_id: 0,
         id: value,
         user_id: value,
         is_back_cart: true
@@ -2411,11 +2576,13 @@ function adm_add_category() {
         cart.classList.add('hide')
         add_cart.classList.add('hide')
     });
+    let img_base64;
     fileInput.addEventListener('change', function (e) {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = function (event) {
+                img_base64 = event.target.result;
                 cart_adm_img.src = event.target.result;
             };
             cart_adm_img.classList.remove('hide');
@@ -2448,64 +2615,224 @@ function adm_add_category() {
     });
     save_category.addEventListener('click', () => {
         if (add_cart_cheker()) {
+            let loading_cart = document.getElementsByClassName('loading_cart')[0];
+            loading_cart.classList.remove('hide');
             if (type_category.classList.contains('choiced')) {
-                create_category(0, cart_name_input.value, category_list.id, cart_discript_input.value);
+                create_category(0, 0, cart_name_input.value, category_list.id, cart_discript_input.value, img_base64);
             } else if (type_product.classList.contains('choiced')) {
-                create_category(7, cart_name_input.value, category_list.id, cart_discript_input.value, cart_count_input.value, cart_price_input.value);
+                create_category(0, 7, cart_name_input.value, category_list.id, cart_discript_input.value, img_base64, cart_count_input.value, cart_price_input.value);
             };
         };
     });
 };
 
-function create_category(type, title, category_id, description) {
+function adm_change_category() {
+    let cart_info = document.getElementsByClassName('cart_info_change');
+    for (let i = 0; i < cart_info.length; i++) {
+        let cart_adm_img = document.getElementsByClassName('cart_img_change')[i];
+        let cart_img_none = document.getElementsByClassName('cart_img_none_change')[i];
+        let fileInput = document.getElementById('fileInput_'+ cart_info[i].id.split('_')[1]);
+        let cart_name_input = document.getElementsByClassName('cart_name_input_change')[i];
+        let cart_discript_input = document.getElementsByClassName('cart_discript_input_change')[i];
+        let cart_count_input = document.getElementsByClassName('cart_count_input_change')[i];
+        let cart_price_input = document.getElementsByClassName('cart_price_input_change')[i];
+        let save_category = document.getElementsByClassName('save_category_change')[i];
+        let category_list = document.getElementsByClassName('category_list')[0];
+
+        function add_cart_cheker() {
+            if (cart_info[i].id.split('_')[0] == 'category') {
+                if (cart_name_input.value != null) {
+                    save_category.classList.remove('disactive_but');
+                    return true;
+                } else {
+                    save_category.classList.add('disactive_but');
+                    return false;
+                };
+            } else if (cart_info[i].id.split('_')[0] == 'product') {
+                if (cart_name_input.value != null && cart_count_input.value != null && cart_price_input.value != null) {
+                    save_category.classList.remove('disactive_but');
+                    return true;
+                } else {
+                    save_category.classList.add('disactive_but');
+                    return false;
+                };
+            };
+        };
+        let img_base64;
+        fileInput.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    img_base64 = event.target.result;
+                    cart_adm_img.src = event.target.result;
+                };
+                cart_adm_img.classList.remove('hide');
+                cart_img_none.classList.add('hide');
+                reader.readAsDataURL(file);
+            };
+            add_cart_cheker();
+        });
+        cart_name_input.addEventListener('input', () => {
+            add_cart_cheker();
+        });
+        cart_discript_input.addEventListener('input', () => {
+            add_cart_cheker();
+        });
+        cart_count_input.addEventListener('input', () => {
+            add_cart_cheker();
+        });
+        cart_price_input.addEventListener('input', () => {
+            add_cart_cheker();
+        });
+        save_category.addEventListener('click', () => {
+            if (add_cart_cheker()) {
+                let loading_cart_change = document.getElementsByClassName('loading_cart_change')[i];
+                loading_cart_change.classList.remove('hide');
+                if (cart_info[i].id.split('_')[0] == 'category') {
+                    create_category(cart_info[i].id.split('_')[1], 0, cart_name_input.value, category_list.id, cart_discript_input.value, img_base64);
+                } else if (cart_info[i].id.split('_')[0] == 'product') {
+                    create_category(cart_info[i].id.split('_')[1], 7, cart_name_input.value, category_list.id, cart_discript_input.value, img_base64, cart_count_input.value, cart_price_input.value);
+                };
+            };
+        });
+    };
+};
+
+function create_category(id, type, title, category_id, description, img, count, price) {
     const postData = {
-        bot_id: 251807,
+        bot_id: 0,
+        id_raw: id,
         type: type,
         title: title,
         category_id: parseInt(category_id),
         description: description,
-        count: 1000
+        img_file: img,
+        count: count,
+        price: price
     };
     let myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
-    fetch('https://api.bot-t.com/v1/shop/category/create?token=7723075467:AAEHIRezunqN-fb__mqG4akqIHGZd3r9X5g', {
+    fetch('https://tl-shop.click/api/category_create', {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify(postData),
+    }).then((category_id) => {
+        reload(category_id);
+    })
+};
+
+function adm_manage_category() {
+    let category = document.getElementsByClassName('category');
+    let product = document.getElementsByClassName('product');
+    for (let i = 0; i < category.length; i++) {
+        let remove_category_svg = category[i].getElementsByClassName('remove_category_svg')[0];
+        let show_category_svg = category[i].getElementsByClassName('show_category_svg')[0];
+        let hide_category_svg = category[i].getElementsByClassName('hide_category_svg')[0];
+        let duplicate_category_svg = category[i].getElementsByClassName('duplicate_category_svg')[0];
+        let category_id = category[i];
+        let id = category_id.id;
+        remove_category_svg.addEventListener('click', (event) => {
+            event.stopPropagation();
+            category_manage(id, 'remove');
+        });
+        show_category_svg.addEventListener('click', (event) => {
+            event.stopPropagation();
+            category_manage(id, 'hide');
+        });
+        hide_category_svg.addEventListener('click', (event) => {
+            event.stopPropagation();
+            category_manage(id, 'hide');
+        });
+        duplicate_category_svg.addEventListener('click', (event) => {
+            event.stopPropagation();
+            category_manage(id, 'duplicate');
+        });
+    };
+    for (let i = 0; i < product.length; i++) {
+        let remove_category_svg = product[i].getElementsByClassName('remove_category_svg')[0];
+        let show_category_svg = product[i].getElementsByClassName('show_category_svg')[0];
+        let hide_category_svg = product[i].getElementsByClassName('hide_category_svg')[0];
+        let duplicate_category_svg = product[i].getElementsByClassName('duplicate_category_svg')[0];
+        let category_id = product[i];
+        let id = category_id.id;
+        remove_category_svg.addEventListener('click', (event) => {
+            event.stopPropagation();
+            category_manage(id, 'remove');
+        });
+        show_category_svg.addEventListener('click', (event) => {
+            event.stopPropagation();
+            category_manage(id, 'hide');
+        });
+        hide_category_svg.addEventListener('click', (event) => {
+            event.stopPropagation();
+            category_manage(id, 'hide');
+        });
+        duplicate_category_svg.addEventListener('click', (event) => {
+            event.stopPropagation();
+            category_manage(id, 'duplicate');
+        });
+    };
+};
+
+function category_manage(id, type) {
+    const postData = {
+        bot_id: 0,
+        id: id,
+        type: type
+    };
+    let myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    fetch('https://tl-shop.click/api/category_manage', {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify(postData),
+    }).then(() => {
+        reload();
+    })
+};
+
+function reload() {
+    const postData = {
+        bot_id: 251807,
+    };
+    let myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    fetch('https://api.bot-t.com/v1/shoppublic/category/alls', {
         method: 'POST',
         headers: myHeaders,
         body: JSON.stringify(postData),
     }).then((data) => {
         return data.json();
-    }).then((json_create_category_data) => {
-        bott_auth();
-    });
-};
+    }).then((json_data) => {
+        json_data = json_data['data'];
+        common_json_data = json_data;
 
+        let path = document.getElementsByClassName('path')[0];
+        let category_list = document.getElementsByClassName('category_list')[0];
+        let cart = document.getElementsByClassName('cart')[0];
+        let cart_category = document.getElementsByClassName('cart_category');
+        let cart_product = document.getElementsByClassName('cart_product');
+        let add_cart = document.getElementsByClassName('add_cart');
+        let catalog = document.getElementsByClassName('catalog')[0];
 
-function bott_auth() {
-    fetch(`https://bot-t.com/auth/telegram/success?token=1000597955mUCnK-DpnAe-oX2ntt-A5jnvTQVpsh2Y`, {
-        method: 'GET',
-        mode: 'cors',
-        headers: {
-            'Upgrade-Insecure-Requests': '1',
-            'User-Agent': 'Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/132.0.0.0 Safari\/537.36',
-            'sec-ch-ua': '\"Not A(Brand\";v=\"8\", \"Chromium\";v=\"132\"',
-            'sec-ch-ua-mobile': '?0',
-            'sec-ch-ua-platform': '\"Windows\"'
-        },
-    }).then((data) => {
-        return data.json();
-    });
-};
+        let category_id = category_list.id;
+        let json_data_new = findById(common_json_data, parseInt(category_id));
 
-
-function edit_img_category(category_id) {
-    fetch(`https://bot-t.com/lk/common/shop/category/image-add?category_id=${category_id}&bot_id=251807`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'referer': 'https://bot-t.com/lk/common/shop/category/index?bot_id=251807'
-        },
-    }).then((data) => {
-        return data.json();
+        catalog.classList.remove('hide');
+        path.remove();
+        cart.classList.add('hide');
+        category_list.remove();
+        for (let i = 0; i < cart_category.length;) {
+            cart_category[0].remove();
+        };
+        for (let i = 0; i < cart_product.length;) {
+            cart_product[0].remove();
+        };
+        for (let i = 0; i < add_cart.length;) {
+            add_cart[0].remove();
+        };
+        create_categories(json_data_new, category_id);
     });
 };
 
@@ -2521,6 +2848,8 @@ document.addEventListener('DOMContentLoaded', function () {
         headers: myHeaders,
         body: JSON.stringify(postData),
     }).then((data) => {
+        let catalog_loading = document.getElementById('catalog_loading');
+        catalog_loading.classList.add('hide');
         let user = Telegram.WebApp.initDataUnsafe.user;
         if (user) {
             userId = user['id'];
@@ -2531,9 +2860,11 @@ document.addEventListener('DOMContentLoaded', function () {
         if (userId == '1000597955' || userId == '1035087579') {
             admin_flag = true;
         };
+        console.log(userId);
         return data.json();
     }).then((json_data) => {
         json_data = json_data['data'];
+        console.log(json_data);
         if (admin_flag) {
             console.log(json_data);
             let product_list = '';
@@ -2550,8 +2881,10 @@ document.addEventListener('DOMContentLoaded', function () {
                                     product_list = product_list + '    ' + json_data[i]['children'][j]['children'][k]['design']['title'] + '\n';
                                 };
                             };
+                            product_list = product_list + '\n';
                         };
                     };
+                    product_list = product_list + '\n';
                 };
             };
             console.log(product_list);
