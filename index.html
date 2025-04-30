@@ -20,6 +20,9 @@
     <div class="top"></div>
     <main>
         <div class="catalog" id="catalog">
+            <div class="loading" id="catalog_loading">
+                <div class="spinner"></div>
+            </div>
         </div>
         <div class="cart hide" id="cart">
         </div>
@@ -284,12 +287,12 @@
                             <p class="choice_time_name">Время работы:</p>
                             <p class="choice_time">Ежедневно 10:00 - 23:00</p>
                         </div>
-                        <div class="choice_adress_pickup1 hide">
+                        <!-- <div class="choice_adress_pickup1">   изменить
                             <p class="choice_point_name">Пункт выдачи:</p>
                             <p class="choice_point">Г. Мурманск, ул. Полярной правды 8</p>
                             <p class="choice_time_name">Время работы:</p>
                             <p class="choice_time">Пн-пт 9:00 - 15:00</p>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="choice_adress_close">Выбрать</div>
                 </div>
@@ -408,6 +411,9 @@
                 <p class="orders_name">Заказы</p>
             </section>
             <section class="orders_body hide">
+                <div class="loading" id="orders_loading">
+                    <div class="spinner"></div>
+                </div>
                 <div class="orders_list">
                 </div>
             </section>
@@ -552,7 +558,7 @@
         </nav>
     </footer>
 
-    <div class="loading hide">
+    <div class="loading hide" id="create_orders_loading">
         <div class="spinner"></div>
     </div>
 
@@ -609,7 +615,7 @@
             rules_body.classList.remove('hide');
         });
         orders_path.addEventListener('click', () => {
-            controller.abort();
+            orders_loading.classList.remove('hide');
             profile_path.classList.remove('hide');
             profile_body.classList.remove('hide');
             orders_path.classList.add('hide');
