@@ -1,11 +1,12 @@
 "use strict"
 
+// const { data } = require("browserslist");
 
-
+// import natural from 'natural';
+// const tokenizer = new natural.WordTokenizer();
 
 let common_json_data;
-
-
+let customDictionary;
 
 
 let user_key;
@@ -31,32 +32,6 @@ let form_data = {
     pay: null
 };
 let admin_flag = false;
-
-
-// async function get_user_key() {
-//     try {
-//         const response = await fetch('https://tl-shop.click/api/get-user-key', {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             },
-//             body: JSON.stringify({
-//                 bot_id: 0,
-//                 telegram_id: parseInt(userId)
-//             }),
-//         });
-
-//         const data = await response.json();
-
-//         if (data.success) {
-//             console.log(data);
-//         } else {
-//             console.log(data.error)
-//         }
-//     } catch (error) {
-//         console.error('Error:', error);
-//     }
-// };
 
 
 function get_user_key() {
@@ -118,8 +93,6 @@ function get_basket() {
         };
     });
 };
-
-
 
 
 function get_count() {
@@ -193,9 +166,9 @@ function uppdate_categories() {
 };
 
 
-function create_categories(json_data, category_id) { //создание категорий
+function create_categories(json_data, category_id, type, searchRequest) { //создание категорий
     let catalog = document.getElementById('catalog');
-    if (category_id == 0) {
+    if (category_id == 0 && type != 'search') {
         let path = document.createElement('section');
         path.classList.add('path');
         catalog.append(path);
@@ -215,8 +188,12 @@ function create_categories(json_data, category_id) { //создание кате
                     </svg>`;
         let category_name = document.createElement('p');
         path.append(category_name);
-        category_name.outerHTML = `<p class="category_name">${json_data['design']['title']}</p>`;
-        json_data = json_data['children'];
+        if (type == 'search') {
+            category_name.outerHTML = `<p class="category_name">Поиск по запросу: ${searchRequest}</p>`;
+        } else {
+            category_name.outerHTML = `<p class="category_name">${json_data['design']['title']}</p>`;
+            json_data = json_data['children'];
+        }
     };
 
     let category_list = document.createElement('section');
@@ -239,7 +216,7 @@ function create_categories(json_data, category_id) { //создание кате
             hide = true;
         };
         if (hide) { //если не скрыт
-            let discript = json_data[i]['design']['description'].split('\r\n').join('<br>');
+            let discript = json_data[i]['design']['description'].split('\r\n').join('<br>').split('\n').join('<br>');
             if (json_data[i]['typeObg']['id'] == '0') { //если категория
                 let category = document.createElement('article');
                 category_list.append(category);
@@ -357,12 +334,18 @@ function create_categories(json_data, category_id) { //создание кате
                 };
                 let product = document.createElement('product');
                 category_list.append(product);
+                let parentTitleOuter = '';
+                if (type == 'search') {
+                    let parentTitle = findById(common_json_data, json_data[i].category_id).design.title
+                    parentTitleOuter = `<div class="discript">< ${parentTitle}</div>`;
+                }
                 if (admin_flag) {
                     product.outerHTML = `<article class="product" id="${json_data[i]['id']}">
                     <div class="container">
                         <img src="${json_data[i]['design']['image']}" class="img" loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false" style="object-fit: contain; object-position: 50% 50%;"></img>
                     </div>
                     <div class="info">
+                        ${parentTitleOuter}
                         <p class="name">${json_data[i]['design']['title']}</p>
 
                         <div class="discript">${discript}</div>
@@ -408,6 +391,7 @@ function create_categories(json_data, category_id) { //создание кате
                         <img src="${json_data[i]['design']['image']}" class="img" loading="lazy" fetchpriority="auto" aria-hidden="true" draggable="false" style="object-fit: contain; object-position: 50% 50%;"></img>
                     </div>
                     <div class="info">
+                        ${parentTitleOuter}
                         <p class="name">${json_data[i]['design']['title']}</p>
 
                         <div class="discript">${discript}</div>
@@ -432,7 +416,7 @@ function create_categories(json_data, category_id) { //создание кате
                     </div>
                 </article>`
                 }
-                
+
                 let cart_product = document.createElement('article');
                 cart.append(cart_product);
                 if (admin_flag) {
@@ -1082,15 +1066,19 @@ function back_to_category() { //Назад в категорию
     path.addEventListener('click', () => {
         if (category_name.innerText != 'Главная') {
             let category_id = category_list.id;
-            let category_father_id = findCategoryById(common_json_data, parseInt(category_id));
-            // let category_father_id = jsonpath.query(common_json_data, `$..[?(@.id == ${category_id})].category_id`);
             let json_data_new;
-            if (category_father_id == 0) {
+            let category_father_id;
+            if (category_id == 0) {
                 json_data_new = common_json_data;
+                category_father_id = 0;
             } else {
-                json_data_new = findById(common_json_data, parseInt(category_father_id));
-                // json_data_new = jsonpath.query(common_json_data, `$..[?(@.id == ${category_father_id})]`);
-            };
+                category_father_id = findCategoryById(common_json_data, parseInt(category_id));
+                if (category_father_id == 0) {
+                    json_data_new = common_json_data;
+                } else {
+                    json_data_new = findById(common_json_data, parseInt(category_father_id));
+                };
+            }
             path.remove();
             category_list.remove();
             for (let i = 0; i < cart_category.length;) {
@@ -1575,15 +1563,15 @@ function form_manag() {
     choice_adress_pickup.addEventListener('click', () => {
         adress_pickup = choice_adress_pickup.getElementsByClassName('choice_point')[0].textContent;
         form_data.adressPickup = choice_adress_pickup.getElementsByClassName('choice_point')[0].textContent;
-        choice_adress_pickup1.classList.remove('choiced');
+        // choice_adress_pickup1.classList.remove('choiced');    изменить
         choice_adress_pickup.classList.add('choiced');
     });
-    choice_adress_pickup1.addEventListener('click', () => {
-        adress_pickup = choice_adress_pickup1.getElementsByClassName('choice_point')[0].textContent;
-        form_data.adressPickup = choice_adress_pickup1.getElementsByClassName('choice_point')[0].textContent;
-        choice_adress_pickup1.classList.add('choiced');
-        choice_adress_pickup.classList.remove('choiced');
-    });
+    // choice_adress_pickup1.addEventListener('click', () => {     изменить
+    //     adress_pickup = choice_adress_pickup1.getElementsByClassName('choice_point')[0].textContent;
+    //     form_data.adressPickup = choice_adress_pickup1.getElementsByClassName('choice_point')[0].textContent;
+    //     choice_adress_pickup1.classList.add('choiced');
+    //     choice_adress_pickup.classList.remove('choiced');
+    // });
     choice_adress_close.addEventListener('click', () => {
         method_pickup_but_change.classList.add('hide');
         method_pickup_but_add.classList.remove('hide');
@@ -1598,13 +1586,14 @@ function form_manag() {
             pay_check();
             pickup_address.textContent = adress_pickup;
         };
-        if (adress_pickup == choice_adress_pickup1.getElementsByClassName('choice_point')[0].textContent) {
-            date_courier.classList.add('hide');
-            date_pickup2.classList.remove('hide');
-            date_pickup1.classList.add('hide');
-            time.classList.remove('hide');
-            date_pickup2_hour_num_manag();
-        } else if (adress_pickup == choice_adress_pickup.getElementsByClassName('choice_point')[0].textContent) {
+        // if (adress_pickup == choice_adress_pickup1.getElementsByClassName('choice_point')[0].textContent) {   изменить
+        //     date_courier.classList.add('hide');
+        //     date_pickup2.classList.remove('hide');
+        //     date_pickup1.classList.add('hide');
+        //     time.classList.remove('hide');
+        //     date_pickup2_hour_num_manag();
+        // } else 
+        if (adress_pickup == choice_adress_pickup.getElementsByClassName('choice_point')[0].textContent) {
             date_courier.classList.add('hide');
             date_pickup2.classList.add('hide');
             date_pickup1.classList.remove('hide');
@@ -1851,10 +1840,6 @@ function form_manag() {
         }
     }
 };
-
-
-let json_order_data;
-
 
 
 function load() {
@@ -2630,7 +2615,7 @@ function adm_change_category() {
     for (let i = 0; i < cart_info.length; i++) {
         let cart_adm_img = document.getElementsByClassName('cart_img_change')[i];
         let cart_img_none = document.getElementsByClassName('cart_img_none_change')[i];
-        let fileInput = document.getElementById('fileInput_'+ cart_info[i].id.split('_')[1]);
+        let fileInput = document.getElementById('fileInput_' + cart_info[i].id.split('_')[1]);
         let cart_name_input = document.getElementsByClassName('cart_name_input_change')[i];
         let cart_discript_input = document.getElementsByClassName('cart_discript_input_change')[i];
         let cart_count_input = document.getElementsByClassName('cart_count_input_change')[i];
@@ -2835,14 +2820,279 @@ function reload() {
     });
 };
 
+async function correctSpelling(text) {
+    try {
+        const postData = {
+            bot_id: 0,
+            text: text
+        };
+        let myHeaders = new Headers();
+        myHeaders.append('Content-Type', 'application/json');
+        const response = await fetch('https://tl-shop.click/api/search', {
+            method: 'POST',
+            headers: myHeaders,
+            body: JSON.stringify(postData),
+        });
+
+        const data = await response.json();
+        return data.data;
+    } catch (error) {
+        console.error('Не удалось получить данные:', error);
+    }
+}
+
+function getAllProducts(jsonData) {
+    let products = [];
+    function searchProducts(obj) {
+        if (typeof obj !== 'object' || obj === null) {
+            return;
+        }
+
+        // Проверяем текущий объект на соответствие условиям
+        if (obj.is_hide === false && obj.is_view === true && obj.type == 7) {
+            products.push(obj);
+        }
+
+        // Рекурсивно обходим все свойства объекта
+        for (const key in obj) {
+            if (Array.isArray(obj[key])) {
+                obj[key].forEach(item => searchProducts(item));
+            } else if (typeof obj[key] === 'object') {
+                searchProducts(obj[key]);
+            }
+        }
+    }
+
+    searchProducts(jsonData);
+
+    return products;
+};
+
+function searchGenerator(searchPath, searchRequest) {
+    const pathList = searchPath.split('_');
+    let SearchCatalog = [];
+    let SearchCatalogCategoryList = [];
+    for (let i = 0; i < pathList.length; i++) {
+        const products = findById(common_json_data, parseInt(pathList[i]));
+
+        if (products.type != 7) {
+            SearchCatalogCategoryList.push(...getAllProducts(products));
+        } else {
+            SearchCatalog.push(products);
+        }
+    };
+    SearchCatalog.push(...SearchCatalogCategoryList);
+    const SearchCatalogArrays = Array.from(
+        new Set(SearchCatalog.map(JSON.stringify))
+    ).map(JSON.parse);
+
+    let path = document.getElementsByClassName('path')[0];
+    let category_list = document.getElementsByClassName('category_list')[0];
+    let cart = document.getElementsByClassName('cart')[0];
+    let cart_category = document.getElementsByClassName('cart_category');
+    let cart_product = document.getElementsByClassName('cart_product');
+    let add_cart = document.getElementsByClassName('add_cart');
+    let catalog = document.getElementsByClassName('catalog')[0];
+
+    catalog.classList.remove('hide');
+    path.remove();
+    cart.classList.add('hide');
+    category_list.remove();
+    for (let i = 0; i < cart_category.length;) {
+        cart_category[0].remove();
+    };
+    for (let i = 0; i < cart_product.length;) {
+        cart_product[0].remove();
+    };
+    for (let i = 0; i < add_cart.length;) {
+        add_cart[0].remove();
+    };
+
+    create_categories(SearchCatalogArrays, 0, 'search', searchRequest);
+};
+
+function search_hints() {
+    new Promise((resolve) => {
+        search_loading.classList.remove('hide');
+        not_found.classList.add('hide');
+        const search = document.querySelector('.search');
+        const searchBar = document.querySelector('.search_bar');
+        let searchAnswersList = document.getElementsByClassName('search_answer');
+        for (; searchAnswersList.length;) {
+            searchAnswersList[0].remove();
+        };
+        if (search.value == '') {
+
+            new Promise((innerResolve) => {
+                for (let i = 0; i < common_json_data.length; i++) { //цикл основных категорий
+                    if (common_json_data[i]['is_hide'] == false && common_json_data[i]['is_view'] == true) {
+                        let searchAnswer = document.createElement('div');
+                        searchBar.append(searchAnswer);
+                        searchAnswer.outerHTML = `<div class="search_answer" id="${common_json_data[i].id}">
+                            <p class="search_part">Все товары</p>
+                            <p class="search_category_part">- ${common_json_data[i].design.title}</p>
+                        </div>`;
+                    };
+                };
+                innerResolve();
+            }).then(() => {
+                search_loading.classList.add('hide');
+                resolve();
+            });
+
+        } else if (!/^\s*$/.test(search.value)) {
+            correctSpelling(search.value.toLowerCase()).then(searchResponseList => {
+
+                if (searchResponseList.length > 0) {
+                    let directSearchList = [];
+                    for (let i = 0; i < searchResponseList.length; i++) {
+                        let searchAnswer = document.createElement('div');
+                        searchBar.append(searchAnswer);
+                        searchAnswer.outerHTML = `<div class="search_answer" id="${searchResponseList[i].ids.join('_')}">
+                            <p class="search_part">${searchResponseList[i].word}</p>
+                        </div>`;
+                        for (let j = 0; j < searchResponseList[i].ids.length; j++) {
+                            const searchResponse = findById(common_json_data, searchResponseList[i].ids[j]);
+                            if (searchResponse.children.length > 0) {
+                                if (searchResponse.category_id != 0) {
+                                    const searchParentResponse = findById(common_json_data, searchResponse.category_id);
+                                    let searchAnswer = document.createElement('div');
+                                    searchBar.append(searchAnswer);
+                                    searchAnswer.outerHTML = `<div class="search_answer" id="${searchResponse.id}">
+                                    <p class="search_part">${searchResponse.design.title}</p>
+                                    <p class="search_category_part">- ${searchParentResponse.design.title}</p>
+                                </div>`;
+                                } else {
+                                    let searchAnswer = document.createElement('div');
+                                    searchBar.append(searchAnswer);
+                                    searchAnswer.outerHTML = `<div class="search_answer" id="${searchResponse.id}">
+                                    <p class="search_part">${searchResponse.design.title}</p>
+                                </div>`;
+                                }
+
+                            } else {
+                                let flag = true;
+                                let directSearchListId;
+                                for (let k = 0; k < directSearchList.length; k++) {
+                                    if (directSearchList[k].parent == searchResponse.category_id) {
+                                        flag = false;
+                                        directSearchListId = k;
+                                    };
+                                };
+
+                                if (flag) {
+                                    directSearchList.push(
+                                        {
+                                            word: searchResponseList[i].word,
+                                            parent: searchResponse.category_id,
+                                            response: [searchResponse.id]
+                                        }
+                                    );
+                                } else {
+                                    directSearchList[directSearchListId].response.push(searchResponse.id);
+                                };
+
+                            };
+                        };
+                    };
+                    for (let i = 0; i < directSearchList.length; i++) {
+                        const searchParentResponse = findById(common_json_data, directSearchList[i].parent);
+                        let searchAnswer = document.createElement('div');
+                        searchBar.append(searchAnswer);
+                        searchAnswer.outerHTML = `<div class="search_answer" id="${directSearchList[i].response.join('_')}">
+                            <p class="search_part">${directSearchList[i].word}</p>
+                            <p class="search_category_part">- ${searchParentResponse.design.title}</p>
+                        </div>`;
+                    }
+                } else {
+                    not_found.classList.remove('hide');
+                }
+            }).then(() => {
+                search_loading.classList.add('hide');
+                resolve();
+            });
+        } else {
+            resolve();
+        };
+    }).then(() => {
+        let searchAnswersList = document.querySelectorAll('.search_answer');
+        for (let i = 0; i < searchAnswersList.length; i++) {
+            searchAnswersList[i].addEventListener('click', () => {
+                searchGenerator(searchAnswersList[i].id, searchAnswersList[i].innerText);
+            });
+        };
+    });
+};
+
+function search_manage() {
+    const searchInput = document.querySelector('.search');
+    const searchBut = document.querySelector('.search_but');
+    const searchSvg = document.querySelector('.search_svg');
+    const searchBar = document.querySelector('.search_bar');
+    const searchLine = document.querySelector('.search_line');
+    const searchContainer = document.querySelector('.search_container');
+
+    searchInput.addEventListener('focus', function () {
+        searchBar.classList.add('show');
+        searchLine.classList.add('show');
+        searchInput.classList.add('show');
+        searchBut.classList.add('show');
+        searchSvg.classList.add('show');
+        search_hints();
+    });
+
+    searchBut.addEventListener('click', function () {
+        searchBar.classList.remove('show');
+        searchLine.classList.remove('show');
+        searchInput.classList.remove('show');
+        searchBut.classList.remove('show');
+        searchSvg.classList.remove('show');
+        searchInput.value = '';
+    });
+
+    // Закрытие при клике вне searchContainer
+    document.addEventListener('click', function (event) {
+        if (!searchContainer.contains(event.target) && event.target !== searchBut) {
+            searchBar.classList.remove('show');
+            searchLine.classList.remove('show');
+            searchInput.classList.remove('show');
+            searchBut.classList.remove('show');
+            searchSvg.classList.remove('show');
+        }
+    });
+    searchInput.addEventListener('input', () => {
+        search_hints();
+    });
+
+    searchBar.addEventListener('click', function () {
+        searchBar.classList.remove('show');
+        searchLine.classList.remove('show');
+        searchInput.classList.remove('show');
+        searchBut.classList.remove('show');
+        searchSvg.classList.remove('show');
+        searchInput.blur();
+    });
+
+    searchInput.addEventListener('search', () => {
+        searchBar.classList.remove('show');
+        searchLine.classList.remove('show');
+        searchInput.classList.remove('show');
+        searchBut.classList.remove('show');
+        searchSvg.classList.remove('show');
+        searchInput.blur();
+        const searchAnswersList = document.querySelectorAll('.search_answer')[0];
+        searchGenerator(searchAnswersList.id, searchAnswersList.innerText);
+    });
+};
+
 document.addEventListener('DOMContentLoaded', function () {
     Telegram.WebApp.expand();
     const postData = {
-        bot_id: 251807,
+        bot_id: 0,
     };
     let myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
-    fetch('https://api.bot-t.com/v1/shoppublic/category/alls', {
+    fetch('https://tl-shop.click/api/get-category', {
         method: 'POST',
         headers: myHeaders,
         body: JSON.stringify(postData),
@@ -2863,21 +3113,28 @@ document.addEventListener('DOMContentLoaded', function () {
         return data.json();
     }).then((json_data) => {
         json_data = json_data['data'];
-        console.log(json_data);
         if (admin_flag) {
             console.log(json_data);
             let product_list = '';
             let product_list_price = 0;
+            let product_list_local_price;
             for (let i = 0; i < json_data.length; i++) {
                 if (json_data[i]['is_hide'] == false && json_data[i]['is_view'] == true) {
                     product_list = product_list + '➖' + json_data[i]['design']['title'] + '➖' + '\n';
                     for (let j = 0; j < json_data[i]['children'].length; j++) {
                         if (json_data[i]['children'][j]['is_hide'] == false && json_data[i]['children'][j]['is_view'] == true) {
-                            product_list = product_list + '  ➖' + json_data[i]['children'][j]['design']['title'] + '➖' + '\n';
+                            if (parseInt((json_data[i]['children'][j]['price']['amount'].toString()).slice(0, -2)) > 0) {
+                                product_list_price += parseInt((json_data[i]['children'][j]['price']['amount']).toString().slice(0, -2)) * parseFloat(json_data[i]['children'][j]['setting']['count']);
+                                product_list_local_price = parseInt((json_data[i]['children'][j]['price']['amount']).toString().slice(0, -2)) * parseFloat(json_data[i]['children'][j]['setting']['count']);
+                                product_list = product_list + '    ' + json_data[i]['children'][j]['design']['title'] + ' ' + product_list_local_price;
+                            } else {
+                                product_list = product_list + '  ➖' + json_data[i]['children'][j]['design']['title'] + '➖' + '\n';
+                            }
                             for (let k = 0; k < json_data[i]['children'][j]['children'].length; k++) {
                                 if (json_data[i]['children'][j]['children'][k]['is_hide'] == false && json_data[i]['children'][j]['children'][k]['is_view'] == true) {
-                                    product_list_price += (json_data[i]['children'][j]['children'][k]['price']['full']).slice(0, -2);
-                                    product_list = product_list + '    ' + json_data[i]['children'][j]['children'][k]['design']['title'] + '\n';
+                                    product_list_local_price = parseInt((json_data[i]['children'][j]['children'][k]['price']['amount']).toString().slice(0, -2)) * parseFloat(json_data[i]['children'][j]['children'][k]['setting']['count']);;
+                                    product_list_price += parseInt((json_data[i]['children'][j]['children'][k]['price']['amount']).toString().slice(0, -2)) * parseFloat(json_data[i]['children'][j]['children'][k]['setting']['count']);
+                                    product_list = product_list + '    ' + json_data[i]['children'][j]['children'][k]['design']['title'] + ' ' + product_list_local_price + '\n';
                                 };
                             };
                             product_list = product_list + '\n';
@@ -2887,9 +3144,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 };
             };
             console.log(product_list);
+            console.log(product_list_price);
         };
         common_json_data = json_data;
         create_categories(json_data, 0);
         get_user_key();
+        search_manage();
     });
 });
