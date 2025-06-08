@@ -1347,15 +1347,15 @@ function form_manag() {
         if (isTodayAvailable) {
             date_pickup1_manag(hours_msk);
             const nextDay = getNextDays(year_msk, month_msk, day_msk, 0);
-            const maxDay = getNextDays(year_msk, month_msk, day_msk, 2);
+            const maxDay = getNextDays(year_msk, month_msk, day_msk, 0); //исправить 2
 
             date_pickup1_day.value = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
             date_pickup1_day.min = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
             date_pickup1_day.max = `${maxDay.year}-${maxDay.month}-${maxDay.day}`;
         } else {
             date_pickup1_manag(0);
-            const nextDay = getNextDays(year_msk, month_msk, day_msk, 1);
-            const maxDay = getNextDays(year_msk, month_msk, day_msk, 3);
+            const nextDay = getNextDays(year_msk, month_msk, day_msk, 2); //исправить 1
+            const maxDay = getNextDays(year_msk, month_msk, day_msk, 3); 
 
             date_pickup1_day.value = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
             date_pickup1_day.min = `${nextDay.year}-${nextDay.month}-${nextDay.day}`;
