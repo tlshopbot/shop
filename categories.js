@@ -3134,7 +3134,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 if (json_data[i]['children'][j]['children'][k]['is_hide'] == false && json_data[i]['children'][j]['children'][k]['is_view'] == true) {
                                     product_list_local_price = parseInt((json_data[i]['children'][j]['children'][k]['price']['amount']).toString().slice(0, -2)) * parseFloat(json_data[i]['children'][j]['children'][k]['setting']['count']);;
                                     product_list_price += parseInt((json_data[i]['children'][j]['children'][k]['price']['amount']).toString().slice(0, -2)) * parseFloat(json_data[i]['children'][j]['children'][k]['setting']['count']);
-                                    product_list = product_list + '    ' + json_data[i]['children'][j]['children'][k]['design']['title'] + ' ' + product_list_local_price + '\n';
+                                    product_list = product_list + '    ' + json_data[i]['children'][j]['children'][k]['design']['title'] + ' ' + product_list_local_price + ' ' + json_data[i]['children'][j]['children'][k]['price']['amount'] + '\n';
                                 };
                             };
                             product_list = product_list + '\n';
