@@ -1824,7 +1824,7 @@ function form_manag() {
             };
         };
         if (((form_data.adressCourier) && (form_data.date) && (form_data.pay) && (form_data.phone) && (form_data.time)) || ((form_data.adressPickup) && (form_data.date) && (form_data.pay) && (form_data.phone) && (form_data.time))) {
-            if (form_data.method == "pickup" && (form_data.adressPickup == 'Г. Мурманск, ул. Достоевского 22' || form_data.adressPickup == 'Г. Мурманск, ул. Полярной правды 8')) {
+            if (form_data.method == "pickup" && (form_data.adressPickup == 'Г. Мурманск, ул. Беринга 14' || form_data.adressPickup == 'Г. Мурманск, ул. Полярной правды 8')) {
                 pay_but.classList.remove('disactive_but');
                 return true;
             } else if (form_data.method == "courier" && (form_data.adressCourier)) {
