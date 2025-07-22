@@ -1718,7 +1718,7 @@ function form_manag() {
                     document.getElementsByClassName('method_pickup_but_add')[0].classList.remove('incorrect_svg');
                 }, 1000);
             };
-            if (form_data.adressPickup == "Г. Мурманск, ул. Достоевского 22") {
+            if (form_data.adressPickup == "Г. Мурманск, ул. Беринга 14") {
                 form_data.date = date_pickup1_day.value;
                 if (date_pickup1.getElementsByClassName('active_input')[0]) {
                     form_data.time = date_pickup1.getElementsByClassName('active_input')[0].textContent;
@@ -1800,7 +1800,7 @@ function form_manag() {
     });
     function pay_check() {
         if (form_data.method == "pickup") {
-            if (form_data.adressPickup == "Г. Мурманск, ул. Достоевского 22") {
+            if (form_data.adressPickup == "Г. Мурманск, ул. Беринга 14") {
                 form_data.date = date_pickup1_day.value;
                 if (date_pickup1.getElementsByClassName('active_input')[0]) {
                     form_data.time = date_pickup1.getElementsByClassName('active_input')[0].textContent;
