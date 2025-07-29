@@ -3119,10 +3119,10 @@ document.addEventListener('DOMContentLoaded', function () {
             let product_list_price = 0;
             let product_list_local_price;
             for (let i = 0; i < json_data.length; i++) {
-                if (json_data[i]['is_hide'] == false && json_data[i]['is_view'] == true) {
+                if (json_data[i]['is_hide'] == false) {
                     product_list = product_list + '➖' + json_data[i]['design']['title'] + '➖' + '\n';
                     for (let j = 0; j < json_data[i]['children'].length; j++) {
-                        if (json_data[i]['children'][j]['is_hide'] == false && json_data[i]['children'][j]['is_view'] == true) {
+                        if (json_data[i]['children'][j]['is_hide'] == false) {
                             if (parseInt((json_data[i]['children'][j]['price']['amount'].toString()).slice(0, -2)) > 0) {
                                 product_list_price += parseInt((json_data[i]['children'][j]['price']['amount']).toString().slice(0, -2)) * parseFloat(json_data[i]['children'][j]['setting']['count']);
                                 product_list_local_price = parseInt((json_data[i]['children'][j]['price']['amount']).toString().slice(0, -2)) * parseFloat(json_data[i]['children'][j]['setting']['count']);
@@ -3131,7 +3131,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 product_list = product_list + '  ➖' + json_data[i]['children'][j]['design']['title'] + '➖' + '\n';
                             }
                             for (let k = 0; k < json_data[i]['children'][j]['children'].length; k++) {
-                                if (json_data[i]['children'][j]['children'][k]['is_hide'] == false && json_data[i]['children'][j]['children'][k]['is_view'] == true) {
+                                if (json_data[i]['children'][j]['children'][k]['is_hide'] == false) {
                                     product_list_local_price = parseInt((json_data[i]['children'][j]['children'][k]['price']['amount']).toString().slice(0, -2)) * parseFloat(json_data[i]['children'][j]['children'][k]['setting']['count']);;
                                     product_list_price += parseInt((json_data[i]['children'][j]['children'][k]['price']['amount']).toString().slice(0, -2)) * parseFloat(json_data[i]['children'][j]['children'][k]['setting']['count']);
                                     product_list = product_list + '    ' + json_data[i]['children'][j]['children'][k]['design']['title'] + ' ' + product_list_local_price + ' ' + json_data[i]['children'][j]['children'][k]['setting']['count'] + '\n';
