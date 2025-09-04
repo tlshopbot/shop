@@ -41,7 +41,7 @@ function get_user_key() {
     };
     let my_user_keyHeaders = new Headers();
     my_user_keyHeaders.append('Content-Type', 'application/json');
-    fetch('https://tl-shop.click/api/get-user-key', {
+    fetch('http://localhost:3000/api/get-user-key', {
         method: 'POST',
         headers: my_user_keyHeaders,
         body: JSON.stringify(post_user_keyData),
@@ -1917,7 +1917,7 @@ ${products}
     };
     let my_edit_massageHeaders = new Headers();
     my_edit_massageHeaders.append('Content-Type', 'application/json');
-    fetch('https://tl-shop.click/api/update-text', {
+    fetch('http://localhost:3000/api/update-text', {
         method: 'POST',
         headers: my_edit_massageHeaders,
         body: JSON.stringify(post_edit_massageData),
@@ -1938,7 +1938,7 @@ function send_massage(json_order_data) {
     };
     let my_send_massageHeaders = new Headers();
     my_send_massageHeaders.append('Content-Type', 'application/json');
-    fetch('https://tl-shop.click/api/message', {
+    fetch('http://localhost:3000/api/message', {
         method: 'POST',
         headers: my_send_massageHeaders,
         body: JSON.stringify(post_send_massageData),
@@ -1959,7 +1959,7 @@ function send_feedback(json_order_data) {
     };
     let my_send_feedbackHeaders = new Headers();
     my_send_feedbackHeaders.append('Content-Type', 'application/json');
-    fetch('https://tl-shop.click/api/message', {
+    fetch('http://localhost:3000/api/message', {
         method: 'POST',
         headers: my_send_feedbackHeaders,
         body: JSON.stringify(post_send_feedbackData),
@@ -1983,7 +1983,7 @@ function edit_feedback(json_order_data) {
     };
     let my_edit_feedbackHeaders = new Headers();
     my_edit_feedbackHeaders.append('Content-Type', 'application/json');
-    fetch('https://tl-shop.click/api/update-text', {
+    fetch('http://localhost:3000/api/update-text', {
         method: 'POST',
         headers: my_edit_feedbackHeaders,
         body: JSON.stringify(post_edit_feedbackData),
@@ -2039,7 +2039,7 @@ ${products}
     };
     let my_edit_massageHeaders = new Headers();
     my_edit_massageHeaders.append('Content-Type', 'application/json');
-    fetch('https://tl-shop.click/api/update-text', {
+    fetch('http://localhost:3000/api/update-text', {
         method: 'POST',
         headers: my_edit_massageHeaders,
         body: JSON.stringify(post_edit_massageData),
@@ -2059,7 +2059,7 @@ function send_massage_admin() {
     };
     let my_send_massageHeaders = new Headers();
     my_send_massageHeaders.append('Content-Type', 'application/json');
-    fetch('https://tl-shop.click/api/admin_message', {
+    fetch('http://localhost:3000/api/admin_message', {
         method: 'POST',
         headers: my_send_massageHeaders,
         body: JSON.stringify(post_send_massageData),
@@ -2271,7 +2271,7 @@ function admin() {
         };
         let my_get_usersHeaders = new Headers();
         my_get_usersHeaders.append('Content-Type', 'application/json');
-        fetch('https://tl-shop.click/api/user_count', {
+        fetch('http://localhost:3000/api/user_count', {
             method: 'POST',
             headers: my_get_usersHeaders,
             body: JSON.stringify(post_get_usersData),
@@ -2288,7 +2288,7 @@ function admin() {
         };
         let my_get_order_countHeaders = new Headers();
         my_get_order_countHeaders.append('Content-Type', 'application/json');
-        fetch('https://tl-shop.click/api/order_count', {
+        fetch('http://localhost:3000/api/order_count', {
             method: 'POST',
             headers: my_get_order_countHeaders,
             body: JSON.stringify(post_get_order_countData),
@@ -2320,7 +2320,7 @@ function balance_manag() {
     check_balance.addEventListener('click', async () => { // Добавляем async
         if (!check_balance.classList.contains('disactive_but')) {
             try {
-                const result = await admin_activate('https://tl-shop.click/api/zero-balance', balance_input.value); // Ждём ответа
+                const result = await admin_activate('http://localhost:3000/api/zero-balance', balance_input.value); // Ждём ответа
                 if (result && result.data.result) { // Проверяем result на существование
                     balance_input.classList.add('succes_input'); // Добавляем класс (было remove)
                     setTimeout(() => {
@@ -2364,7 +2364,7 @@ function block_manag() {
     check_block.addEventListener('click', async () => { // Добавляем async
         if (!check_block.classList.contains('disactive_but')) {
             try {
-                const result = await admin_activate('https://tl-shop.click/api/user_ban', block_input.value); // Ждём ответа
+                const result = await admin_activate('http://localhost:3000/api/user_ban', block_input.value); // Ждём ответа
                 if (result && result.data.result) { // Проверяем result на существование
                     block_input.classList.add('succes_input'); // Добавляем класс (было remove)
                     setTimeout(() => {
@@ -2408,7 +2408,7 @@ function delete_manag() {
     check_delete.addEventListener('click', async () => { // Добавляем async
         if (!check_delete.classList.contains('disactive_but')) {
             try {
-                const result = await admin_activate('https://tl-shop.click/api/order_delete', delete_input.value); // Ждём ответа
+                const result = await admin_activate('http://localhost:3000/api/order_delete', delete_input.value); // Ждём ответа
                 if (result && result.result) { // Проверяем result на существование
                     delete_input.classList.add('succes_input'); // Добавляем класс (было remove)
                     setTimeout(() => {
@@ -2452,7 +2452,7 @@ function complete_manag() {
     check_complete.addEventListener('click', async () => { // Добавляем async
         if (!check_complete.classList.contains('disactive_but')) {
             try {
-                const result = await admin_activate('https://tl-shop.click/api/order_complete', complete_input.value); // Ждём ответа
+                const result = await admin_activate('http://localhost:3000/api/order_complete', complete_input.value); // Ждём ответа
                 if (result && result.result) { // Проверяем result на существование
                     complete_input.classList.add('succes_input'); // Добавляем класс (было remove)
                     setTimeout(() => {
@@ -2697,7 +2697,7 @@ function create_category(id, type, title, category_id, description, img, count, 
     };
     let myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
-    fetch('https://tl-shop.click/api/category_create', {
+    fetch('http://localhost:3000/api/category_create', {
         method: 'POST',
         headers: myHeaders,
         body: JSON.stringify(postData),
@@ -2767,7 +2767,7 @@ function category_manage(id, type) {
     };
     let myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
-    fetch('https://tl-shop.click/api/category_manage', {
+    fetch('http://localhost:3000/api/category_manage', {
         method: 'POST',
         headers: myHeaders,
         body: JSON.stringify(postData),
@@ -2828,7 +2828,7 @@ async function correctSpelling(text) {
         };
         let myHeaders = new Headers();
         myHeaders.append('Content-Type', 'application/json');
-        const response = await fetch('https://tl-shop.click/api/search', {
+        const response = await fetch('http://localhost:3000/api/search', {
             method: 'POST',
             headers: myHeaders,
             body: JSON.stringify(postData),
@@ -3092,7 +3092,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
     let myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
-    fetch('https://tl-shop.click/api/get-category', {
+    fetch('http://localhost:3000/api/get-category', {
         method: 'POST',
         headers: myHeaders,
         body: JSON.stringify(postData),
